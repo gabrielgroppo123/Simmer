@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="false" userDefinedModelVersionIdentifier="">
-    <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
-        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24901" systemVersion="25F84" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Comentario" representedClassName="Comentario" syncable="YES">
+        <attribute name="data" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="descricao" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="receita" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Receita" inverseName="comentarios" inverseEntity="Receita"/>
     </entity>
-    <elements>
-        <element name="Item" positionX="-63" positionY="-18" width="128" height="44"/>
-    </elements>
+    <entity name="Ingrediente" representedClassName="Ingrediente" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="nome" optional="YES" attributeType="String"/>
+        <attribute name="quantidade" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="unidade" optional="YES" attributeType="String"/>
+        <relationship name="receita" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Receita" inverseName="ingredientes" inverseEntity="Receita"/>
+    </entity>
+    <entity name="Receita" representedClassName="Receita" syncable="YES">
+        <attribute name="categoria" optional="YES" attributeType="String"/>
+        <attribute name="dataCriacao" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="duracao" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="favorito" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="foto" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="modoPreparo" optional="YES" attributeType="String"/>
+        <attribute name="nome" optional="YES" attributeType="String"/>
+        <attribute name="porcoes" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="utensilios" optional="YES" attributeType="String"/>
+        <relationship name="comentarios" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Comentario" inverseName="receita" inverseEntity="Comentario"/>
+        <relationship name="ingredientes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Ingrediente" inverseName="receita" inverseEntity="Ingrediente"/>
+    </entity>
 </model>
