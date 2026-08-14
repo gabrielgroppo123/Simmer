@@ -14,14 +14,14 @@
         <relationship name="receita" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Receita" inverseName="ingredientes" inverseEntity="Receita"/>
     </entity>
     <entity name="Receita" representedClassName="Receita" syncable="YES">
-        <attribute name="categoria" optional="YES" attributeType="String"/>
-        <attribute name="dataCriacao" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="categoria" attributeType="String"/>
+        <attribute name="dataCriacao" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="duracao" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="favorito" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="foto" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="modoPreparo" optional="YES" attributeType="String"/>
-        <attribute name="nome" optional="YES" attributeType="String"/>
+        <attribute name="favorito" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="foto" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="modoPreparo" attributeType="String"/>
+        <attribute name="nome" attributeType="String"/>
         <attribute name="porcoes" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="utensilios" optional="YES" attributeType="String"/>
         <relationship name="comentarios" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Comentario" inverseName="receita" inverseEntity="Comentario"/>

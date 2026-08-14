@@ -6,8 +6,23 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		7B9E292C302E70BC0030E0D7 /* Receita+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9E292B302E70BC0030E0D7 /* Receita+CoreDataProperties.swift */; };
+		7B9E292D302E70BC0030E0D7 /* Receita+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9E292A302E70BC0030E0D7 /* Receita+CoreDataClass.swift */; };
+		7B9E2938302E78F80030E0D7 /* Ingrediente+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9E2936302E78F80030E0D7 /* Ingrediente+CoreDataClass.swift */; };
+		7B9E2939302E78F80030E0D7 /* Ingrediente+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9E2937302E78F80030E0D7 /* Ingrediente+CoreDataProperties.swift */; };
+		7B9E293C302E79100030E0D7 /* Comentario+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9E293A302E79100030E0D7 /* Comentario+CoreDataClass.swift */; };
+		7B9E293D302E79100030E0D7 /* Comentario+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9E293B302E79100030E0D7 /* Comentario+CoreDataProperties.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		7B9E2909302E5FAC0030E0D7 /* Simmer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Simmer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B9E292A302E70BC0030E0D7 /* Receita+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Receita+CoreDataClass.swift"; path = "Simmer/Models/Receita+CoreDataClass.swift"; sourceTree = "<group>"; };
+		7B9E292B302E70BC0030E0D7 /* Receita+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Receita+CoreDataProperties.swift"; path = "Simmer/Models/Receita+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		7B9E2936302E78F80030E0D7 /* Ingrediente+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Ingrediente+CoreDataClass.swift"; path = "Simmer/Models/Ingrediente+CoreDataClass.swift"; sourceTree = "<group>"; };
+		7B9E2937302E78F80030E0D7 /* Ingrediente+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Ingrediente+CoreDataProperties.swift"; path = "Simmer/Models/Ingrediente+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		7B9E293A302E79100030E0D7 /* Comentario+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Comentario+CoreDataClass.swift"; path = "Simmer/Models/Comentario+CoreDataClass.swift"; sourceTree = "<group>"; };
+		7B9E293B302E79100030E0D7 /* Comentario+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Comentario+CoreDataProperties.swift"; path = "Simmer/Models/Comentario+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -32,6 +47,12 @@
 		7B9E2900302E5FAC0030E0D7 = {
 			isa = PBXGroup;
 			children = (
+				7B9E293A302E79100030E0D7 /* Comentario+CoreDataClass.swift */,
+				7B9E293B302E79100030E0D7 /* Comentario+CoreDataProperties.swift */,
+				7B9E2936302E78F80030E0D7 /* Ingrediente+CoreDataClass.swift */,
+				7B9E2937302E78F80030E0D7 /* Ingrediente+CoreDataProperties.swift */,
+				7B9E292A302E70BC0030E0D7 /* Receita+CoreDataClass.swift */,
+				7B9E292B302E70BC0030E0D7 /* Receita+CoreDataProperties.swift */,
 				7B9E290B302E5FAC0030E0D7 /* Simmer */,
 				7B9E290A302E5FAC0030E0D7 /* Products */,
 			);
@@ -119,6 +140,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B9E2938302E78F80030E0D7 /* Ingrediente+CoreDataClass.swift in Sources */,
+				7B9E2939302E78F80030E0D7 /* Ingrediente+CoreDataProperties.swift in Sources */,
+				7B9E292C302E70BC0030E0D7 /* Receita+CoreDataProperties.swift in Sources */,
+				7B9E292D302E70BC0030E0D7 /* Receita+CoreDataClass.swift in Sources */,
+				7B9E293C302E79100030E0D7 /* Comentario+CoreDataClass.swift in Sources */,
+				7B9E293D302E79100030E0D7 /* Comentario+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
