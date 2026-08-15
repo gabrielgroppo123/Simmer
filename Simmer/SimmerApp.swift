@@ -10,12 +10,18 @@ import CoreData
 
 @main
 struct SimmerApp: App {
+    
     let persistenceController = PersistenceController.shared
-
+    
+    let receitaService = ReceitaService(
+        repository: CoreDataReceitaRepository(
+            context: PersistenceController.shared.container.viewContext
+        )
+    )
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            MainView(service: receitaService)
         }
     }
 }

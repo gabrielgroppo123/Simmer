@@ -18,10 +18,10 @@ extension Comentario {
         return NSFetchRequest<Comentario>(entityName: "Comentario")
     }
 
-    @NSManaged public var id: UUID?
-    @NSManaged public var descricao: String?
-    @NSManaged public var data: Date?
-    @NSManaged public var receita: Receita?
+    @NSManaged public var id: UUID
+    @NSManaged public var descricao: String
+    @NSManaged public var data: Date
+    @NSManaged public var receita: Receita
 
 }
 

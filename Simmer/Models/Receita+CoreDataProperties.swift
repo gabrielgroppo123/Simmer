@@ -22,7 +22,7 @@ extension Receita {
     @NSManaged public var nome: String
     @NSManaged public var categoria: String
     @NSManaged public var favorito: Bool
-    @NSManaged public var dataCriacao: Date
+    @NSManaged public var dataCriacao: Date?
     @NSManaged public var foto: Data
     @NSManaged public var porcoes: Int16
     @NSManaged public var duracao: Int64

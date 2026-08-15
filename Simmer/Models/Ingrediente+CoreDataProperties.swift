@@ -18,11 +18,11 @@ extension Ingrediente {
         return NSFetchRequest<Ingrediente>(entityName: "Ingrediente")
     }
 
-    @NSManaged public var id: UUID?
-    @NSManaged public var nome: String?
+    @NSManaged public var id: UUID
+    @NSManaged public var nome: String
     @NSManaged public var quantidade: Double
-    @NSManaged public var unidade: String?
-    @NSManaged public var receita: Receita?
+    @NSManaged public var unidade: String
+    @NSManaged public var receita: Receita
 
 }
 
