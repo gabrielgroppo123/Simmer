@@ -99,10 +99,18 @@ struct ContentView: View {
                 receitaEncontrada,
                 nome: "Bolo de Chocolate Especial",
                 categoria: receitaEncontrada.categoria,
+                foto: receitaEncontrada.foto,
                 porcoes: 12,
                 duracao: receitaEncontrada.duracao,
                 utensilios: receitaEncontrada.utensilios,
-                modoPreparo: receitaEncontrada.modoPreparo
+                modoPreparo: receitaEncontrada.modoPreparo,
+                ingredientes: receitaEncontrada.ingredientes.map {
+                    NovoIngrediente(
+                        nome: $0.nome,
+                        quantidade: $0.quantidade,
+                        unidade: $0.unidade
+                    )
+                }
             )
             
             print("✏️ UPDATE")

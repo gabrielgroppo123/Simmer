@@ -10,7 +10,7 @@ struct NovaReceita {
     let nome: String
     let categoria: Categoria
     let foto: Data
-    let porcoes: Int16
+    let porcoes: Int16?
     let duracao: Int64
     let utensilios: String?
     let modoPreparo: String
@@ -52,20 +52,24 @@ final class ReceitaService {
         _ receita: ReceitaModel,
         nome: String,
         categoria: Categoria,
+        foto: Data,
         porcoes: Int16,
         duracao: Int64,
         utensilios: String?,
-        modoPreparo: String
+        modoPreparo: String,
+        ingredientes: [NovoIngrediente]
     ) throws {
         
         try repository.atualizarReceita(
             receita,
             nome: nome,
             categoria: categoria,
+            foto: foto,
             porcoes: porcoes,
             duracao: duracao,
             utensilios: utensilios,
-            modoPreparo: modoPreparo
+            modoPreparo: modoPreparo,
+            ingredientes: ingredientes
         )
     }
     

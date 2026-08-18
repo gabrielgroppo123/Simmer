@@ -15,7 +15,7 @@ struct ReceitaModel: Identifiable {
     let favorito: Bool
     let dataCriacao: Date?
     let foto: Data
-    let porcoes: Int16
+    let porcoes: Int16?
     let duracao: Int64
     let utensilios: String?
     let modoPreparo: String

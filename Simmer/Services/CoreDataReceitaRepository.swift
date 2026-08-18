@@ -8,6 +8,12 @@
 import CoreData
 
 final class CoreDataReceitaRepository: ReceitaRepository {
+    func atualizarReceita(_ receita: ReceitaModel, nome: String, categoria: Categoria, foto: Data, porcoes: Int16?, duracao: Int64, utensilios: String?, modoPreparo: String, ingredientes: [NovoIngrediente]) throws {
+        
+    }
+    
+    
+    
     
     private let context: NSManagedObjectContext
     
@@ -24,7 +30,7 @@ final class CoreDataReceitaRepository: ReceitaRepository {
         receita.nome = dados.nome
         receita.categoria = dados.categoria.rawValue
         receita.foto = dados.foto
-        receita.porcoes = dados.porcoes
+        receita.porcoes = dados.porcoes ?? 1
         receita.duracao = dados.duracao
         receita.utensilios = dados.utensilios
         receita.modoPreparo = dados.modoPreparo
@@ -116,7 +122,7 @@ final class CoreDataReceitaRepository: ReceitaRepository {
         _ receita: ReceitaModel,
         nome: String,
         categoria: Categoria,
-        porcoes: Int16,
+        porcoes: Int16?,
         duracao: Int64,
         utensilios: String?,
         modoPreparo: String
@@ -137,7 +143,7 @@ final class CoreDataReceitaRepository: ReceitaRepository {
         
         receitaCoreData.nome = nome
         receitaCoreData.categoria = categoria.rawValue
-        receitaCoreData.porcoes = porcoes
+        receitaCoreData.porcoes = porcoes ?? 1
         receitaCoreData.duracao = duracao
         receitaCoreData.utensilios = utensilios
         receitaCoreData.modoPreparo = modoPreparo
