@@ -72,132 +72,42 @@ struct EditarReceita: View {
     var body: some View {
         Form {
             
-            // MARK: - Informações
-            
-            Section("Informações da receita") {
-                
-                TextField(
-                    "Nome da receita",
-                    text: $nome
-                )
-                
-                Picker(
-                    "Categoria",
-                    selection: $categoria
-                ) {
-                    ForEach(Categoria.allCases) { categoria in
-                        Text(categoria.rawValue)
-                            .tag(categoria)
-                    }
-                }
-                
-                TextField(
-                    "Porções",
-                    text: $porcoes
-                )
-                .keyboardType(.numberPad)
-                
-                TextField(
-                    "Duração em minutos",
-                    text: $duracao
-                )
-                .keyboardType(.numberPad)
-                
-                TextField(
-                    "Utensílios",
-                    text: $utensilios
-                )
-                
-                TextField(
-                    "Modo de preparo",
-                    text: $modoPreparo,
-                    axis: .vertical
-                )
-                .lineLimit(4...8)
-            }
-            
-            // MARK: - Foto
             
             Section("Foto") {
-                
-                PhotosPicker(
-                    selection: $fotoSelecionada,
-                    matching: .images
-                ) {
-                    Label(
-                        "Alterar foto",
-                        systemImage: "photo"
-                    )
-                }
-                
-                if let imagem = UIImage(data: foto) {
-                    Image(uiImage: imagem)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 200)
-                        .clipShape(
-                            RoundedRectangle(
-                                cornerRadius: 12
-                            )
-                        )
-                }
+
+                EditarReceitaFotoView(
+                    foto: $foto,
+                    fotoSelecionada: $fotoSelecionada
+                )
             }
             
-            // MARK: - Ingredientes
             
-            Section("Ingredientes") {
-                
-                ForEach($ingredientes) { $ingrediente in
-                    
-                    VStack(
-                        alignment: .leading,
-                        spacing: 12
-                    ) {
-                        
-                        TextField(
-                            "Nome do ingrediente",
-                            text: $ingrediente.nome
-                        )
-                        
-                        HStack {
-                            
-                            TextField(
-                                "Quantidade",
-                                text: $ingrediente.quantidade
-                            )
-                            .keyboardType(.decimalPad)
-                            
-                            Picker(
-                                "",
-                                selection: $ingrediente.unidade
-                            ) {
-                                ForEach(
-                                    UnidadeMedida.allCases
-                                ) { unidade in
-                                    Text(unidade.rawValue)
-                                        .tag(unidade)
-                                }
-                            }
-                        }
-                    }
-                    .padding(.vertical, 4)
-                }
-                .onDelete { offsets in
-                    ingredientes.remove(
-                        atOffsets: offsets
-                    )
-                }
-                
-                Button {
-                    adicionarIngrediente()
-                } label: {
-                    Label(
-                        "Adicionar ingrediente",
-                        systemImage: "plus"
-                    )
-                }
+            Section("Informações da receita") {
+
+                EditarReceitaInformacoesView(
+                    nome: $nome,
+                    categoria: $categoria,
+                    porcoes: $porcoes,
+                    duracao: $duracao,
+                    utensilios: $utensilios,
+                    modoPreparo: $modoPreparo
+                )
             }
+   
+                        
+            EditarReceitaIngredientesView(
+                ingredientes: $ingredientes,
+                adicionarIngrediente: adicionarIngrediente
+            )
+            
+            Section("Mais informações") {
+
+                EditarReceitaOutrasInformacoesView(
+                    utensilios: $utensilios,
+                    modoPreparo: $modoPreparo
+                )
+            }
+            
         }
         .navigationTitle("Editar receita")
         .navigationBarTitleDisplayMode(.inline)
@@ -226,7 +136,7 @@ struct EditarReceita: View {
         }
     }
     
-    // MARK: - Ingredientes
+    
     
     private func adicionarIngrediente() {
         
@@ -235,7 +145,7 @@ struct EditarReceita: View {
         )
     }
     
-    // MARK: - Foto
+   
     
     private func carregarFoto() async {
         
@@ -256,7 +166,6 @@ struct EditarReceita: View {
         }
     }
     
-    // MARK: - Salvar
     
     private func salvarAlteracoes() {
         
@@ -404,7 +313,7 @@ struct EditarReceita: View {
 
 
 
-// MARK: - Erros
+
 
 private enum ErroEdicao: Error {
     case ingredienteSemNome
