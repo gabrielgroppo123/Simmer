@@ -7,7 +7,6 @@
 
 import SwiftUI
 import PhotosUI
-import UIKit
 
 struct CadastrarReceita: View {
     
@@ -36,66 +35,82 @@ struct CadastrarReceita: View {
     
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
+            
+            VStack(
+                alignment: .leading,
+                spacing: 0
+            ) {
                 
-                // MARK: - Foto
+                ReceitaFotoView(
+                    foto: $foto,
+                    fotoSelecionada: $fotoSelecionada
+                )
+                .padding(.top, 18)
                 
-                fotoView
-                    .padding(.top, 18)
+                ReceitaCampoNomeView(
+                    nome: $nome
+                )
+                .padding(.top, 46)
                 
-                // MARK: - Nome
+                ReceitaTempoView(
+                    duracao: $duracao
+                )
+                .padding(.top, 34)
                 
-                campoNome
-                    .padding(.top, 46)
+                ReceitaPorcoesView(
+                    porcoes: $porcoes
+                )
+                .padding(.top, 26)
                 
-                // MARK: - Informações
+                ReceitaCategoriaView(
+                    categoria: $categoria
+                )
+                .padding(.top, 22)
                 
-                tempoPreparo
-                    .padding(.top, 34)
+                ReceitaIngredientesView(
+                    ingredientes: $ingredientes
+                )
+                .padding(.top, 48)
                 
-                seletorPorcoes
-                    .padding(.top, 26)
+                ReceitaModoPreparoView(
+                    modoPreparo: $modoPreparo
+                )
+                .padding(.top, 48)
                 
-                seletorCategoria
-                    .padding(.top, 22)
+                ReceitaUtensiliosView(
+                    utensilios: $utensilios
+                )
+                .padding(.top, 46)
                 
-                // MARK: - Ingredientes
-                
-                secaoIngredientes
-                    .padding(.top, 48)
-                
-                // MARK: - Modo de preparo
-                
-                secaoModoPreparo
-                    .padding(.top, 48)
-                
-                // MARK: - Utensílios
-                
-                secaoUtensilios
-                    .padding(.top, 46)
-                
-                // MARK: - Observações
-                
-                secaoObservacoes
-                    .padding(.top, 46)
-                
-                Spacer(minLength: 30)
+                ReceitaObservacoesView(
+                    observacao: $observacao
+                )
+                .padding(.top, 46)
             }
             .padding(.horizontal, 16)
+            .padding(.bottom, 30)
         }
         .scrollIndicators(.hidden)
-        .background(Color(.systemBackground))
+        .background(
+            Color(.systemBackground)
+        )
         .navigationTitle("Nova Receita")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            
+            ToolbarItem(
+                placement: .topBarTrailing
+            ) {
                 Button {
                     salvarReceita()
                 } label: {
-                    Image(systemName: "checkmark")
-                        .fontWeight(.medium)
+                    Image(
+                        systemName: "checkmark"
+                    )
                 }
-                .accessibilityLabel("Salvar receita")
+                .accessibilityLabel(
+                    "Salvar receita"
+                )
             }
         }
         .task(id: fotoSelecionada) {
@@ -105,563 +120,12 @@ struct CadastrarReceita: View {
             "Não foi possível salvar",
             isPresented: $mostrandoErro
         ) {
-            Button("OK", role: .cancel) {}
+            Button(
+                "OK",
+                role: .cancel
+            ) {}
         } message: {
             Text(mensagemErro)
-        }
-    }
-}
-
-// MARK: - Componentes da tela
-
-private extension CadastrarReceita {
-    
-    // MARK: Foto
-    
-    var fotoView: some View {
-        PhotosPicker(
-            selection: $fotoSelecionada,
-            matching: .images
-        ) {
-            ZStack {
-                
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(
-                        Color.gray.opacity(0.14)
-                    )
-                    .frame(
-                        width: 224,
-                        height: 180
-                    )
-                
-                if let foto,
-                   let imagem = UIImage(data: foto) {
-                    
-                    Image(uiImage: imagem)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(
-                            width: 224,
-                            height: 180
-                        )
-                        .clipShape(
-                            RoundedRectangle(
-                                cornerRadius: 16
-                            )
-                        )
-                    
-                } else {
-                    
-                    VStack(spacing: 14) {
-                        
-                        Image(
-                            systemName: "photo"
-                        )
-                        .font(.system(size: 42))
-                        .foregroundStyle(
-                            .gray.opacity(0.55)
-                        )
-                        
-                        Text("Adicione uma imagem")
-                            .font(.system(size: 17))
-                            .foregroundStyle(
-                                .gray.opacity(0.65)
-                            )
-                    }
-                }
-            }
-        }
-        .frame(
-            maxWidth: .infinity
-        )
-        .buttonStyle(.plain)
-        .accessibilityLabel(
-            foto == nil
-                ? "Adicionar imagem"
-                : "Alterar imagem"
-        )
-    }
-    
-    // MARK: Nome
-    
-    var campoNome: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            
-            HStack(alignment: .firstTextBaseline) {
-                
-                Text("Nome da Receita")
-                    .font(
-                        .system(
-                            size: 21,
-                            weight: .semibold
-                        )
-                    )
-                
-                Text("*")
-                    .foregroundStyle(.red)
-                
-                Spacer()
-                
-                if nome.trimmingCharacters(
-                    in: .whitespacesAndNewlines
-                ).isEmpty {
-                    Text("campo obrigatório")
-                        .font(.system(size: 12))
-                        .foregroundStyle(.red.opacity(0.75))
-                }
-            }
-            
-            TextField(
-                "Ex: Pudim",
-                text: $nome
-            )
-            .font(.system(size: 18))
-            .textInputAutocapitalization(.sentences)
-            
-            Divider()
-        }
-    }
-    
-    // MARK: Tempo
-    
-    var tempoPreparo: some View {
-        HStack {
-            
-            Image(systemName: "clock")
-                .font(.system(size: 20))
-                .frame(width: 28)
-            
-            Text("Tempo de preparo")
-                .font(
-                    .system(
-                        size: 18,
-                        weight: .semibold
-                    )
-                )
-            
-            Spacer()
-            
-            TextField(
-                "0",
-                text: $duracao
-            )
-            .keyboardType(.numberPad)
-            .multilineTextAlignment(.center)
-            .font(.system(size: 16))
-            .frame(
-                width: 62,
-                height: 36
-            )
-            .background(
-                Color.gray.opacity(0.10)
-            )
-            .clipShape(
-                Capsule()
-            )
-        }
-    }
-    
-    // MARK: Porções
-    
-    var seletorPorcoes: some View {
-        HStack {
-            
-            Image(systemName: "person.2")
-                .font(.system(size: 19))
-                .frame(width: 28)
-            
-            Text("Porções")
-                .font(
-                    .system(
-                        size: 18,
-                        weight: .semibold
-                    )
-                )
-            
-            Spacer()
-            
-            HStack(spacing: 0) {
-                
-                Button {
-                    diminuirPorcoes()
-                } label: {
-                    Image(systemName: "minus")
-                        .font(
-                            .system(
-                                size: 16,
-                                weight: .semibold
-                            )
-                        )
-                        .frame(
-                            width: 38,
-                            height: 38
-                        )
-                }
-                
-                Text(
-                    porcoes.isEmpty
-                        ? "0"
-                        : porcoes
-                )
-                .font(.system(size: 17))
-                .frame(
-                    width: 34
-                )
-                
-                Button {
-                    aumentarPorcoes()
-                } label: {
-                    Image(systemName: "plus")
-                        .font(
-                            .system(
-                                size: 16,
-                                weight: .semibold
-                            )
-                        )
-                        .frame(
-                            width: 38,
-                            height: 38
-                        )
-                }
-            }
-            .background(
-                Color.gray.opacity(0.10)
-            )
-            .clipShape(
-                Capsule()
-            )
-        }
-    }
-    
-    // MARK: Categoria
-    
-    var seletorCategoria: some View {
-        HStack {
-            
-            Image(systemName: "square.grid.2x2")
-                .font(.system(size: 19))
-                .frame(width: 28)
-            
-            Text("Categoria")
-                .font(
-                    .system(
-                        size: 18,
-                        weight: .semibold
-                    )
-                )
-            
-            Spacer()
-            
-            Menu {
-                
-                ForEach(
-                    Categoria.allCases
-                ) { categoria in
-                    
-                    Button {
-                        self.categoria = categoria
-                    } label: {
-                        Text(categoria.rawValue)
-                    }
-                }
-                
-            } label: {
-                
-                HStack(spacing: 7) {
-                    
-                    Text(
-                        categoria == .outro
-                            ? "Escolher"
-                            : categoria.rawValue
-                    )
-                    .font(.system(size: 15))
-                    .foregroundStyle(
-                        categoria == .outro
-                            ? .secondary
-                            : .primary
-                    )
-                    
-                    Image(
-                        systemName: "chevron.up.chevron.down"
-                    )
-                    .font(.system(size: 11))
-                    .foregroundStyle(.secondary)
-                }
-                .padding(.horizontal, 16)
-                .frame(height: 44)
-                .background(
-                    Color.gray.opacity(0.10)
-                )
-                .clipShape(
-                    Capsule()
-                )
-            }
-        }
-    }
-    
-    // MARK: Ingredientes
-    
-    var secaoIngredientes: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            
-            HStack(alignment: .firstTextBaseline) {
-                
-                Text("Ingredientes")
-                    .font(
-                        .system(
-                            size: 22,
-                            weight: .semibold
-                        )
-                    )
-                
-                Text("*")
-                    .foregroundStyle(.red)
-                
-                Spacer()
-                
-                if ingredientes.isEmpty {
-                    Text("campo obrigatório")
-                        .font(.system(size: 12))
-                        .foregroundStyle(
-                            .red.opacity(0.75)
-                        )
-                }
-            }
-            
-            // Cabeçalho
-            
-            HStack(spacing: 12) {
-                
-                Text("Nome do ingrediente")
-                    .frame(
-                        maxWidth: .infinity,
-                        alignment: .leading
-                    )
-                
-                Text("Qtd")
-                    .frame(
-                        width: 48,
-                        alignment: .leading
-                    )
-                
-                Text("Unidade")
-                    .frame(
-                        width: 78,
-                        alignment: .leading
-                    )
-            }
-            .font(.system(size: 14))
-            
-            // Ingredientes
-            
-            ForEach(
-                $ingredientes
-            ) { $ingrediente in
-                
-                HStack(
-                    alignment: .top,
-                    spacing: 12
-                ) {
-                    
-                    TextField(
-                        "Ex: Leite",
-                        text: $ingrediente.nome
-                    )
-                    .frame(
-                        maxWidth: .infinity
-                    )
-                    
-                    TextField(
-                        "250",
-                        text: $ingrediente.quantidade
-                    )
-                    .keyboardType(.decimalPad)
-                    .multilineTextAlignment(.center)
-                    .frame(width: 48)
-                    
-                    Picker(
-                        "",
-                        selection: $ingrediente.unidade
-                    ) {
-                        
-                        ForEach(
-                            UnidadeMedida.allCases
-                        ) { unidade in
-                            
-                            Text(unidade.rawValue)
-                                .tag(unidade)
-                        }
-                    }
-                    .labelsHidden()
-                    .frame(width: 78)
-                }
-                .font(.system(size: 16))
-                
-                Divider()
-            }
-            .onDelete { offsets in
-                ingredientes.remove(
-                    atOffsets: offsets
-                )
-            }
-            
-            Button {
-                adicionarIngrediente()
-            } label: {
-                Label(
-                    "Adicionar ingrediente",
-                    systemImage: "plus.circle"
-                )
-                .font(.system(size: 15))
-            }
-        }
-    }
-    
-    // MARK: Modo de preparo
-    
-    var secaoModoPreparo: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            
-            HStack(alignment: .firstTextBaseline) {
-                
-                Text("Modo de Fazer")
-                    .font(
-                        .system(
-                            size: 22,
-                            weight: .semibold
-                        )
-                    )
-                
-                Text("*")
-                    .foregroundStyle(.red)
-                
-                Spacer()
-                
-                if modoPreparo.trimmingCharacters(
-                    in: .whitespacesAndNewlines
-                ).isEmpty {
-                    Text("campo obrigatório")
-                        .font(.system(size: 12))
-                        .foregroundStyle(
-                            .red.opacity(0.75)
-                        )
-                }
-            }
-            
-            TextField(
-                "Ex: Refogue no azeite a cebola, o alho, o tomate e o pimentão...",
-                text: $modoPreparo,
-                axis: .vertical
-            )
-            .font(.system(size: 17))
-            .lineLimit(5...8)
-            
-            Divider()
-        }
-    }
-    
-    // MARK: Utensílios
-    
-    var secaoUtensilios: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            
-            Text("Utensílios")
-                .font(
-                    .system(
-                        size: 22,
-                        weight: .semibold
-                    )
-                )
-            
-            ForEach(
-                utensilios.indices,
-                id: \.self
-            ) { indice in
-                
-                HStack(spacing: 8) {
-                    
-                    TextField(
-                        "Adicionar utensílio",
-                        text: $utensilios[indice]
-                    )
-                    .font(.system(size: 17))
-                    
-                    Button {
-                        removerUtensilio(
-                            no: indice
-                        )
-                    } label: {
-                        Image(
-                            systemName: "minus.circle"
-                        )
-                        .foregroundStyle(.secondary)
-                    }
-                    .buttonStyle(.plain)
-                }
-                
-                Divider()
-            }
-            
-            Button {
-                adicionarUtensilio()
-            } label: {
-                Label(
-                    "Adicionar utensílio",
-                    systemImage: "plus.circle"
-                )
-                .font(.system(size: 15))
-            }
-        }
-    }
-    
-    // MARK: Observações
-    
-    var secaoObservacoes: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            
-            HStack {
-                
-                Text("Observações")
-                    .font(
-                        .system(
-                            size: 22,
-                            weight: .semibold
-                        )
-                    )
-                
-                Spacer()
-                
-                Button {
-                    // O campo já fica disponível.
-                    // Esse botão será conectado ao fluxo
-                    // de comentários posteriormente.
-                } label: {
-                    Image(systemName: "plus")
-                        .font(
-                            .system(
-                                size: 20,
-                                weight: .medium
-                            )
-                        )
-                        .frame(
-                            width: 48,
-                            height: 48
-                        )
-                        .background(
-                            Color.gray.opacity(0.08)
-                        )
-                        .clipShape(Circle())
-                }
-                .buttonStyle(.plain)
-            }
-            
-            TextField(
-                "Sinta-se livre para adicionar seus pensamentos sobre a receita.",
-                text: $observacao,
-                axis: .vertical
-            )
-            .font(.system(size: 15))
-            .lineLimit(3...7)
         }
     }
 }
@@ -938,16 +402,6 @@ private extension CadastrarReceita {
     }
 }
 
-// MARK: - Modelo temporário
-
-private struct IngredienteFormulario: Identifiable {
-    
-    let id = UUID()
-    
-    var nome = ""
-    var quantidade = ""
-    var unidade: UnidadeMedida = .unidades
-}
 
 // MARK: - Erros
 
