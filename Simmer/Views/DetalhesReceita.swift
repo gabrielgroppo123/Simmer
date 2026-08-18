@@ -5,8 +5,6 @@
 //  Created by Gabriel Groppo on 15/08/26.
 //
 
-
-
 import SwiftUI
 import UIKit
 
@@ -14,6 +12,8 @@ struct DetalhesReceita: View {
     
     let receita: ReceitaModel
     private let service: ReceitaService
+    
+    @Environment(\.dismiss) private var dismiss
     
     @State private var receitaAtual: ReceitaModel
     @State private var mostrarAlertaExclusao = false
@@ -35,12 +35,24 @@ struct DetalhesReceita: View {
                 // MARK: - Foto
                 
                 if let imagem = UIImage(data: receitaAtual.foto) {
+                    
                     Image(uiImage: imagem)
                         .resizable()
                         .scaledToFill()
                         .frame(maxWidth: .infinity)
                         .frame(height: 250)
                         .clipped()
+                    
+                } else {
+                    
+                    Rectangle()
+                        .fill(.gray.opacity(0.2))
+                        .frame(height: 250)
+                        .overlay {
+                            Image(systemName: "photo")
+                                .font(.largeTitle)
+                                .foregroundStyle(.gray)
+                        }
                 }
                 
                 // MARK: - Informações principais
@@ -57,13 +69,17 @@ struct DetalhesReceita: View {
                     
                     HStack(spacing: 20) {
                         
-                        Label(
-                            "\(receitaAtual.porcoes) porções",
-                            systemImage: "person.2"
-                        )
+                        if let porcoes = receitaAtual.porcoes {
+                            Label(
+                                "\(porcoes) porções",
+                                systemImage: "person.2"
+                            )
+                        }
                         
                         Label(
-                            formatarDuracao(receitaAtual.duracao),
+                            formatarDuracao(
+                                receitaAtual.duracao
+                            ),
                             systemImage: "clock"
                         )
                     }
@@ -79,9 +95,12 @@ struct DetalhesReceita: View {
                         .font(.title2)
                         .fontWeight(.bold)
                     
-                    ForEach(receitaAtual.ingredientes) { ingrediente in
+                    ForEach(
+                        receitaAtual.ingredientes
+                    ) { ingrediente in
                         
                         HStack {
+                            
                             Text(ingrediente.nome)
                             
                             Spacer()
@@ -101,7 +120,10 @@ struct DetalhesReceita: View {
                 if let utensilios = receitaAtual.utensilios,
                    !utensilios.isEmpty {
                     
-                    VStack(alignment: .leading, spacing: 12) {
+                    VStack(
+                        alignment: .leading,
+                        spacing: 12
+                    ) {
                         
                         Text("Utensílios")
                             .font(.title2)
@@ -114,7 +136,10 @@ struct DetalhesReceita: View {
                 
                 // MARK: - Modo de preparo
                 
-                VStack(alignment: .leading, spacing: 12) {
+                VStack(
+                    alignment: .leading,
+                    spacing: 12
+                ) {
                     
                     Text("Modo de preparo")
                         .font(.title2)
@@ -124,10 +149,30 @@ struct DetalhesReceita: View {
                 }
                 .padding(.horizontal)
                 
+                // MARK: - Data de criação
+                
+                VStack(
+                    alignment: .leading,
+                    spacing: 8
+                ) {
+                    
+                    Text("Criada em")
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                    
+                    Text(
+                        receitaAtual.dataCriacao ?? Date(),
+                        style: .date
+                    )
+                    .foregroundStyle(.secondary)
+                }
+                .padding(.horizontal)
+                
                 // MARK: - Ações
                 
                 VStack(spacing: 12) {
                     
+                    // Favoritar
                     Button {
                         alternarFavorito()
                     } label: {
@@ -135,14 +180,19 @@ struct DetalhesReceita: View {
                             receitaAtual.favorito
                                 ? "Desfavoritar receita"
                                 : "Favoritar receita",
-                            systemImage: receitaAtual.favorito
+                            systemImage:
+                                receitaAtual.favorito
                                 ? "star.fill"
                                 : "star"
                         )
                     }
                     
-                    Button {
-                        print("✏️ Editar receita: \(receitaAtual.nome)")
+                    // Editar
+                    NavigationLink {
+                        EditarReceita(
+                            receita: receitaAtual,
+                            service: service
+                        )
                     } label: {
                         Label(
                             "Editar receita",
@@ -150,6 +200,7 @@ struct DetalhesReceita: View {
                         )
                     }
                     
+                    // Excluir
                     Button(role: .destructive) {
                         mostrarAlertaExclusao = true
                     } label: {
@@ -175,11 +226,15 @@ struct DetalhesReceita: View {
                 // Não faz nada
             }
             
-            Button("Excluir", role: .destructive) {
+            Button(
+                "Excluir",
+                role: .destructive
+            ) {
                 excluirReceita()
             }
             
         } message: {
+            
             Text(
                 "Tem certeza que deseja excluir \"\(receitaAtual.nome)\"?"
             )
@@ -221,7 +276,10 @@ struct DetalhesReceita: View {
             )
             
         } catch {
-            print("❌ Erro ao atualizar favorito: \(error)")
+            
+            print(
+                "❌ Erro ao atualizar favorito: \(error)"
+            )
         }
     }
     
@@ -231,18 +289,29 @@ struct DetalhesReceita: View {
         
         do {
             
-            try service.deletarReceita(receitaAtual)
+            try service.deletarReceita(
+                receitaAtual
+            )
             
-            print("🗑️ Receita excluída: \(receitaAtual.nome)")
+            print(
+                "🗑️ Receita excluída: \(receitaAtual.nome)"
+            )
+            
+            dismiss()
             
         } catch {
-            print("❌ Erro ao excluir receita: \(error)")
+            
+            print(
+                "❌ Erro ao excluir receita: \(error)"
+            )
         }
     }
     
-    // MARK: - Formatação
+    // MARK: - Formatação da duração
     
-    private func formatarDuracao(_ duracao: Int64) -> String {
+    private func formatarDuracao(
+        _ duracao: Int64
+    ) -> String {
         
         let minutos = duracao / 60
         
@@ -260,10 +329,19 @@ struct DetalhesReceita: View {
         return "\(horas) h \(minutosRestantes) min"
     }
     
-    private func formatarQuantidade(_ quantidade: Double) -> String {
+    // MARK: - Formatação da quantidade
+    
+    private func formatarQuantidade(
+        _ quantidade: Double
+    ) -> String {
         
-        if quantidade.truncatingRemainder(dividingBy: 1) == 0 {
-            return String(Int(quantidade))
+        if quantidade.truncatingRemainder(
+            dividingBy: 1
+        ) == 0 {
+            
+            return String(
+                Int(quantidade)
+            )
         }
         
         return String(quantidade)
@@ -272,6 +350,7 @@ struct DetalhesReceita: View {
 
 #Preview {
     NavigationStack {
+        
         DetalhesReceita(
             receita: ReceitaModel(
                 id: UUID(),
@@ -285,7 +364,8 @@ struct DetalhesReceita: View {
                 porcoes: 8,
                 duracao: 2400,
                 utensilios: "Forma e batedeira",
-                modoPreparo: "Misture todos os ingredientes e asse por 40 minutos.",
+                modoPreparo:
+                    "Misture todos os ingredientes e asse por 40 minutos.",
                 ingredientes: [
                     IngredienteModel(
                         id: UUID(),

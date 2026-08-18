@@ -21,10 +21,12 @@ protocol ReceitaRepository {
         _ receita: ReceitaModel,
         nome: String,
         categoria: Categoria,
-        porcoes: Int16,
+        foto: Data,
+        porcoes: Int16?,
         duracao: Int64,
         utensilios: String?,
-        modoPreparo: String
+        modoPreparo: String,
+        ingredientes: [NovoIngrediente]
     ) throws
     
     func atualizarFavorito(
