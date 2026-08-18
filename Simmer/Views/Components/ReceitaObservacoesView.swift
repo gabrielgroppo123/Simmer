@@ -62,3 +62,19 @@ struct ReceitaObservacoesView: View {
         }
     }
 }
+
+#Preview("Campo Vazio (Placeholder)") {
+    ReceitaObservacoesView(
+        observacao: .constant("")
+    )
+    .padding()
+}
+
+#Preview("Campo Preenchido") {
+    ReceitaObservacoesView(
+        observacao: .constant(
+            "Rendeu exatamente 12 porções! Na próxima vez, vale a pena colocar um pouco menos de açúcar na massa."
+        )
+    )
+    .padding()
+}

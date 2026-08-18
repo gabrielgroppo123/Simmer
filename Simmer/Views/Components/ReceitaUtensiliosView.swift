@@ -61,3 +61,7 @@ struct ReceitaUtensiliosView: View {
         utensilios.remove(at: indice)
     }
 }
+
+#Preview {
+    ReceitaUtensiliosView(utensilios: .constant(["Batedeira", "Espátula"]))
+}

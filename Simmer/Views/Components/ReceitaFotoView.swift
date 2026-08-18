@@ -74,3 +74,14 @@ struct ReceitaFotoView: View {
         )
     }
 }
+
+#Preview("Com Foto Mock") {
+    // Carrega uma imagem de sistema para simular a foto selecionada no Canvas
+    let mockData = UIImage(systemName: "fork.knife")?
+        .pngData()
+    
+    return ReceitaFotoView(
+        foto: .constant(mockData),
+        fotoSelecionada: .constant(nil)
+    )
+}

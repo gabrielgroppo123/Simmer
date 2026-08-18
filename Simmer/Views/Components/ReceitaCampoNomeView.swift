@@ -14,7 +14,7 @@ struct ReceitaCampoNomeView: View {
     var body: some View {
         VStack(
             alignment: .leading,
-            spacing: 6
+            spacing: 12
         ) {
             
             HStack(
@@ -56,4 +56,11 @@ struct ReceitaCampoNomeView: View {
             Divider()
         }
     }
+}
+
+#Preview("Campo Preenchido") {
+    ReceitaCampoNomeView(
+        nome: .constant("Bolo de Cenoura")
+    )
+    .padding()
 }

@@ -72,3 +72,18 @@ struct ReceitaCategoriaView: View {
         }
     }
 }
+
+#Preview("Estado Inicial (Outro)") {
+    ReceitaCategoriaView(
+        categoria: .constant(.outro)
+    )
+    .padding()
+}
+
+#Preview("Categoria Selecionada") {
+    // Altere para qualquer outro caso válido da sua enum Categoria (ex: .almoco)
+    ReceitaCategoriaView(
+        categoria: .constant(.massas)
+    )
+    .padding()
+}

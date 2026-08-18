@@ -26,3 +26,5 @@ struct IngredienteFormulario: Identifiable {
         self.unidade = unidade
     }
 }
+
+

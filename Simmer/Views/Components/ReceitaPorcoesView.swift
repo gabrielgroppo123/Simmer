@@ -99,3 +99,15 @@ struct ReceitaPorcoesView: View {
             : String(novoValor)
     }
 }
+
+#Preview("Interativo (Clique nos Botões)") {
+    @Previewable @State var porcoes = "2"
+    
+    ReceitaPorcoesView(porcoes: $porcoes)
+        .padding()
+}
+
+#Preview("Valor Inicial Zerado") {
+    ReceitaPorcoesView(porcoes: .constant(""))
+        .padding()
+}
