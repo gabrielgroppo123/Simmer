@@ -402,28 +402,7 @@ struct EditarReceita: View {
     }
 }
 
-// MARK: - Modelo do formulário
 
-private struct IngredienteFormulario: Identifiable {
-    
-    let id: UUID
-    
-    var nome: String
-    var quantidade: String
-    var unidade: UnidadeMedida
-    
-    init(
-        id: UUID = UUID(),
-        nome: String = "",
-        quantidade: String = "",
-        unidade: UnidadeMedida = .unidades
-    ) {
-        self.id = id
-        self.nome = nome
-        self.quantidade = quantidade
-        self.unidade = unidade
-    }
-}
 
 // MARK: - Erros
 
