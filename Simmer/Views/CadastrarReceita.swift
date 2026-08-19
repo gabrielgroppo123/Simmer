@@ -11,6 +11,15 @@ import PhotosUI
 struct CadastrarReceita: View {
     
     private let service: ReceitaService
+    private let onSaved: () -> Void
+
+    init(
+        service: ReceitaService,
+        onSaved: @escaping () -> Void = {}
+    ) {
+        self.service = service
+        self.onSaved = onSaved
+    }
     
     @Environment(\.dismiss) private var dismiss
     
@@ -29,9 +38,7 @@ struct CadastrarReceita: View {
     @State private var mostrandoErro = false
     @State private var mensagemErro = ""
     
-    init(service: ReceitaService) {
-        self.service = service
-    }
+    
     
     var body: some View {
         ScrollView {
@@ -370,6 +377,8 @@ private extension CadastrarReceita {
             print(
                 "✅ Receita cadastrada com sucesso!"
             )
+            
+            onSaved()
             
             if !observacao.trimmingCharacters(
                 in: .whitespacesAndNewlines

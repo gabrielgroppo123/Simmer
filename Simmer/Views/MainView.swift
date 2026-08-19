@@ -6,13 +6,15 @@
 //
 
 import SwiftUI
-import UIKit
-import Speech
 
 struct MainView: View {
     
     @State private var receitas: [ReceitaModel] = []
     @State private var textoBusca = ""
+    @State private var somenteFavoritos = false
+    @State private var ordenacao: ReceitaOrdenacao = .dataCriacao
+    @State private var direcao: ReceitaOrdenacao.Direcao = .decrescente
+    
     @StateObject private var speechRecognizer = SpeechRecognizer()
     
     private let service: ReceitaService
@@ -21,119 +23,160 @@ struct MainView: View {
         self.service = service
     }
     
-    private var barraDePesquisa: some View {
-        HStack(spacing: 10) {
-            
-            Image(systemName: "magnifyingglass")
-                .foregroundStyle(.secondary)
-            
-            TextField(
-                "Buscar receitas",
-                text: $textoBusca
-            )
-            
-            Button {
-                iniciarBuscaPorVoz()
-            } label: {
-                Image(
-                    systemName: speechRecognizer.estaOuvindo
-                        ? "mic.fill"
-                        : "mic"
-                )
-            }
-            .accessibilityLabel(
-                speechRecognizer.estaOuvindo
-                    ? "Parar pesquisa por voz"
-                    : "Pesquisar por voz"
-            )
-        }
-        .padding(.horizontal, 14)
-        .frame(height: 44)
-        .background(.gray.opacity(0.15))
-        .clipShape(
-            RoundedRectangle(cornerRadius: 12)
-        )
-    }
-    
     var body: some View {
         NavigationStack {
             
-            ScrollView {
+            ZStack(alignment: .bottom) {
                 
-                LazyVStack(spacing: 16) {
+                ScrollView {
                     
-                    ForEach(receitas) { receita in
+                    VStack(
+                        alignment: .leading,
+                        spacing: 0
+                    ) {
                         
-                        VStack(alignment: .leading, spacing: 12) {
+                        // MARK: - Categorias
+                        
+                        ReceitaCategoriasView(
+                            categorias: Categoria.allCases
+                        ) { categoria in
                             
-                            if let imagem = UIImage(data: receita.foto) {
-                                Image(uiImage: imagem)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(height: 180)
-                                    .frame(maxWidth: .infinity)
-                                    .clipped()
-                            } else {
-                                Rectangle()
-                                    .fill(.gray.opacity(0.2))
-                                    .frame(height: 180)
-                                    .overlay {
-                                        Image(systemName: "photo")
-                                            .font(.largeTitle)
-                                            .foregroundStyle(.gray)
-                                    }
+                            print(
+                                "📂 Categoria selecionada: \(categoria.rawValue)"
+                            )
+                        }
+                        .padding(.top, 28)
+                        
+                        // MARK: - Suas receitas
+                        
+                        HStack(spacing: 12) {
+                            
+                            Text("Suas Receitas")
+                                .font(
+                                    .system(
+                                        size: 22,
+                                        weight: .semibold
+                                    )
+                                )
+                            
+                            Spacer()
+                            
+                            // Favoritos
+                            Button {
+                                somenteFavoritos.toggle()
+                            } label: {
+                                Image(
+                                    systemName:
+                                        somenteFavoritos
+                                        ? "heart.fill"
+                                        : "heart"
+                                )
+                                .foregroundStyle(
+                                    somenteFavoritos
+                                    ? .black
+                                    : .primary
+                                )
+                                .font(.system(size: 18))
+                                .frame(
+                                    width: 40,
+                                    height: 40
+                                )
+                                .background(
+                                    Color.gray.opacity(0.08)
+                                )
+                                .clipShape(Circle())
                             }
+                            .accessibilityLabel(
+                                somenteFavoritos
+                                ? "Mostrar todas as receitas"
+                                : "Mostrar somente favoritas"
+                            )
                             
-                            VStack(alignment: .leading, spacing: 6) {
+                            // Ordenação
+                            ReceitaOrdenacaoView(
+                                ordenacao: $ordenacao,
+                                direcao: $direcao
+                            )
+                            
+                            // Nova receita
+                            NavigationLink {
+                                CadastrarReceita(
+                                    service: service,
+                                    onSaved: {
+                                        carregarReceitas()
+                                    }
+                                )
+                            } label: {
+                                Image(systemName: "plus")
+                                    .font(.system(size: 18))
+                                    .foregroundStyle(.black)
+                                    .frame(
+                                        width: 40,
+                                        height: 40
+                                    )
+                                    .background(
+                                        Color.orange
+                                    )
+                                    .clipShape(Circle())
+                            }
+                            .accessibilityLabel(
+                                "Cadastrar nova receita"
+                            )
+                        }
+                        .padding(.top, 52)
+                        
+                        // MARK: - Lista de receitas
+                        
+                        LazyVStack(
+                            spacing: 14
+                        ) {
+                            
+                            ForEach(receitas) { receita in
                                 
-                                Text(receita.nome)
-                                    .font(.headline)
-                                
-                                Text(receita.categoria.rawValue)
-                                    .font(.subheadline)
-                                
-                                Button("Ver detalhes") {
-                                    print(
-                                        "📖 Abrir receita: \(receita.nome)"
+                                NavigationLink {
+                                    DetalhesReceita(
+                                        receita: receita,
+                                        service: service
+                                    )
+                                } label: {
+                                    ReceitaCardView(
+                                        receita: receita
                                     )
                                 }
+                                .buttonStyle(.plain)
                             }
-                            .padding(.horizontal)
-                            .padding(.bottom)
                         }
-                        .background {
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(.background)
-                                .shadow(
-                                    color: .black.opacity(0.1),
-                                    radius: 5
-                                )
-                        }
-                        .padding(.horizontal)
+                        .padding(.top, 18)
+                        
+                        // Espaço para a barra de pesquisa
+                        
+                        Color.clear
+                            .frame(height: 70)
                     }
+                    .padding(.horizontal, 16)
                 }
-                .padding(.vertical)
+                
+                // MARK: - Barra de pesquisa
+                
+                ReceitaBuscaView(
+                    textoBusca: $textoBusca,
+                    estaOuvindo:
+                        speechRecognizer.estaOuvindo,
+                    iniciarBuscaPorVoz:
+                        iniciarBuscaPorVoz
+                )
+                .padding(.horizontal, 12)
+                .padding(.bottom, 8)
+                .background(
+                    Color(.systemBackground)
+                        .opacity(0.94)
+                )
             }
-            
-            .navigationTitle("Simmer")
+            .background(
+                Color(.systemBackground)
+            )
+            .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
-            
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink {
-                        CadastrarReceita(
-                            service: service
-                        )
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                    .accessibilityLabel("Cadastrar nova receita")
-                }
-            }
-            
-            barraDePesquisa
-                .padding(.horizontal)
-                .padding(.top)
         }
         .onAppear {
             carregarReceitas()
@@ -141,10 +184,62 @@ struct MainView: View {
         .onChange(of: textoBusca) {
             carregarReceitas()
         }
-        .onChange(of: speechRecognizer.textoReconhecido) {
-            textoBusca = speechRecognizer.textoReconhecido
+        .onChange(
+            of: speechRecognizer.textoReconhecido
+        ) {
+            textoBusca =
+                speechRecognizer.textoReconhecido
         }
     }
+    
+    private var receitasExibidas: [ReceitaModel] {
+        
+        var resultado = receitas
+        
+        if somenteFavoritos {
+            resultado = resultado.filter {
+                $0.favorito
+            }
+        }
+        
+        switch ordenacao {
+            
+        case .dataCriacao:
+            resultado.sort {
+                if direcao == .decrescente {
+                    return $0.dataCriacao ?? Date() > $1.dataCriacao ?? Date()
+                } else {
+                    return $0.dataCriacao ?? Date() < $1.dataCriacao ?? Date()
+                }
+            }
+            
+        case .tempoPreparo:
+            resultado.sort {
+                if direcao == .crescente {
+                    return $0.duracao < $1.duracao
+                } else {
+                    return $0.duracao > $1.duracao
+                }
+            }
+            
+        case .titulo:
+            resultado.sort {
+                if direcao == .crescente {
+                    return $0.nome.localizedCaseInsensitiveCompare(
+                        $1.nome
+                    ) == .orderedAscending
+                } else {
+                    return $0.nome.localizedCaseInsensitiveCompare(
+                        $1.nome
+                    ) == .orderedDescending
+                }
+            }
+        }
+        
+        return resultado
+    }
+    
+    // MARK: - Carregar receitas
     
     private func carregarReceitas() {
         
@@ -153,9 +248,13 @@ struct MainView: View {
                 texto: textoBusca
             )
         } catch {
-            print("❌ Erro ao buscar receitas: \(error)")
+            print(
+                "❌ Erro ao buscar receitas: \(error)"
+            )
         }
     }
+    
+    // MARK: - Busca por voz
     
     private func iniciarBuscaPorVoz() {
         
@@ -165,7 +264,9 @@ struct MainView: View {
         }
         
         Task {
-            let permitido = await speechRecognizer.solicitarPermissao()
+            
+            let permitido =
+                await speechRecognizer.solicitarPermissao()
             
             guard permitido else {
                 print(

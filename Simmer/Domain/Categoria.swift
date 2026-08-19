@@ -9,17 +9,17 @@ import Foundation
 
 enum Categoria: String, CaseIterable, Identifiable {
     
-    case massas = "Massas"
-    case carnes = "Carnes"
     case aves = "Aves"
-    case peixesFrutosDoMar = "Peixes e frutos do mar"
-    case saladasVegetais = "Legumes e vegetais"
-    case sopasCaldos = "Sopas e caldos"
-    case arrozGraos = "Grãos e leguminosas"
-    case paesSalgados = "Pães e salgados"
-    case sobremesas = "Doces"
     case bebidas = "Bebidas"
-    case outro = "Outro"
+    case carnes = "Carnes"
+    case sobremesas = "Doces"
+    case arrozGraos = "Grãos e leguminosas"
+    case saladasVegetais = "Legumes e vegetais"
+    case massas = "Massas"
+    case paesSalgados = "Pães e salgados"
+    case peixesFrutosDoMar = "Peixes e frutos do mar"
+    case sopasCaldos = "Sopas e caldos"
+    case outro = "Outros"
     
     var id: String {
         rawValue
