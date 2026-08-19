@@ -35,9 +35,9 @@ struct ReceitaCardView: View {
                     )
                     .lineLimit(1)
                 
-                //Spacer()
+                Spacer()
                 
-                HStack(spacing: 6){
+                HStack(spacing: 6) {
                     
                     Image(
                         systemName: "clock.fill"
