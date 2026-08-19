@@ -61,3 +61,12 @@ struct ReceitaBuscaView: View {
         .clipShape(Capsule())
     }
 }
+
+#Preview {
+    ReceitaBuscaView(
+        textoBusca: .constant(""),
+        estaOuvindo: false,
+        iniciarBuscaPorVoz: {}
+    )
+    .padding()
+}
