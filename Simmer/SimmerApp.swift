@@ -19,9 +19,23 @@ struct SimmerApp: App {
         )
     )
     
+    @State private var mostrandoSplash = true
+    
     var body: some Scene {
-        WindowGroup {
-            MainView(service: receitaService)
-        }
-    }
-}
+           WindowGroup {
+               
+               if mostrandoSplash {
+                   
+                   SplashView {
+                       mostrandoSplash = false
+                   }
+                   
+               } else {
+                   
+                   MainView(
+                       service: receitaService
+                   )
+               }
+           }
+       }
+   }

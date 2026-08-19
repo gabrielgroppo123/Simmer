@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E9A5F1830362E9A008BD13B /* SplashDark 2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 2E9A5F1730362E9A008BD13B /* SplashDark 2.mp4 */; };
+		2E9A5F1A30362EA5008BD13B /* SplashLight 2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 2E9A5F1930362EA5008BD13B /* SplashLight 2.mp4 */; };
 		7B9E292C302E70BC0030E0D7 /* Receita+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9E292B302E70BC0030E0D7 /* Receita+CoreDataProperties.swift */; };
 		7B9E292D302E70BC0030E0D7 /* Receita+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9E292A302E70BC0030E0D7 /* Receita+CoreDataClass.swift */; };
 		7B9E2938302E78F80030E0D7 /* Ingrediente+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9E2936302E78F80030E0D7 /* Ingrediente+CoreDataClass.swift */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2E9A5F1730362E9A008BD13B /* SplashDark 2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SplashDark 2.mp4"; sourceTree = "<group>"; };
+		2E9A5F1930362EA5008BD13B /* SplashLight 2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SplashLight 2.mp4"; sourceTree = "<group>"; };
 		7B9E2909302E5FAC0030E0D7 /* Simmer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Simmer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B9E292A302E70BC0030E0D7 /* Receita+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Receita+CoreDataClass.swift"; path = "Simmer/Models/Receita+CoreDataClass.swift"; sourceTree = "<group>"; };
 		7B9E292B302E70BC0030E0D7 /* Receita+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Receita+CoreDataProperties.swift"; path = "Simmer/Models/Receita+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -55,6 +59,8 @@
 				7B9E292A302E70BC0030E0D7 /* Receita+CoreDataClass.swift */,
 				7B9E292B302E70BC0030E0D7 /* Receita+CoreDataProperties.swift */,
 				7B9E290A302E5FAC0030E0D7 /* Products */,
+				2E9A5F1730362E9A008BD13B /* SplashDark 2.mp4 */,
+				2E9A5F1930362EA5008BD13B /* SplashLight 2.mp4 */,
 			);
 			sourceTree = "<group>";
 		};
@@ -130,6 +136,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2E9A5F1830362E9A008BD13B /* SplashDark 2.mp4 in Resources */,
+				2E9A5F1A30362EA5008BD13B /* SplashLight 2.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,7 +288,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3PZUG43HKQ;
+				DEVELOPMENT_TEAM = ASZ8558R77;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -312,7 +320,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3PZUG43HKQ;
+				DEVELOPMENT_TEAM = ASZ8558R77;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
