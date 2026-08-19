@@ -100,7 +100,7 @@ struct ObservacoesReceita: View {
     }
 }
 
-// MARK: - Pesquisa
+
 
 private extension ObservacoesReceita {
     
@@ -137,7 +137,6 @@ private extension ObservacoesReceita {
     }
 }
 
-// MARK: - Ações
 
 private extension ObservacoesReceita {
     
@@ -161,7 +160,6 @@ private extension ObservacoesReceita {
     }
 }
 
-// MARK: - Modelo temporário
 
 private struct ObservacaoMock: Identifiable {
     
@@ -170,7 +168,6 @@ private struct ObservacaoMock: Identifiable {
     let texto: String
 }
 
-// MARK: - Card
 
 private struct ObservacaoCardView: View {
     
@@ -198,7 +195,6 @@ private struct ObservacaoCardView: View {
     }
 }
 
-// MARK: - Nova observação
 
 private struct NovaObservacaoView: View {
     
@@ -259,7 +255,6 @@ private struct NovaObservacaoView: View {
     }
 }
 
-// MARK: - Preview
 
 #Preview {
     NavigationStack {
