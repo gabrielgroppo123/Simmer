@@ -87,4 +87,8 @@ final class ReceitaService {
     func deletarReceita(_ receita: ReceitaModel) throws {
         try repository.deletarReceita(receita)
     }
+    
+    func apagarReceitasComCategoriaAntiga() throws {
+        try repository.apagarReceitasComCategoriaAntiga()
+    }
 }

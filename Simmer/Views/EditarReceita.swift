@@ -326,7 +326,7 @@ private enum ErroEdicao: Error {
             receita: ReceitaModel(
                 id: UUID(),
                 nome: "Bolo de Chocolate",
-                categoria: .sobremesas,
+                categoria: .doces,
                 favorito: false,
                 dataCriacao: Date(),
                 foto: UIImage(
