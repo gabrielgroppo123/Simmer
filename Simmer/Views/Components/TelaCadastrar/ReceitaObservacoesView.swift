@@ -18,42 +18,24 @@ struct ReceitaObservacoesView: View {
         ) {
             
             HStack {
-                
-                Text("Observações")
-                    .font(
-                        .system(
-                            size: 22,
-                            weight: .semibold
-                        )
-                    )
-                
-                Spacer()
-                
-                Button {
-                    // A ação será conectada
-                    // ao Comentario posteriormente.
-                } label: {
-                    Image(systemName: "plus")
+                VStack (alignment: .leading){
+                    Text("Observações")
                         .font(
                             .system(
-                                size: 20,
-                                weight: .medium
+                                size: 22,
+                                weight: .semibold
                             )
                         )
-                        .frame(
-                            width: 48,
-                            height: 48
-                        )
-                        .background(
-                            Color.gray.opacity(0.08)
-                        )
-                        .clipShape(Circle())
+                        .padding(.bottom, 20)
+                    
+                    Text("Sugestão: descreva não sabores, mas sentimentos, expectativas, dificuldades no seu processo com a receita.")
                 }
-                .buttonStyle(.plain)
+                Spacer()
+                
             }
-            
+            Divider()
             TextField(
-                "Sinta-se livre para adicionar seus pensamentos sobre a receita.",
+                "Ex: Vi essa receita na internet e parece boa.",
                 text: $observacao,
                 axis: .vertical
             )
