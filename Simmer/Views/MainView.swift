@@ -38,13 +38,9 @@ struct MainView: View {
                         // MARK: - Categorias
                         
                         ReceitaCategoriasView(
-                            categorias: Categoria.allCases
-                        ) { categoria in
-                            
-                            print(
-                                "📂 Categoria selecionada: \(categoria.rawValue)"
-                            )
-                        }
+                            categorias: Categoria.allCases,
+                            service: service
+                        )
                         .padding(.top, 28)
                         
                         // MARK: - Suas receitas
