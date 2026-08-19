@@ -39,3 +39,7 @@ struct ReceitaUtensilioRowView: View {
         Divider()
     }
 }
+
+#Preview {
+    ReceitaUtensilioRowView(utensilio: .constant("Batedeira")) {}
+}

@@ -14,7 +14,7 @@ struct ReceitaModoPreparoView: View {
     var body: some View {
         VStack(
             alignment: .leading,
-            spacing: 8
+            spacing: 12
         ) {
             
             HStack(
@@ -52,9 +52,25 @@ struct ReceitaModoPreparoView: View {
                 axis: .vertical
             )
             .font(.system(size: 17))
-            .lineLimit(5...8)
+            .lineLimit(2...8)
             
             Divider()
         }
     }
+}
+
+#Preview("Campo Vazio (Alerta)") {
+    ReceitaModoPreparoView(
+        modoPreparo: .constant("")
+    )
+    .padding()
+}
+
+#Preview("Campo Preenchido") {
+    ReceitaModoPreparoView(
+        modoPreparo: .constant(
+            "1. Misture todos os ingredientes secos em uma tigela grande.\n2. Adicione os líquidos aos poucos enquanto mexe.\n3. Leve ao forno pré-aquecido a 180°C por 30 minutos."
+        )
+    )
+    .padding()
 }
