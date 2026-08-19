@@ -273,11 +273,11 @@ private extension CadastrarReceita {
             porcoesInt = valor
         }
         
-        guard let duracaoInt = Int64(duracao),
+        guard let duracaoInt = converterDuracaoParaSegundos(duracao),
               duracaoInt > 0 else {
             
             mostrarErro(
-                "Informe uma duração válida."
+                "Informe um tempo de preparo válido."
             )
             
             return
@@ -420,6 +420,60 @@ private extension CadastrarReceita {
     ) {
         mensagemErro = mensagem
         mostrandoErro = true
+    }
+    
+    private func converterDuracaoParaSegundos(
+        _ duracao: String
+    ) -> Int64? {
+        
+        let texto = duracao
+            .lowercased()
+            .replacingOccurrences(of: " ", with: "")
+        
+        guard !texto.isEmpty else {
+            return nil
+        }
+        
+        var horas = 0
+        var minutos = 0
+        
+        if let intervaloH = texto.range(of: "h") {
+            
+            let valorHoras = String(
+                texto[..<intervaloH.lowerBound]
+            )
+            
+            horas = Int(valorHoras) ?? 0
+            
+            let restante = String(
+                texto[intervaloH.upperBound...]
+            )
+            
+            if let intervaloMin = restante.range(of: "min") {
+                
+                let valorMinutos = String(
+                    restante[..<intervaloMin.lowerBound]
+                )
+                
+                minutos = Int(valorMinutos) ?? 0
+            }
+            
+        } else if let intervaloMin = texto.range(of: "min") {
+            
+            let valorMinutos = String(
+                texto[..<intervaloMin.lowerBound]
+            )
+            
+            minutos = Int(valorMinutos) ?? 0
+        }
+        
+        let totalSegundos =
+            (horas * 60 * 60) +
+            (minutos * 60)
+        
+        return totalSegundos > 0
+            ? Int64(totalSegundos)
+            : nil
     }
 }
 

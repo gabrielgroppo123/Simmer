@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Categoria: String, CaseIterable, Identifiable {
+enum Categoria: String, CaseIterable, Identifiable, Hashable {
     
     case aves = "Aves"
     case bebidas = "Bebidas"

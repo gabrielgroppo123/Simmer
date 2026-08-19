@@ -88,10 +88,22 @@ struct ObservacoesReceita: View {
                     mostrandoNovaObservacao = true
                 } label: {
                     Image(systemName: "plus")
+                        .font(.system(size: 18))
+                        .foregroundStyle(.black)
+                        .frame(
+                            width: 44,
+                            height: 44
+                        )
+                        .background(
+                            Color.orange
+                        )
+                        .clipShape(Circle())
                 }
+                    
                 .accessibilityLabel("Adicionar observação")
             }
         }
+        
         .sheet(isPresented: $mostrandoNovaObservacao) {
             NovaObservacaoView(texto: $novaObservacao) {
                 adicionarObservacao()

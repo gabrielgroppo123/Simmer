@@ -21,7 +21,7 @@ struct ReceitaModoPreparoView: View {
                 alignment: .firstTextBaseline
             ) {
                 
-                Text("Modo de Fazer")
+                Text("Modo de preparo")
                     .font(
                         .system(
                             size: 22,
@@ -45,7 +45,7 @@ struct ReceitaModoPreparoView: View {
                         )
                 }
             }
-            
+            Divider()
             TextField(
                 "Ex: Refogue no azeite a cebola, o alho, o tomate e o pimentão...",
                 text: $modoPreparo,
@@ -54,7 +54,7 @@ struct ReceitaModoPreparoView: View {
             .font(.system(size: 17))
             .lineLimit(2...8)
             
-            Divider()
+            
         }
     }
 }

@@ -14,6 +14,7 @@ struct MainView: View {
     @State private var somenteFavoritos = false
     @State private var ordenacao: ReceitaOrdenacao = .dataCriacao
     @State private var direcao: ReceitaOrdenacao.Direcao = .decrescente
+    @State private var categoriaSelecionada: Categoria?
     
     @StateObject private var speechRecognizer = SpeechRecognizer()
     
@@ -38,9 +39,10 @@ struct MainView: View {
                         // MARK: - Categorias
                         
                         ReceitaCategoriasView(
-                            categorias: Categoria.allCases,
-                            service: service
-                        )
+                            categorias: Categoria.allCases
+                        ) { categoria in
+                            categoriaSelecionada = categoria
+                        }
                         .padding(.top, 28)
                         
                         // MARK: - Suas receitas
@@ -150,6 +152,14 @@ struct MainView: View {
                             .frame(height: 70)
                     }
                     .padding(.horizontal, 16)
+                }
+                .navigationDestination(
+                    item: $categoriaSelecionada
+                ) { categoria in
+                    CategoriaView(
+                        categoria: categoria,
+                        service: service
+                    )
                 }
                 
                 // MARK: - Barra de pesquisa
