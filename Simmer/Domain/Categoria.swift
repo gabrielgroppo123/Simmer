@@ -12,7 +12,7 @@ enum Categoria: String, CaseIterable, Identifiable, Hashable {
     case aves = "Aves"
     case bebidas = "Bebidas"
     case carnes = "Carnes"
-    case sobremesas = "Doces"
+    case doces = "Doces"
     case arrozGraos = "Grãos e leguminosas"
     case saladasVegetais = "Legumes e vegetais"
     case massas = "Massas"

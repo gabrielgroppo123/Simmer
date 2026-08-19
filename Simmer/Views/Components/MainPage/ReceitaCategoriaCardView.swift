@@ -185,7 +185,7 @@ struct ReceitaCategoriaCardView: View {
                 Color(red: 0.55, green: 0.22, blue: 0.16)
             ]
             
-        case .sobremesas:
+        case .doces:
             return [
                 Color(red: 0.95, green: 0.42, blue: 0.44),
                 Color(red: 0.98, green: 0.82, blue: 0.80)
@@ -242,7 +242,7 @@ struct ReceitaCategoriaCardView: View {
         case .aves: return "Aves"
         case .bebidas: return "Bebidas"
         case .carnes: return "Carnes vermelhas"
-        case .sobremesas: return "Doces"
+        case .doces: return "Doces"
         case .arrozGraos: return "Grãos & Leguminosas"
         case .massas: return "Massas"
         case .paesSalgados: return "Pães & salgados"
@@ -258,7 +258,7 @@ struct ReceitaCategoriaCardView: View {
         case .aves: return "avesicone"
         case .bebidas: return "bebidasicone"
         case .carnes: return "carnesvermelhasicone"
-        case .sobremesas: return "docesicone"
+        case .doces: return "docesicone"
         case .arrozGraos: return "graoseleguminosasicone"
         case .massas: return "massaicone"
         case .paesSalgados: return "paesesalgadosicone"

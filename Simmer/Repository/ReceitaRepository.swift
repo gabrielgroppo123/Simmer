@@ -35,4 +35,6 @@ protocol ReceitaRepository {
     ) throws
     
     func deletarReceita(_ receita: ReceitaModel) throws
+    
+    func apagarReceitasComCategoriaAntiga() throws
 }

@@ -195,12 +195,23 @@ final class CoreDataReceitaRepository: ReceitaRepository {
     
     private func converterReceita(_ receita: Receita) -> ReceitaModel {
         
-        guard let categoria = Categoria(
-            rawValue: receita.categoria
-        ) else {
-            fatalError(
-                "Categoria inválida: \(receita.categoria)"
-            )
+        let categoria: Categoria
+
+        switch receita.categoria {
+            
+        case "Sobremesas":
+            categoria = .doces
+            
+        default:
+            guard let categoriaConvertida = Categoria(
+                rawValue: receita.categoria
+            ) else {
+                fatalError(
+                    "Categoria inválida: \(receita.categoria)"
+                )
+            }
+            
+            categoria = categoriaConvertida
         }
         
         let ingredientes = (receita.ingredientes as? Set<Ingrediente> ?? [])
@@ -243,6 +254,28 @@ final class CoreDataReceitaRepository: ReceitaRepository {
             modoPreparo: receita.modoPreparo ?? " ",
             ingredientes: ingredientes,
             comentarios: comentarios
+        )
+    }
+    
+    func apagarReceitasComCategoriaAntiga() throws {
+        
+        let request: NSFetchRequest<Receita> = Receita.fetchRequest()
+        
+        request.predicate = NSPredicate(
+            format: "categoria == %@",
+            "Sobremesas"
+        )
+        
+        let receitasAntigas = try context.fetch(request)
+        
+        for receita in receitasAntigas {
+            context.delete(receita)
+        }
+        
+        try context.save()
+        
+        print(
+            "🗑️ \(receitasAntigas.count) receita(s) antiga(s) removida(s)."
         )
     }
 }

@@ -194,7 +194,7 @@ struct CategoriaView: View {
         case .carnes:
             return "Carnes vermelhas"
             
-        case .sobremesas:
+        case .doces:
             return "Doces"
             
         case .arrozGraos:
@@ -328,7 +328,7 @@ struct CategoriaView: View {
 #Preview {
     NavigationStack {
         CategoriaView(
-            categoria: .sobremesas,
+            categoria: .doces,
             service: PreviewSupport.receitaService
         )
     }

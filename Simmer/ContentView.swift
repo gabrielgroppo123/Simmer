@@ -21,6 +21,9 @@ struct ContentView: View {
             
             Text("Simmer")
                 .font(.largeTitle)
+            Button("Apagar receitas antigas") {
+                apagarReceitasAntigas()
+            }
             
             Button("Testar CRUD") {
                 testarCRUD()
@@ -53,7 +56,7 @@ struct ContentView: View {
         
         let dados = NovaReceita(
             nome: "Bolo de Chocolate",
-            categoria: .sobremesas,
+            categoria: .doces,
             foto: imagemDeTeste(),
             porcoes: 8,
             duracao: 3600,
@@ -157,6 +160,20 @@ struct ContentView: View {
         )!
         
         return imagem.pngData()!
+    }
+    
+    private func apagarReceitasAntigas() {
+        
+        do {
+            try service.apagarReceitasComCategoriaAntiga()
+            
+            print("✅ Limpeza concluída!")
+            
+        } catch {
+            print(
+                "❌ Erro ao apagar receitas antigas: \(error)"
+            )
+        }
     }
 }
 

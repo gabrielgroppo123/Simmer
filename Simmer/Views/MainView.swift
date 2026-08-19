@@ -129,7 +129,7 @@ struct MainView: View {
                             spacing: 14
                         ) {
                             
-                            ForEach(receitas) { receita in
+                            ForEach(receitasExibidas) { receita in
                                 
                                 NavigationLink {
                                     DetalhesReceita(
@@ -246,13 +246,23 @@ struct MainView: View {
     }
     
     // MARK: - Carregar receitas
-    
     private func carregarReceitas() {
         
         do {
-            receitas = try service.buscarReceitas(
+            let resultado = try service.buscarReceitas(
                 texto: textoBusca
             )
+            
+            print("🔎 Receitas encontradas: \(resultado.count)")
+            
+            for receita in resultado {
+                print(
+                    "🍰 \(receita.nome) | Categoria: \(receita.categoria.rawValue)"
+                )
+            }
+            
+            receitas = resultado
+            
         } catch {
             print(
                 "❌ Erro ao buscar receitas: \(error)"
