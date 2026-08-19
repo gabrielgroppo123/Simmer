@@ -93,6 +93,7 @@ struct CategoriaView: View {
                         NavigationLink {
                             CadastrarReceita(
                                 service: service,
+                                categoriaInicial: categoria,
                                 onSaved: {
                                     carregarReceitas()
                                 }
@@ -101,13 +102,8 @@ struct CategoriaView: View {
                             Image(systemName: "plus")
                                 .font(.system(size: 18))
                                 .foregroundStyle(.black)
-                                .frame(
-                                    width: 40,
-                                    height: 40
-                                )
-                                .background(
-                                    Color.orange
-                                )
+                                .frame(width: 40, height: 40)
+                                .background(Color.orange)
                                 .clipShape(Circle())
                         }
                         .accessibilityLabel(
