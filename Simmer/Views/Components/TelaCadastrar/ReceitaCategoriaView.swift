@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ReceitaCategoriaView: View {
     
-    @Binding var categoria: Categoria
+    @Binding var categoria: Categoria?
     
     var body: some View {
         HStack {
@@ -44,13 +44,11 @@ struct ReceitaCategoriaView: View {
                 HStack(spacing: 7) {
                     
                     Text(
-                        categoria == .outro
-                            ? "Escolher"
-                            : categoria.rawValue
+                        categoria?.rawValue ?? "Escolher"
                     )
                     .font(.system(size: 15))
                     .foregroundStyle(
-                        categoria == .outro
+                        categoria == nil
                             ? .secondary
                             : .primary
                     )

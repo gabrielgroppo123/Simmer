@@ -15,16 +15,21 @@ struct CadastrarReceita: View {
 
     init(
         service: ReceitaService,
+        categoriaInicial: Categoria? = nil,
         onSaved: @escaping () -> Void = {}
     ) {
         self.service = service
         self.onSaved = onSaved
+        
+        _categoria = State(
+            initialValue: categoriaInicial
+        )
     }
     
     @Environment(\.dismiss) private var dismiss
     
     @State private var nome = ""
-    @State private var categoria: Categoria = .outro
+    @State private var categoria: Categoria?
     @State private var foto: Data?
     @State private var porcoes = ""
     @State private var duracao = ""
@@ -355,6 +360,13 @@ private extension CadastrarReceita {
                 separator: "\n"
             )
         
+        guard let categoria else {
+            mostrarErro(
+                "Escolha uma categoria para a receita."
+            )
+            return
+        }
+        
         let dados = NovaReceita(
             nome: nome,
             categoria: categoria,
@@ -429,4 +441,3 @@ private enum ErroCadastro: Error {
         )
     }
 }
-//oi

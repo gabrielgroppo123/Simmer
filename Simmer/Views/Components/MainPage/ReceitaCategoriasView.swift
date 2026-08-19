@@ -174,7 +174,7 @@ struct ReceitaCategoriaCardView: View {
 struct ReceitaCategoriasView: View {
     
     let categorias: [Categoria]
-    let selecionarCategoria: (Categoria) -> Void
+    let service: ReceitaService
     
     var body: some View {
         VStack(
@@ -198,8 +198,11 @@ struct ReceitaCategoriasView: View {
                     
                     ForEach(categorias) { categoria in
                         
-                        Button {
-                            selecionarCategoria(categoria)
+                        NavigationLink {
+                            CategoriaView(
+                                categoria: categoria,
+                                service: service
+                            )
                         } label: {
                             ReceitaCategoriaCardView(
                                 categoria: categoria
