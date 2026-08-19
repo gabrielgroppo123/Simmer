@@ -62,11 +62,3 @@ struct ReceitaBuscaView: View {
     }
 }
 
-#Preview {
-    ReceitaBuscaView(
-        textoBusca: .constant(""),
-        estaOuvindo: false,
-        iniciarBuscaPorVoz: {}
-    )
-    .padding()
-}

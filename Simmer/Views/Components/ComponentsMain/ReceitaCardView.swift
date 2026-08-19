@@ -170,27 +170,5 @@ struct ReceitaCardView: View {
     }
 }
 
-extension ReceitaModel {
-    static var mock: ReceitaModel {
-        ReceitaModel(
-            id: UUID(),
-            nome: "Bolo de Cenoura",
-            categoria: .sobremesas,
-            favorito: true,
-            dataCriacao: Date(),
-            foto: Data(),
-            porcoes: 8,
-            duracao: 2700,
-            utensilios: "Liquidificador",
-            modoPreparo: "Modo de preparo aqui...",
-            ingredientes: [],
-            comentarios: []
-        )
-    }
-}
 
-#Preview {
-    ReceitaCardView(receita: .mock)
-        .padding()
-}
 

@@ -127,20 +127,3 @@ struct ReceitaOrdenacaoView: View {
         }
     }
 }
-
-#Preview("Estático") {
-    ReceitaOrdenacaoView(
-        ordenacao: .constant(.dataCriacao),
-        direcao: .constant(.crescente)
-    )
-}
-
-#Preview("Interativo") {
-    @Previewable @State var ordenacao: ReceitaOrdenacao = .dataCriacao
-    @Previewable @State var direcao: ReceitaOrdenacao.Direcao = .crescente
-    
-    ReceitaOrdenacaoView(
-        ordenacao: $ordenacao,
-        direcao: $direcao
-    )
-}

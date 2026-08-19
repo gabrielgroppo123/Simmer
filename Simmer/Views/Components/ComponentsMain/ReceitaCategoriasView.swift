@@ -251,12 +251,3 @@ struct ReceitaCategoriasView: View {
     }
 }
 
-// MARK: - Preview
-#Preview {
-    ReceitaCategoriasView(
-        categorias: [.aves, .sobremesas, .massas],
-        selecionarCategoria: { categoria in
-            print("Categoria selecionada: \(categoria)")
-        }
-    )
-}
