@@ -197,51 +197,82 @@ struct DetalhesReceita: View {
                     .padding(.horizontal)
                 }
                 
-                // MARK: - Observações (Comentários da Receita)
-                
+                // MARK: - Observações
+
                 VStack(alignment: .leading, spacing: 12) {
                     
-                    NavigationLink {
-                        ObservacoesReceita(
-                            receita: receitaAtual,
-                            service: service)
-                    } label: {
-                        HStack(spacing: 6) {
-                            Text("Observações")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                            
-                            Image(systemName: "chevron.right")
-                                .font(.title3)
-                                .fontWeight(.semibold)
-                        }
-                        .tint(.primary)
-                    }
-                    .padding(.horizontal)
-                    
-                    if receitaAtual.comentarios.isEmpty {
+                    HStack {
                         
-                        // Estado vazio para manter a seção visível
-                        CardDetalhesView(paddingVertical: 16, paddingHorizontal: 20) {
-                            Text("Sugestão: descreva não só sabores, mas sentimentos, expectativas, dificuldades no seu processo com a receita. ")
-                                .font(.body)
-                                .foregroundStyle(.secondary)
+                        // Título → abre todas as observações
+                        NavigationLink {
+                            ObservacoesReceita(
+                                receita: receitaAtual,
+                                service: service
+                            )
+                        } label: {
+                            HStack(spacing: 6) {
+                                
+                                Text("Observações")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                
+                                Image(systemName: "chevron.right")
+                                    .font(.title3)
+                                    .fontWeight(.semibold)
+                            }
+                            .tint(.primary)
                         }
-                        .padding(.horizontal)
+                        
+                        Spacer()
+                        
+                        // + → abre Observações com a sheet aberta
+                        NavigationLink {
+                            ObservacoesReceita(
+                                receita: receitaAtual,
+                                service: service,
+                                abrirNovaObservacao: true
+                            )
+                        } label: {
+                            Image(systemName: "plus")
+                                .font(.system(size: 20, weight: .medium))
+                                .foregroundStyle(.black)
+                                .frame(
+                                    width: 44,
+                                    height: 44
+                                )
+                                .background(
+                                    Color.orange
+                                )
+                                .clipShape(Circle())
+                        }
+                        .accessibilityLabel("Adicionar observação")
+                    }
+                    
+                    // MARK: - Último comentário
+                    
+                    if let ultimoComentario = receitaAtual.comentarios.max(
+                        by: { $0.data < $1.data }
+                    ) {
+                        
+                        CardObservacaoDetalhes(
+                            comentario: ultimoComentario
+                        )
                         
                     } else {
                         
-                        // Carrossel horizontal de comentários
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 16) {
-                                ForEach(receitaAtual.comentarios.prefix(3)) { comentario in
-                                    CardObservacaoDetalhes(comentario: comentario)
-                                }
-                            }
-                            .padding(.horizontal)
+                        CardDetalhesView(
+                            paddingVertical: 16,
+                            paddingHorizontal: 20
+                        ) {
+                            Text(
+                                "Sugestão: descreva não só sabores, mas sentimentos, expectativas, dificuldades no seu processo com a receita."
+                            )
+                            .font(.body)
+                            .foregroundStyle(.secondary)
                         }
                     }
                 }
+                .padding(.horizontal)
             }
             .padding(.vertical)
         }
