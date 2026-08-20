@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     
+    @Environment(\.scenePhase) private var scenePhase
     @State private var receitas: [ReceitaModel] = []
     @State private var textoBusca = ""
     @State private var somenteFavoritos = false
@@ -152,11 +153,18 @@ struct MainView: View {
                                 ForEach(receitasExibidas) { receita in
                                     
                                     NavigationLink {
-                                        DetalhesReceita(receita: receita,service: service)
+                                        DetalhesReceita(
+                                            receita: receita,
+                                            service: service,
+                                            onSaved: {
+                                                carregarReceitas()
+                                            }
+                                        )
                                     } label: {
                                         ReceitaCardView(receita: receita)
                                     }
                                     .buttonStyle(.plain)
+                                    
                                 }
                             }
                         }
@@ -207,6 +215,7 @@ struct MainView: View {
             textoBusca =
                 speechRecognizer.textoReconhecido
         }
+        
     }
     
     private var receitasExibidas: [ReceitaModel] {
