@@ -11,6 +11,7 @@ struct ObservacoesReceita: View {
     
     private let receita: ReceitaModel
     private let service: ReceitaService
+    private let abrirNovaObservacao: Bool
     
     @Environment(\.dismiss) private var dismiss
     
@@ -26,12 +27,14 @@ struct ObservacoesReceita: View {
     // MARK: - Inicialização
     
     init(
-        receita: ReceitaModel,
-        service: ReceitaService
-    ) {
-        self.receita = receita
-        self.service = service
-    }
+            receita: ReceitaModel,
+            service: ReceitaService,
+            abrirNovaObservacao: Bool = false
+        ) {
+            self.receita = receita
+            self.service = service
+            self.abrirNovaObservacao = abrirNovaObservacao
+        }
     
     // MARK: - Observações filtradas
     
@@ -106,6 +109,7 @@ struct ObservacoesReceita: View {
                 pesquisa: $pesquisa
             )
         }
+        .navigationBarBackButtonHidden(true)
         .background(
             Color(.systemBackground)
         )
@@ -126,6 +130,11 @@ struct ObservacoesReceita: View {
         
         .onAppear {
             carregarObservacoes()
+            
+            if abrirNovaObservacao {
+                novaObservacao = ""
+                mostrandoNovaObservacao = true
+            }
         }
         
         // MARK: Alert
