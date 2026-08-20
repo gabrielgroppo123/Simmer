@@ -166,6 +166,24 @@ struct DetalhesReceita: View {
                             }
                         }
                     }
+                    NavigationLink {
+                        CalculadoraReceitaView(
+                            receita: receitaAtual
+                        )
+                    } label: {
+                        HStack {
+                            
+                            Image(systemName: "plus.forwardslash.minus")
+                            
+                            Text("Calcular porções")
+                            
+                            Spacer()
+                            
+                            Image(systemName: "chevron.right")
+                        }
+                    }
+                    .tint(.primary)
+                    .background(.orange)
                 }
                 .padding(.horizontal)
                 
@@ -380,9 +398,7 @@ struct DetalhesReceita: View {
                 ingredientes: receitaAtual.ingredientes,
                 comentarios: receitaAtual.comentarios
             )
-            
             onSaved()
-            
         } catch {
             print("❌ Erro ao atualizar favorito: \(error)")
         }
