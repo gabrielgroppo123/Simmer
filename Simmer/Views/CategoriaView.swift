@@ -28,6 +28,8 @@ struct CategoriaView: View {
         self.service = service
     }
     
+    @Environment(\.colorScheme) private var colorScheme
+    
     var body: some View {
         ZStack(alignment: .bottom) {
             
@@ -64,18 +66,13 @@ struct CategoriaView: View {
                             )
                             .foregroundStyle(
                                 somenteFavoritos
-                                ? .black
-                                : .primary
-                            )
+                                    ? (colorScheme == .dark ? .white : .black): .primary)
                             .font(.system(size: 18))
                             .frame(
                                 width: 40,
                                 height: 40
                             )
-                            .background(
-                                Color.gray.opacity(0.08)
-                            )
-                            .clipShape(Circle())
+                            .glassEffect(.regular,in: Circle())
                         }
                         .accessibilityLabel(
                             somenteFavoritos
@@ -114,28 +111,45 @@ struct CategoriaView: View {
                     
                     // MARK: - Receitas
                     
-                    LazyVStack(
-                        spacing: 14
-                    ) {
+                    if receitasOrdenadas.isEmpty {
                         
-                        ForEach(
-                            receitasOrdenadas
-                        ) { receita in
+                        VStack(spacing: 8) {
                             
-                            NavigationLink {
-                                DetalhesReceita(
-                                    receita: receita,
-                                    service: service
-                                )
-                            } label: {
-                                ReceitaCardView(
-                                    receita: receita
-                                )
-                            }
-                            .buttonStyle(.plain)
+                            Image(systemName: "book.closed")
+                                .font(.system(size: 36))
+                                .foregroundStyle(.secondary)
+                                .padding(.bottom, 8)
+                            
+                            Text("Nenhuma receita nesta categoria")
+                                .font(.system(size: 18,weight: .semibold))
+                                .foregroundStyle(Color("Grafite"))
+                                .multilineTextAlignment(.center)
+                            
+                            Text("Cadastre uma receita em \(nomeCategoria) para encontrá-la aqui.")
+                            .font(.system(size: 15))
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: 280)
                         }
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 100)
+                        
+                    } else {
+                        
+                        LazyVStack(spacing: 14) {
+                            
+                            ForEach(receitasOrdenadas) { receita in
+                                
+                                NavigationLink {
+                                    DetalhesReceita(receita: receita, service: service)
+                                } label: {
+                                    ReceitaCardView(receita: receita)
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                        .padding(.top, 20)
                     }
-                    .padding(.top, 20)
                     
                     Color.clear
                         .frame(height: 70)
