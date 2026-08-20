@@ -281,7 +281,7 @@ struct MainView: View {
         }
     }
     
-    // MARK: - Busca por voz
+   //oi
     
     private func iniciarBuscaPorVoz() {
         
