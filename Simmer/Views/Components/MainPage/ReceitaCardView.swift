@@ -16,16 +16,13 @@ struct ReceitaCardView: View {
         HStack(spacing: 12) {
             
             // MARK: - Imagem
-            
             imagemReceita
             
             // MARK: - Informações
-            
             VStack(
                 alignment: .leading,
                 spacing: 6
             ) {
-                
                 Text(receita.nome)
                     .font(
                         .system(
@@ -38,7 +35,6 @@ struct ReceitaCardView: View {
                 Spacer()
                 
                 HStack(spacing: 6) {
-                    
                     Image(
                         systemName: "clock.fill"
                     )
@@ -51,7 +47,6 @@ struct ReceitaCardView: View {
                     )
                     
                     if receita.favorito {
-                        
                         Image(
                             systemName: "heart.fill"
                         )
@@ -68,7 +63,6 @@ struct ReceitaCardView: View {
             )
             
             // MARK: - Navegação
-            
             Image(
                 systemName: "chevron.right"
             )
@@ -90,31 +84,23 @@ struct ReceitaCardView: View {
         )
         .overlay {
             RoundedRectangle(cornerRadius: 17)
-            .stroke(Color("TracadoCardReceita"),lineWidth: 1)
+            .stroke(Color("TracadoCardReceita"), lineWidth: 1)
         }
-        .shadow(color: .black.opacity(0.06),radius: 5,y: 2)
+        .shadow(color: .black.opacity(0.06), radius: 5, y: 2)
     }
     
     // MARK: - Imagem
-    
     private var imagemReceita: some View {
-        
         Group {
-            
             if let imagem = UIImage(
                 data: receita.foto
             ) {
-                
                 Image(uiImage: imagem)
                     .resizable()
                     .scaledToFill()
-                
             } else {
-                
                 ZStack {
-                    
                     Color.gray.opacity(0.15)
-                    
                     Image(
                         systemName: "photo"
                     )
@@ -134,30 +120,25 @@ struct ReceitaCardView: View {
     }
     
     // MARK: - Duração
-    
     private func textoDuracao(
-        _ duracao: Int64
+        _ duracaoEmSegundos: Int64
     ) -> String {
-        
-        guard duracao > 0 else {
+        guard duracaoEmSegundos > 0 else {
             return "Não informado"
         }
         
-        let minutos = duracao / 60
-        
-        let horas = minutos / 60
-        let minutosRestantes = minutos % 60
+        let totalMinutos = duracaoEmSegundos / 60
+        let horas = totalMinutos / 60
+        let minutosRestantes = totalMinutos % 60
         
         if horas > 0 {
-            
             if minutosRestantes > 0 {
                 return "\(horas)h \(minutosRestantes)min"
             }
-            
             return "\(horas)h"
         }
         
-        return "\(minutos)min"
+        return "\(minutosRestantes)min"
     }
 }
 
