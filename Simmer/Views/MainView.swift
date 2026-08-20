@@ -24,6 +24,8 @@ struct MainView: View {
         self.service = service
     }
     
+    @Environment(\.colorScheme) private var colorScheme
+    
     var body: some View {
         NavigationStack {
             
@@ -71,18 +73,13 @@ struct MainView: View {
                                 )
                                 .foregroundStyle(
                                     somenteFavoritos
-                                    ? .black
-                                    : .primary
-                                )
+                                        ? (colorScheme == .dark ? .white : .black): .primary)
                                 .font(.system(size: 18))
                                 .frame(
                                     width: 40,
                                     height: 40
                                 )
-                                .background(
-                                    Color.gray.opacity(0.08)
-                                )
-                                .clipShape(Circle())
+                                .glassEffect(.regular,in: Circle())
                             }
                             .accessibilityLabel(
                                 somenteFavoritos
@@ -106,16 +103,15 @@ struct MainView: View {
                                 )
                             } label: {
                                 Image(systemName: "plus")
-                                    .font(.system(size: 18))
+                                    .font(.system(size: 20))
                                     .foregroundStyle(.black)
                                     .frame(
                                         width: 40,
                                         height: 40
                                     )
-                                    .background(
-                                        Color.orange
-                                    )
+                                    .background(Color.adicionarReceita)
                                     .clipShape(Circle())
+                                
                             }
                             .accessibilityLabel(
                                 "Cadastrar nova receita"
@@ -129,19 +125,39 @@ struct MainView: View {
                             spacing: 14
                         ) {
                             
-                            ForEach(receitasExibidas) { receita in
+                            if receitasExibidas.isEmpty {
                                 
-                                NavigationLink {
-                                    DetalhesReceita(
-                                        receita: receita,
-                                        service: service
-                                    )
-                                } label: {
-                                    ReceitaCardView(
-                                        receita: receita
-                                    )
+                                VStack(spacing: 12) {
+                                    
+                                    Image(systemName: "book.closed")
+                                        .font(.system(size: 40))
+                                        .foregroundStyle(.gray)
+                                    
+                                    Text("Você ainda não possui receitas")
+                                        .font(.system(size: 18,weight: .semibold))
+                                        .foregroundStyle(Color("Grafite"))
+                                        .multilineTextAlignment(.center)
+                                    
+                                    Text("Cadastre sua primeira receita para começar a montar seu caderno.")
+                                        .font(.system(size: 15))
+                                        .foregroundStyle(.secondary)
+                                        .multilineTextAlignment(.center)
                                 }
-                                .buttonStyle(.plain)
+                                .frame(maxWidth: .infinity)
+                                .padding(.top, 80)
+                                .padding(.horizontal, 30)
+                                
+                            } else {
+                                
+                                ForEach(receitasExibidas) { receita in
+                                    
+                                    NavigationLink {
+                                        DetalhesReceita(receita: receita,service: service)
+                                    } label: {
+                                        ReceitaCardView(receita: receita)
+                                    }
+                                    .buttonStyle(.plain)
+                                }
                             }
                         }
                         .padding(.top, 18)
@@ -153,13 +169,8 @@ struct MainView: View {
                     }
                     .padding(.horizontal, 16)
                 }
-                .navigationDestination(
-                    item: $categoriaSelecionada
-                ) { categoria in
-                    CategoriaView(
-                        categoria: categoria,
-                        service: service
-                    )
+                .navigationDestination(item: $categoriaSelecionada) { categoria in
+                    CategoriaView(categoria: categoria,service: service)
                 }
                 
                 // MARK: - Barra de pesquisa

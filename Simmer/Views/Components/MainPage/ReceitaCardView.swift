@@ -86,22 +86,13 @@ struct ReceitaCardView: View {
             RoundedRectangle(
                 cornerRadius: 17
             )
-            .fill(Color(.systemBackground))
+            .fill(Color("CardReceita"))
         )
         .overlay {
-            RoundedRectangle(
-                cornerRadius: 17
-            )
-            .stroke(
-                Color.gray.opacity(0.18),
-                lineWidth: 1
-            )
+            RoundedRectangle(cornerRadius: 17)
+            .stroke(Color("TracadoCardReceita"),lineWidth: 1)
         }
-        .shadow(
-            color: .black.opacity(0.06),
-            radius: 5,
-            y: 2
-        )
+        .shadow(color: .black.opacity(0.06),radius: 5,y: 2)
     }
     
     // MARK: - Imagem
@@ -169,3 +160,4 @@ struct ReceitaCardView: View {
         return "\(minutos)min"
     }
 }
+

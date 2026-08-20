@@ -12,6 +12,8 @@ struct ReceitaOrdenacaoView: View {
     @Binding var ordenacao: ReceitaOrdenacao
     @Binding var direcao: ReceitaOrdenacao.Direcao
     
+    @Environment(\.colorScheme) private var colorScheme
+    
     var body: some View {
         Menu {
             
@@ -86,15 +88,9 @@ struct ReceitaOrdenacaoView: View {
                 systemName: "arrow.up.arrow.down"
             )
             .font(.system(size: 18))
-            .foregroundStyle(.black)
-            .frame(
-                width: 40,
-                height: 40
-            )
-            .background(
-                Color.gray.opacity(0.08)
-            )
-            .clipShape(Circle())
+            .foregroundStyle(colorScheme == .dark ? .white : .black)
+            .frame(width: 40,height: 40)
+            .glassEffect(.regular,in: Circle())
         }
         .accessibilityLabel("Ordenar receitas")
     }
