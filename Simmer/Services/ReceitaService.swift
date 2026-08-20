@@ -91,4 +91,26 @@ final class ReceitaService {
     func apagarReceitasComCategoriaAntiga() throws {
         try repository.apagarReceitasComCategoriaAntiga()
     }
+    
+    // MARK: - Comentários
+
+    func criarComentario(
+        descricao: String,
+        receita: ReceitaModel
+    ) throws -> ComentarioModel {
+        
+        try repository.criarComentario(
+            descricao: descricao,
+            receita: receita
+        )
+    }
+
+    func buscarComentarios(
+        receita: ReceitaModel
+    ) throws -> [ComentarioModel] {
+        
+        try repository.buscarComentarios(
+            receita: receita
+        )
+    }
 }

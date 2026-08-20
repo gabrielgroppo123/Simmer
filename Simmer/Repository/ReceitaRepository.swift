@@ -34,6 +34,15 @@ protocol ReceitaRepository {
         favorito: Bool
     ) throws
     
+    func criarComentario(
+        descricao: String,
+        receita: ReceitaModel
+    ) throws -> ComentarioModel
+
+    func buscarComentarios(
+        receita: ReceitaModel
+    ) throws -> [ComentarioModel]
+    
     func deletarReceita(_ receita: ReceitaModel) throws
     
     func apagarReceitasComCategoriaAntiga() throws

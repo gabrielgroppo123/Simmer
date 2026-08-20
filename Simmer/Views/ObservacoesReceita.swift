@@ -4,9 +4,13 @@
 //
 //  Created by Mariana Fracaroli Lopes on 18/08/26.
 //
+
 import SwiftUI
 
 struct ObservacoesReceita: View {
+    
+    private let receita: ReceitaModel
+    private let service: ReceitaService
     
     @Environment(\.dismiss) private var dismiss
     
@@ -14,259 +18,203 @@ struct ObservacoesReceita: View {
     @State private var mostrandoNovaObservacao = false
     @State private var novaObservacao = ""
     
-    @State private var observacoes: [ObservacaoMock] = [
-        
-        ObservacaoMock(
-            data: "02/08/2026",
-            texto: "Fica excelente adicionando molho pesto de manjericão fresco no lugar do azeite tradicional. Se for preparar com antecedência, deixe para temperar na hora de servir para não murchar as folhas."
-        ),
-        
-        ObservacaoMock(
-            data: "18/04/2026",
-            texto: "Substituí as nozes tradicionais por castanha-de-caju tostada e funcionou super bem. Adicionei também um toque de parmesão em lascas no final."
-        ),
-        
-        ObservacaoMock(
-            data: "23/01/2026",
-            texto: "Rendimento perfeito para duas pessoas como acompanhamento. Para virar prato principal, vale a pena acrescentar tiras de frango grelhado ou queijo de cabra aquecido."
-        ),
-        
-        ObservacaoMock(
-            data: "17/10/2025",
-            texto: "Secar bem as folhas com a centrífuga de salada antes do preparo faz toda a diferença para o molho fixar melhor e não diluir o sabor."
-        )
-    ]
+    @State private var observacoes: [ComentarioModel] = []
     
-    private var observacoesFiltradas: [ObservacaoMock] {
+    @State private var mostrandoErro = false
+    @State private var mensagemErro = ""
+    
+    // MARK: - Inicialização
+    
+    init(
+        receita: ReceitaModel,
+        service: ReceitaService
+    ) {
+        self.receita = receita
+        self.service = service
+    }
+    
+    // MARK: - Observações filtradas
+    
+    private var observacoesFiltradas: [ComentarioModel] {
         
         if pesquisa.trimmingCharacters(
-            in: .whitespacesAndNewlines).isEmpty {
-            
+            in: .whitespacesAndNewlines
+        ).isEmpty {
             return observacoes
         }
         
         return observacoes.filter {
-            $0.texto.localizedCaseInsensitiveContains(pesquisa)
+            $0.descricao.localizedCaseInsensitiveContains(
+                pesquisa
+            )
         }
     }
+    
+    // MARK: - Body
     
     var body: some View {
         
         ZStack(alignment: .bottom) {
             
-            ScrollView {
+            VStack(spacing: 0) {
                 
-                VStack(alignment: .leading,spacing: 0) {
-                    
-                    ForEach(observacoesFiltradas) { observacao in
-                        
-                        ObservacaoCardView(
-                            observacao: observacao
-                        )
-                        .padding(.bottom, 36)
+                // MARK: Cabeçalho
+                
+                ObservacoesCabecalhoView(
+                    voltar: {
+                        dismiss()
+                    },
+                    adicionar: {
+                        novaObservacao = ""
+                        mostrandoNovaObservacao = true
                     }
+                )
+                
+                // MARK: Lista de observações
+                
+                ScrollView {
                     
-                    Color.clear
-                        .frame(height: 80)
+                    LazyVStack(
+                        alignment: .leading,
+                        spacing: 0
+                    ) {
+                        
+                        ForEach(
+                            observacoesFiltradas
+                        ) { observacao in
+                            
+                            ObservacaoCardView(
+                                observacao: observacao
+                            )
+                            .padding(.bottom, 28)
+                        }
+                        
+                        // Espaço para a barra de pesquisa
+                        
+                        Color.clear
+                            .frame(height: 70)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 10)
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 30)
+                .scrollIndicators(.hidden)
             }
-            .scrollIndicators(.hidden)
             
-            barraPesquisa
-        }
-        .background(Color(.systemBackground))
-        .navigationTitle("Observações")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
+            // MARK: Barra de pesquisa
             
-            ToolbarItem(
-                placement: .topBarTrailing) {
-                Button {
-                    novaObservacao = ""
-                    mostrandoNovaObservacao = true
-                } label: {
-                    Image(systemName: "plus")
-                        .font(.system(size: 18))
-                        .foregroundStyle(.black)
-                        .frame(
-                            width: 44,
-                            height: 44
-                        )
-                        .background(
-                            Color.orange
-                        )
-                        .clipShape(Circle())
-                }
-                    
-                .accessibilityLabel("Adicionar observação")
-            }
+            ObservacoesBuscaView(
+                pesquisa: $pesquisa
+            )
         }
+        .background(
+            Color(.systemBackground)
+        )
         
-        .sheet(isPresented: $mostrandoNovaObservacao) {
-            NovaObservacaoView(texto: $novaObservacao) {
+        // MARK: Nova observação
+        
+        .sheet(
+            isPresented: $mostrandoNovaObservacao
+        ) {
+            NovaObservacaoView(
+                texto: $novaObservacao
+            ) {
                 adicionarObservacao()
             }
         }
+        
+        // MARK: Carregar observações
+        
+        .onAppear {
+            carregarObservacoes()
+        }
+        
+        // MARK: Alert
+        
+        .alert(
+            "Erro",
+            isPresented: $mostrandoErro
+        ) {
+            Button(
+                "OK",
+                role: .cancel
+            ) {}
+        } message: {
+            Text(mensagemErro)
+        }
     }
 }
 
-// MARK: - Pesquisa
+// MARK: - Core Data
 
 private extension ObservacoesReceita {
     
-    var barraPesquisa: some View {
+    func carregarObservacoes() {
         
-        HStack(spacing: 10) {
+        do {
             
-            Image(systemName: "magnifyingglass")
-            .font(.system(size: 20))
+            observacoes = try service.buscarComentarios(
+                receita: receita
+            )
             
-            TextField("Pesquise sua receita",text: $pesquisa)
+            print(
+                "💬 \(observacoes.count) comentário(s) carregado(s)"
+            )
             
-            if !pesquisa.isEmpty {
-                
-                Button {
-                    pesquisa = ""
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                    .foregroundStyle(.secondary)
-                }
-            }
+        } catch {
             
-            Image(systemName: "mic.fill")
-            .font(.system(size: 17)).foregroundStyle(.secondary)
+            print(
+                "❌ Erro ao carregar comentários: \(error)"
+            )
         }
-        .padding(.horizontal, 16)
-        .frame(height: 48)
-        .background(.ultraThinMaterial).clipShape(Capsule())
-        .overlay {
-            Capsule().stroke(Color.gray.opacity(0.25),lineWidth: 1)
-        }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 12)
     }
-}
-
-// MARK: - Ações
-
-private extension ObservacoesReceita {
     
     func adicionarObservacao() {
         
-        let texto = novaObservacao.trimmingCharacters(in: .whitespacesAndNewlines)
+        let texto = novaObservacao.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        )
         
         guard !texto.isEmpty else {
             return
         }
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd/MM/yyyy"
-        
-        let nova = ObservacaoMock(data: formatter.string(from: Date()),texto: texto)
-        
-        observacoes.insert(nova,at: 0)
-        
-        mostrandoNovaObservacao = false
-        novaObservacao = ""
-    }
-}
-
-// MARK: - Modelo temporário
-
-private struct ObservacaoMock: Identifiable {
-    
-    let id = UUID()
-    let data: String
-    let texto: String
-}
-
-// MARK: - Card
-
-private struct ObservacaoCardView: View {
-    
-    let observacao: ObservacaoMock
-    
-    var body: some View {
-        
-        VStack(alignment: .leading,spacing: 24) {
+        do {
             
-            Text(observacao.data)
-            .font(.system(size: 21,weight: .bold))
-            
-            Text(observacao.texto)
-            .font(.system(size: 20,weight: .regular))
-            .fixedSize(horizontal: false,vertical: true)
-        }
-        .frame(maxWidth: .infinity,alignment: .leading)
-        .padding(24)
-        .background(Color.cardObservacoes)
-        .clipShape(RoundedRectangle(cornerRadius: 22))
-        .overlay {
-            RoundedRectangle(cornerRadius: 22).stroke(Color(red: 1.0,green: 0.90,blue: 0.82),lineWidth: 1
+            let comentario = try service.criarComentario(
+                descricao: texto,
+                receita: receita
             )
-        }
-    }
-}
-
-// MARK: - Nova observação
-
-private struct NovaObservacaoView: View {
-    
-    @Binding var texto: String
-    
-    let adicionar: () -> Void
-    
-    @Environment(\.dismiss) private var dismiss
-    
-    var body: some View {
-        
-        NavigationStack {
             
-            VStack(
-                alignment: .leading,
-                spacing: 20
-            ) {
-                
-                Text("Nova observação")
-                .font(.system(size: 24,weight: .bold))
-                
-                TextEditor(text: $texto)
-                .font(.system(size: 18))
-                .padding(12)
-                .scrollContentBackground(.hidden)
-                .background(
-                    Color(red: 1.0,green: 0.98,blue: 0.95))
-                .clipShape(RoundedRectangle(cornerRadius: 18))
-                .overlay {
-                    RoundedRectangle(cornerRadius: 18).stroke(Color(red: 1.0,green: 0.90,blue: 0.82),lineWidth: 1)
-                }
-                
-                Spacer()
-            }
-            .padding(20)
-            .navigationTitle("Observação")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                
-                ToolbarItem(
-                    placement: .topBarLeading) {
-                    Button("Cancelar") {
-                        dismiss()
-                    }
-                }
-                    
-                ToolbarItem(
-                    placement: .topBarTrailing
-                ) {
-                    Button("Adicionar") {
-                        adicionar()
-                    }
-                    .buttonStyle(.glassProminent)
-                    .tint(Color(red: 1.0, green: 0.67,blue: 0.20))
-                }
-            }
+            observacoes.insert(
+                comentario,
+                at: 0
+            )
+            
+            mostrandoNovaObservacao = false
+            novaObservacao = ""
+            
+            print(
+                "✅ Comentário salvo no Core Data!"
+            )
+            
+        } catch {
+            
+            mensagemErro =
+                "Não foi possível salvar a observação."
+            
+            mostrandoErro = true
+            
+            let nsError = error as NSError
+            
+            print("❌ ERRO AO SALVAR COMENTÁRIO")
+            print("Domain: \(nsError.domain)")
+            print("Code: \(nsError.code)")
+            print(
+                "Description: \(nsError.localizedDescription)"
+            )
+            print(
+                "UserInfo: \(nsError.userInfo)"
+            )
         }
     }
 }
@@ -274,7 +222,14 @@ private struct NovaObservacaoView: View {
 // MARK: - Preview
 
 #Preview {
+    
+    let receita =
+        PreviewSupport.criarDadosObservacoesPreview()
+    
     NavigationStack {
-        ObservacoesReceita()
+        ObservacoesReceita(
+            receita: receita,
+            service: PreviewSupport.receitaService
+        )
     }
 }
