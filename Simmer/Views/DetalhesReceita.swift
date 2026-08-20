@@ -202,7 +202,9 @@ struct DetalhesReceita: View {
                 VStack(alignment: .leading, spacing: 12) {
                     
                     NavigationLink {
-                        ObservacoesReceita()
+                        ObservacoesReceita(
+                            receita: receitaAtual,
+                            service: service)
                     } label: {
                         HStack(spacing: 6) {
                             Text("Observações")
