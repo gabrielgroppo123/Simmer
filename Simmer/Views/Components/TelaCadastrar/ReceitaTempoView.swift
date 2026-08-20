@@ -12,7 +12,7 @@ struct ReceitaTempoView: View {
     @Binding var duracao: String
     
     @State private var horasSelecionadas: Int = 0
-    @State private var minutosSelecionados: Int = 30
+    @State private var minutosSelecionados: Int = 0
     @State private var isPickerExpanded: Bool = false
     
     var body: some View {
@@ -50,6 +50,7 @@ struct ReceitaTempoView: View {
                 }
             }
             .buttonStyle(.plain)
+            
             // MARK: - Menu Suspenso Sobreposto (Overlay)
             .overlay(alignment: .topTrailing) {
                 if isPickerExpanded {
@@ -78,17 +79,41 @@ struct ReceitaTempoView: View {
                             .fill(Color(uiColor: .systemBackground))
                             .shadow(color: .black.opacity(0.15), radius: 12, x: 0, y: 6)
                     )
-                    .offset(y: 44) // Desloca o menu para ficar logo abaixo do botão
+                    .offset(y: 44)
                     .transition(.scale(scale: 0.95, anchor: .topTrailing).combined(with: .opacity))
                     .onChange(of: horasSelecionadas) { _, _ in atualizarDuracao() }
                     .onChange(of: minutosSelecionados) { _, _ in atualizarDuracao() }
                 }
             }
         }
-        .zIndex(isPickerExpanded ? 1 : 0) // Garante que o menu fique por cima de outras views na mesma tela
+        .zIndex(isPickerExpanded ? 1 : 0)
+        .onAppear {
+            carregarValoresIniciais()
+        }
     }
     
-    // MARK: - Formatação do Texto
+    // MARK: - Carrega horas e minutos se já existir texto na variável duracao
+    private func carregarValoresIniciais() {
+        guard !duracao.isEmpty else { return }
+        
+        let texto = duracao.lowercased().replacingOccurrences(of: " ", with: "")
+        
+        if let rangeH = texto.range(of: "h") {
+            let valorH = String(texto[..<rangeH.lowerBound])
+            horasSelecionadas = Int(valorH) ?? 0
+            
+            let restante = String(texto[rangeH.upperBound...])
+            if let rangeMin = restante.range(of: "min") {
+                let valorMin = String(restante[..<rangeMin.lowerBound])
+                minutosSelecionados = Int(valorMin) ?? 0
+            }
+        } else if let rangeMin = texto.range(of: "min") {
+            let valorMin = String(texto[..<rangeMin.lowerBound])
+            minutosSelecionados = Int(valorMin) ?? 0
+        }
+    }
+    
+    // MARK: - Formatação do Texto esperada pela CadastrarReceita
     private func atualizarDuracao() {
         if horasSelecionadas == 0 && minutosSelecionados == 0 {
             duracao = ""
@@ -97,7 +122,7 @@ struct ReceitaTempoView: View {
         } else if minutosSelecionados == 0 {
             duracao = "\(horasSelecionadas) h"
         } else {
-            duracao = "\(horasSelecionadas)h \(minutosSelecionados)min"
+            duracao = "\(horasSelecionadas) h \(minutosSelecionados) min"
         }
     }
 }

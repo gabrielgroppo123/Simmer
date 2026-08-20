@@ -43,8 +43,6 @@ struct CadastrarReceita: View {
     @State private var mostrandoErro = false
     @State private var mensagemErro = ""
     
-    
-    
     var body: some View {
         ScrollView {
             
@@ -373,7 +371,7 @@ private extension CadastrarReceita {
             categoria: categoria,
             foto: foto,
             porcoes: porcoesInt,
-            duracao: duracaoInt * 60,
+            duracao: duracaoInt, // Corrigido: sem o "* 60"
             utensilios: utensiliosString.isEmpty
                 ? nil
                 : utensiliosString,
@@ -484,7 +482,6 @@ private extension CadastrarReceita {
             : nil
     }
 }
-
 
 // MARK: - Erros
 
