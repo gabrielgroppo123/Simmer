@@ -28,11 +28,11 @@ struct CardDetalhesView<Content: View>: View {
             .padding(.vertical, paddingVertical)
             .background(
                 RoundedRectangle(cornerRadius: 16)
-                    .fill(Color.orange.opacity(0.03)) // Tom de laranja super suave e translúcido
+                    .fill(Color("CardObservacoes")) // Tom de laranja super suave e translúcido
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.orange.opacity(0.15), lineWidth: 1)
+                    .stroke(Color("TracadoCardObs"), lineWidth: 1)
             )
     }
 }
