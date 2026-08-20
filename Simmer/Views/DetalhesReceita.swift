@@ -14,7 +14,7 @@ struct DetalhesReceita: View {
     
     let receita: ReceitaModel
     private let service: ReceitaService
-    
+    private let onSaved: () -> Void
     @Environment(\.dismiss) private var dismiss
     
     @State private var receitaAtual: ReceitaModel
@@ -33,11 +33,16 @@ struct DetalhesReceita: View {
     
     init(
         receita: ReceitaModel,
-        service: ReceitaService
+        service: ReceitaService,
+        onSaved: @escaping () -> Void = {}
     ) {
         self.receita = receita
         self.service = service
-        _receitaAtual = State(initialValue: receita)
+        self.onSaved = onSaved
+        
+        _receitaAtual = State(
+            initialValue: receita
+        )
     }
     
     // MARK: - Body
@@ -375,6 +380,8 @@ struct DetalhesReceita: View {
                 ingredientes: receitaAtual.ingredientes,
                 comentarios: receitaAtual.comentarios
             )
+            
+            onSaved()
             
         } catch {
             print("❌ Erro ao atualizar favorito: \(error)")

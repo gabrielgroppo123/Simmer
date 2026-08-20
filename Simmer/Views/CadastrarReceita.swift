@@ -115,6 +115,7 @@ struct CadastrarReceita: View {
             ) {
                 Button {
                     salvarReceita()
+                    
                 } label: {
                     Image(
                         systemName: "checkmark"
@@ -382,25 +383,32 @@ private extension CadastrarReceita {
         
         do {
             
-            _ = try service.criarReceita(
-                dados
-            )
+            let receitaCriada = try service.criarReceita(dados)
             
-            print(
-                "✅ Receita cadastrada com sucesso!"
-            )
-            
-            onSaved()
-            
-            if !observacao.trimmingCharacters(
+            let textoObservacao = observacao.trimmingCharacters(
                 in: .whitespacesAndNewlines
-            ).isEmpty {
+            )
+            
+            if !textoObservacao.isEmpty {
                 
-                print(
-                    "📝 Observação preenchida: \(observacao)"
+                print("📝 Tentando salvar observação:")
+                print(textoObservacao)
+                
+                print("🍳 Receita criada:")
+                print(receitaCriada.id)
+                
+                let comentario = try service.criarComentario(
+                    descricao: textoObservacao,
+                    receita: receitaCriada
                 )
+                
+                print("✅ Comentário criado:")
+                print(comentario.id)
             }
             
+            print("✅ Receita cadastrada com sucesso!")
+            
+            onSaved()
             dismiss()
             
         } catch {
