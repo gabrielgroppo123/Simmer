@@ -8,9 +8,11 @@
 import CoreData
 
 final class CoreDataReceitaRepository: ReceitaRepository {
-    func atualizarReceita(_ receita: ReceitaModel, nome: String, categoria: Categoria, foto: Data, porcoes: Int16?, duracao: Int64, utensilios: String?, modoPreparo: String, ingredientes: [NovoIngrediente]) throws {
-        
-    }
+    
+    //REBECA: COMENTEI PQ ESSA FUNC JA TINHA LA EMBAIXO E ESTAVA VAZIA
+//    func atualizarReceita(_ receita: ReceitaModel, nome: String, categoria: Categoria, foto: Data, porcoes: Int16?, duracao: Int64, utensilios: String?, modoPreparo: String, ingredientes: [NovoIngrediente]) throws {
+//        
+//    }
     
     
     
@@ -117,36 +119,88 @@ final class CoreDataReceitaRepository: ReceitaRepository {
     }
     
 
+    //REBECA- FOI ESSA FUNC QUE ESTAVA ANTE
+//    func atualizarReceita(
+//        _ receita: ReceitaModel,
+//        nome: String,
+//        categoria: Categoria,
+//        porcoes: Int16?,
+//        duracao: Int64,
+//        utensilios: String?,
+//        modoPreparo: String
+//    ) throws {
+//        
+//        let request: NSFetchRequest<Receita> = Receita.fetchRequest()
+//        
+//        request.predicate = NSPredicate(
+//            format: "id == %@",
+//            receita.id as CVarArg
+//        )
+//        
+//        request.fetchLimit = 1
+//        
+//        guard let receitaCoreData = try context.fetch(request).first else {
+//            return
+//        }
+//        
+//        receitaCoreData.nome = nome
+//        receitaCoreData.categoria = categoria.rawValue
+//        receitaCoreData.porcoes = porcoes ?? 1
+//        receitaCoreData.duracao = duracao
+//        receitaCoreData.utensilios = utensilios
+//        receitaCoreData.modoPreparo = modoPreparo
+//        
+//        try context.save()
+//    }
     
     func atualizarReceita(
         _ receita: ReceitaModel,
         nome: String,
         categoria: Categoria,
+        foto: Data,
         porcoes: Int16?,
         duracao: Int64,
         utensilios: String?,
-        modoPreparo: String
+        modoPreparo: String,
+        ingredientes: [NovoIngrediente]
     ) throws {
-        
         let request: NSFetchRequest<Receita> = Receita.fetchRequest()
-        
         request.predicate = NSPredicate(
             format: "id == %@",
             receita.id as CVarArg
         )
-        
         request.fetchLimit = 1
         
         guard let receitaCoreData = try context.fetch(request).first else {
             return
         }
         
+        // Atualiza os dados básicos (incluindo a foto)
         receitaCoreData.nome = nome
         receitaCoreData.categoria = categoria.rawValue
+        receitaCoreData.foto = foto
         receitaCoreData.porcoes = porcoes ?? 1
         receitaCoreData.duracao = duracao
         receitaCoreData.utensilios = utensilios
         receitaCoreData.modoPreparo = modoPreparo
+        
+        // Apaga os ingredientes antigos para não duplicar
+        if let ingredientesAntigos = receitaCoreData.ingredientes as? Set<Ingrediente> {
+            for ingrediente in ingredientesAntigos {
+                context.delete(ingrediente)
+            }
+        }
+        
+        // Adiciona os novos ingredientes
+        for dadosIngrediente in ingredientes {
+            let ingrediente = Ingrediente(context: context)
+            ingrediente.id = UUID()
+            ingrediente.nome = dadosIngrediente.nome
+            ingrediente.quantidade = dadosIngrediente.quantidade
+            ingrediente.unidade = dadosIngrediente.unidade.rawValue
+            
+            receitaCoreData.addToIngredientes(ingrediente)
+        }
         
         try context.save()
     }
