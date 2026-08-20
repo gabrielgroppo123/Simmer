@@ -278,4 +278,96 @@ final class CoreDataReceitaRepository: ReceitaRepository {
             "🗑️ \(receitasAntigas.count) receita(s) antiga(s) removida(s)."
         )
     }
+    
+    // MARK: - Comentários
+
+    func criarComentario(
+        descricao: String,
+        receita: ReceitaModel
+    ) throws -> ComentarioModel {
+        
+        let request: NSFetchRequest<Receita> =
+            Receita.fetchRequest()
+        
+        request.predicate = NSPredicate(
+            format: "id == %@",
+            receita.id as CVarArg
+        )
+        
+        request.fetchLimit = 1
+        
+        guard let receitaCoreData =
+                try context.fetch(request).first else {
+            
+            throw NSError(
+                domain: "Simmer",
+                code: 404,
+                userInfo: [
+                    NSLocalizedDescriptionKey:
+                        "A receita não foi encontrada no Core Data."
+                ]
+            )
+        }
+        
+        let comentario = Comentario(
+            context: context
+        )
+        
+        comentario.id = UUID()
+        comentario.descricao = descricao
+        comentario.data = Date()
+        comentario.receita = receitaCoreData
+        
+        do {
+            try context.save()
+        } catch {
+            
+            let nsError = error as NSError
+            
+            print("❌ ERRO NO CONTEXT.SAVE()")
+            print("Domain: \(nsError.domain)")
+            print("Code: \(nsError.code)")
+            print("Description: \(nsError.localizedDescription)")
+            print("UserInfo: \(nsError.userInfo)")
+            
+            throw error
+        }
+        
+        return ComentarioModel(
+            id: comentario.id,
+            descricao: comentario.descricao,
+            data: comentario.data
+        )
+    }
+    
+    func buscarComentarios(
+        receita: ReceitaModel
+    ) throws -> [ComentarioModel] {
+        
+        let request: NSFetchRequest<Comentario> =
+            Comentario.fetchRequest()
+        
+        request.predicate = NSPredicate(
+            format: "receita.id == %@",
+            receita.id as CVarArg
+        )
+        
+        request.sortDescriptors = [
+            NSSortDescriptor(
+                keyPath: \Comentario.data,
+                ascending: false
+            )
+        ]
+        
+        let comentarios = try context.fetch(request)
+
+        return comentarios.map { comentario in
+            
+            ComentarioModel(
+                id: comentario.id,
+                descricao: comentario.descricao,
+                data: comentario.data
+            )
+        }
+    }
 }
