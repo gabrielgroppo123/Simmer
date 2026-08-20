@@ -10,6 +10,8 @@ import UIKit
 
 struct DetalhesReceita: View {
     
+    // MARK: - Propriedades
+    
     let receita: ReceitaModel
     private let service: ReceitaService
     
@@ -17,6 +19,17 @@ struct DetalhesReceita: View {
     
     @State private var receitaAtual: ReceitaModel
     @State private var mostrarAlertaExclusao = false
+    
+    // Processa a String de utensílios transformando em um Array de Strings
+    private var listaUtensilios: [String] {
+        guard let utensilios = receitaAtual.utensilios, !utensilios.isEmpty else { return [] }
+        return utensilios
+            .components(separatedBy: CharacterSet(charactersIn: "\n,"))
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+    }
+    
+    // MARK: - Inicializador
     
     init(
         receita: ReceitaModel,
@@ -26,6 +39,8 @@ struct DetalhesReceita: View {
         self.service = service
         _receitaAtual = State(initialValue: receita)
     }
+    
+    // MARK: - Body
     
     var body: some View {
         ScrollView {
@@ -55,35 +70,69 @@ struct DetalhesReceita: View {
                         }
                 }
                 
-                // MARK: - Informações principais
+                // MARK: - Informações Principais
                 
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: 16) {
                     
-                    Text(receitaAtual.nome)
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                    
-                    Text(receitaAtual.categoria.rawValue)
-                        .font(.headline)
-                        .foregroundStyle(.secondary)
-                    
-                    HStack(spacing: 20) {
-                        
-                        if let porcoes = receitaAtual.porcoes {
-                            Label(
-                                "\(porcoes) porções",
-                                systemImage: "person.2"
-                            )
-                        }
-                        
+                    Button {
+                        alternarFavorito()
+                    } label: {
                         Label(
-                            formatarDuracao(
-                                receitaAtual.duracao
-                            ),
-                            systemImage: "clock"
+                            receitaAtual.favorito ? "Desfavoritar" : "Favoritar",
+                            systemImage: receitaAtual.favorito ? "heart.fill" : "heart"
                         )
                     }
-                    .font(.subheadline)
+                    .tint(.primary)
+                    
+                    // Componente de exibição visual do Nome (Não Editável)
+                    ReceitaCampoNomeExibicaoView(nome: receitaAtual.nome)
+                    
+                    // Card com Meta-informações (Data de Criação, Tempo e Porções)
+                    CardDetalhesView(paddingVertical: 20, paddingHorizontal: 20) {
+                        VStack(alignment: .leading, spacing: 16) {
+                            
+                            // 1. Data de Criação
+                            HStack(spacing: 12) {
+                                Image(systemName: "calendar")
+                                    .font(.title3)
+                                    .frame(width: 24)
+                                
+                                (Text("Receita criada em: ")
+                                    .fontWeight(.bold) +
+                                 Text(receitaAtual.dataCriacao ?? Date(), style: .date)
+                                    .fontWeight(.regular))
+                                .font(.body)
+                            }
+                            
+                            // 2. Tempo de Preparo
+                            HStack(spacing: 12) {
+                                Image(systemName: "clock")
+                                    .font(.title3)
+                                    .frame(width: 24)
+                                
+                                (Text("Tempo de preparo: ")
+                                    .fontWeight(.bold) +
+                                 Text(formatarDuracao(receitaAtual.duracao))
+                                    .fontWeight(.regular))
+                                .font(.body)
+                            }
+                            
+                            // 3. Porções
+                            if let porcoes = receitaAtual.porcoes {
+                                HStack(spacing: 12) {
+                                    Image(systemName: "person.2")
+                                        .font(.title3)
+                                        .frame(width: 24)
+                                    
+                                    (Text("Porções: ")
+                                        .fontWeight(.bold) +
+                                     Text("\(porcoes)")
+                                        .fontWeight(.regular))
+                                    .font(.body)
+                                }
+                            }
+                        }
+                    }
                 }
                 .padding(.horizontal)
                 
@@ -95,160 +144,185 @@ struct DetalhesReceita: View {
                         .font(.title2)
                         .fontWeight(.bold)
                     
-                    ForEach(
-                        receitaAtual.ingredientes
-                    ) { ingrediente in
+                    ForEach(receitaAtual.ingredientes) { ingrediente in
                         
-                        HStack {
-                            
-                            Text(ingrediente.nome)
-                            
-                            Spacer()
-                            
-                            Text(
-                                "\(formatarQuantidade(ingrediente.quantidade)) " +
-                                "\(ingrediente.unidade.rawValue)"
-                            )
-                            .foregroundStyle(.secondary)
+                        CardDetalhesView(paddingVertical: 14, paddingHorizontal: 16) {
+                            HStack {
+                                
+                                Text(ingrediente.nome)
+                                
+                                Spacer()
+                                
+                                HStack(spacing: 6) {
+                                    Text(formatarQuantidade(ingrediente.quantidade))
+                                    Text(ingrediente.unidade.rawValue)
+                                }
+                                .foregroundStyle(.secondary)
+                            }
                         }
+                    }
+                }
+                .padding(.horizontal)
+                
+                // MARK: - Modo de Preparo
+                
+                VStack(alignment: .leading, spacing: 12) {
+                    
+                    Text("Modo de Fazer")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                    
+                    CardDetalhesView {
+                        Text(receitaAtual.modoPreparo)
                     }
                 }
                 .padding(.horizontal)
                 
                 // MARK: - Utensílios
                 
-                if let utensilios = receitaAtual.utensilios,
-                   !utensilios.isEmpty {
+                if !listaUtensilios.isEmpty {
                     
-                    VStack(
-                        alignment: .leading,
-                        spacing: 12
-                    ) {
+                    VStack(alignment: .leading, spacing: 12) {
                         
                         Text("Utensílios")
                             .font(.title2)
                             .fontWeight(.bold)
                         
-                        Text(utensilios)
+                        ForEach(listaUtensilios, id: \.self) { utensilio in
+                            CardDetalhesView(paddingVertical: 14, paddingHorizontal: 16) {
+                                Text(utensilio)
+                            }
+                        }
                     }
                     .padding(.horizontal)
                 }
                 
-                // MARK: - Modo de preparo
+                // MARK: - Observações (Comentários da Receita)
                 
-                VStack(
-                    alignment: .leading,
-                    spacing: 12
-                ) {
+                VStack(alignment: .leading, spacing: 12) {
                     
-                    Text("Modo de preparo")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                    
-                    Text(receitaAtual.modoPreparo)
-                }
-                .padding(.horizontal)
-                
-                // MARK: - Data de criação
-                
-                VStack(
-                    alignment: .leading,
-                    spacing: 8
-                ) {
-                    
-                    Text("Criada em")
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                    
-                    Text(
-                        receitaAtual.dataCriacao ?? Date(),
-                        style: .date
-                    )
-                    .foregroundStyle(.secondary)
-                }
-                .padding(.horizontal)
-                
-                // MARK: - Ações
-                
-                VStack(spacing: 12) {
-                    
-                    // Favoritar
-                    Button {
-                        alternarFavorito()
-                    } label: {
-                        Label(
-                            receitaAtual.favorito
-                                ? "Desfavoritar receita"
-                                : "Favoritar receita",
-                            systemImage:
-                                receitaAtual.favorito
-                                ? "star.fill"
-                                : "star"
-                        )
-                    }
-                    
-                    // Editar
                     NavigationLink {
-                        EditarReceita(
-                            receita: receitaAtual,
-                            service: service
-                        )
+                        ObservacoesReceita()
                     } label: {
-                        Label(
-                            "Editar receita",
-                            systemImage: "pencil"
-                        )
+                        HStack(spacing: 6) {
+                            Text("Observações")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                            
+                            Image(systemName: "chevron.right")
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                        }
+                        .tint(.primary)
                     }
+                    .padding(.horizontal)
                     
-                    // Excluir
-                    Button(role: .destructive) {
-                        mostrarAlertaExclusao = true
-                    } label: {
-                        Label(
-                            "Excluir receita",
-                            systemImage: "trash"
-                        )
+                    if receitaAtual.comentarios.isEmpty {
+                        
+                        // Estado vazio para manter a seção visível
+                        CardDetalhesView(paddingVertical: 16, paddingHorizontal: 20) {
+                            Text("Sugestão: descreva não só sabores, mas sentimentos, expectativas, dificuldades no seu processo com a receita. ")
+                                .font(.body)
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding(.horizontal)
+                        
+                    } else {
+                        
+                        // Carrossel horizontal de comentários
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 16) {
+                                ForEach(receitaAtual.comentarios.prefix(3)) { comentario in
+                                    CardObservacaoDetalhes(comentario: comentario)
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
                     }
                 }
-                .buttonStyle(.bordered)
-                .padding(.horizontal)
             }
             .padding(.vertical)
         }
         .navigationTitle("Receita")
         .navigationBarTitleDisplayMode(.inline)
+        
+        // MARK: - Sincronização pós-edição
+        .onAppear {
+            atualizarDadosLocais()
+        }
+        
+        // MARK: - Toolbar
+        
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                HStack(spacing: 12) {
+                    
+                    // Compartilhar
+                    ShareLink(
+                        item: receitaAtual.nome,
+                        subject: Text(receitaAtual.nome),
+                        message: Text("Confira essa receita de \(receitaAtual.nome) no Simmer!")
+                    ) {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                    
+                    // Menu de Ações (Padrão iOS)
+                    Menu {
+                        
+                        NavigationLink {
+                            EditarReceita(
+                                receita: receitaAtual,
+                                service: service
+                            )
+                        } label: {
+                            Label("Editar receita", systemImage: "pencil")
+                        }
+                        
+                        Divider()
+                        
+                        Button(role: .destructive) {
+                            mostrarAlertaExclusao = true
+                        } label: {
+                            Label("Excluir receita", systemImage: "trash")
+                        }
+                        
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                    }
+                }
+            }
+        }
+        
+        // MARK: - Alerta Exclusão
+        
         .alert(
             "Excluir receita?",
             isPresented: $mostrarAlertaExclusao
         ) {
             
-            Button("Cancelar", role: .cancel) {
-                // Não faz nada
-            }
+            Button("Cancelar", role: .cancel) { }
             
-            Button(
-                "Excluir",
-                role: .destructive
-            ) {
+            Button("Excluir", role: .destructive) {
                 excluirReceita()
             }
             
         } message: {
-            
-            Text(
-                "Tem certeza que deseja excluir \"\(receitaAtual.nome)\"?"
-            )
+            Text("Tem certeza que deseja excluir \"\(receitaAtual.nome)\"?")
         }
     }
     
-    // MARK: - Favorito
+    // MARK: - Métodos Auxiliares e Lógica
+    
+    private func atualizarDadosLocais() {
+        if let receitaAtualizada = try? service.buscarReceita(id: receitaAtual.id) {
+            self.receitaAtual = receitaAtualizada
+        }
+    }
     
     private func alternarFavorito() {
-        
         let novoValor = !receitaAtual.favorito
         
         do {
-            
             try service.atualizarFavorito(
                 receitaAtual,
                 favorito: novoValor
@@ -269,81 +343,35 @@ struct DetalhesReceita: View {
                 comentarios: receitaAtual.comentarios
             )
             
-            print(
-                novoValor
-                    ? "⭐ Receita favoritada!"
-                    : "☆ Receita desfavoritada!"
-            )
-            
         } catch {
-            
-            print(
-                "❌ Erro ao atualizar favorito: \(error)"
-            )
+            print("❌ Erro ao atualizar favorito: \(error)")
         }
     }
-    
-    // MARK: - Exclusão
     
     private func excluirReceita() {
-        
         do {
-            
-            try service.deletarReceita(
-                receitaAtual
-            )
-            
-            print(
-                "🗑️ Receita excluída: \(receitaAtual.nome)"
-            )
-            
+            try service.deletarReceita(receitaAtual)
             dismiss()
-            
         } catch {
-            
-            print(
-                "❌ Erro ao excluir receita: \(error)"
-            )
+            print("❌ Erro ao excluir receita: \(error)")
         }
     }
     
-    // MARK: - Formatação da duração
-    
-    private func formatarDuracao(
-        _ duracao: Int64
-    ) -> String {
-        
+    private func formatarDuracao(_ duracao: Int64) -> String {
         let minutos = duracao / 60
-        
-        if minutos < 60 {
-            return "\(minutos) min"
-        }
+        if minutos < 60 { return "\(minutos) min" }
         
         let horas = minutos / 60
         let minutosRestantes = minutos % 60
         
-        if minutosRestantes == 0 {
-            return "\(horas) h"
-        }
-        
+        if minutosRestantes == 0 { return "\(horas) h" }
         return "\(horas) h \(minutosRestantes) min"
     }
     
-    // MARK: - Formatação da quantidade
-    
-    private func formatarQuantidade(
-        _ quantidade: Double
-    ) -> String {
-        
-        if quantidade.truncatingRemainder(
-            dividingBy: 1
-        ) == 0 {
-            
-            return String(
-                Int(quantidade)
-            )
+    private func formatarQuantidade(_ quantidade: Double) -> String {
+        if quantidade.truncatingRemainder(dividingBy: 1) == 0 {
+            return String(Int(quantidade))
         }
-        
         return String(quantidade)
     }
 }
