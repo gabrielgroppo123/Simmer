@@ -328,7 +328,10 @@ struct DetalhesReceita: View {
                         NavigationLink {
                             EditarReceita(
                                 receita: receitaAtual,
-                                service: service
+                                service: service,
+                                onSaved: {
+                                    atualizarDadosLocais()
+                                }
                             )
                         } label: {
                             Label("Editar receita", systemImage: "pencil")

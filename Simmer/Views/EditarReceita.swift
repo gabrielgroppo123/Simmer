@@ -326,8 +326,11 @@ import UIKit
 
 struct EditarReceita: View {
     
+    // MARK: - Propriedades
+    
     let receita: ReceitaModel
     private let service: ReceitaService
+    private let onSaved: () -> Void
     
     @Environment(\.dismiss) private var dismiss
     
@@ -346,12 +349,16 @@ struct EditarReceita: View {
     @State private var mostrandoErro = false
     @State private var mensagemErro = ""
     
+    // MARK: - Inicializador
+    
     init(
         receita: ReceitaModel,
-        service: ReceitaService
+        service: ReceitaService,
+        onSaved: @escaping () -> Void = {}
     ) {
         self.receita = receita
         self.service = service
+        self.onSaved = onSaved
         
         _nome = State(initialValue: receita.nome)
         _categoria = State(initialValue: receita.categoria)
@@ -361,7 +368,7 @@ struct EditarReceita: View {
             initialValue: receita.porcoes.map(String.init) ?? ""
         )
         
-        // Converte a duração salva (segundos) em formato de texto (ex: "40min" ou "1h 20min")
+        // Converte a duração salva (segundos) em formato de texto
         let totalMinutos = receita.duracao / 60
         let h = totalMinutos / 60
         let m = totalMinutos % 60
@@ -395,6 +402,8 @@ struct EditarReceita: View {
             initialValue: ingredientesIniciais
         )
     }
+    
+    // MARK: - Body
     
     var body: some View {
         ScrollView {
@@ -479,6 +488,8 @@ struct EditarReceita: View {
             Text(mensagemErro)
         }
     }
+    
+    // MARK: - Métodos Auxiliares
     
     private func carregarFoto() async {
         guard let fotoSelecionada else { return }
@@ -570,6 +581,10 @@ struct EditarReceita: View {
             )
             
             print("✅ Receita atualizada com sucesso!")
+            
+            // Dispara o callback para atualizar a tela anterior
+            onSaved()
+            
             dismiss()
             
         } catch {
