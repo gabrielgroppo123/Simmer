@@ -14,53 +14,40 @@ struct NovaObservacaoView: View {
     let adicionar: () -> Void
     
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         
         NavigationStack {
             
-            VStack(
-                alignment: .leading,
-                spacing: 20
-            ) {
+            VStack(alignment: .leading,spacing: 20) {
                 
                 Text("Nova observação")
-                    .font(
-                        .system(
-                            size: 24,
-                            weight: .bold
-                        )
-                    )
+                    .font(.system(size: 24,weight: .bold))
                 
                 TextEditor(text: $texto)
                     .font(.system(size: 18))
+                    .foregroundStyle(
+                        colorScheme == .dark
+                        ? .white
+                        : .black
+                    )
                     .padding(12)
                     .scrollContentBackground(.hidden)
                     .background(
-                        Color(
-                            red: 1.0,
-                            green: 0.98,
-                            blue: 0.95
-                        )
-                    )
-                    .clipShape(
-                        RoundedRectangle(
-                            cornerRadius: 18
-                        )
-                    )
+                        colorScheme == .dark
+                        ? Color.black
+                        : Color(red: 1.0,green: 0.98,blue: 0.95))
+                    .clipShape(RoundedRectangle(cornerRadius: 18))
                     .overlay {
                         
                         RoundedRectangle(
                             cornerRadius: 18
                         )
                         .stroke(
-                            Color(
-                                red: 1.0,
-                                green: 0.90,
-                                blue: 0.82
-                            ),
-                            lineWidth: 1
-                        )
+                            colorScheme == .dark
+                            ? Color.white.opacity(0.35)
+                            : Color(red: 1.0,green: 0.90,blue: 0.82),lineWidth: 1)
                     }
                 
                 Spacer()
@@ -70,9 +57,7 @@ struct NovaObservacaoView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 
-                ToolbarItem(
-                    placement: .topBarLeading
-                ) {
+                ToolbarItem(placement: .topBarLeading) {
                     Button("Cancelar") {
                         dismiss()
                     }
@@ -81,17 +66,14 @@ struct NovaObservacaoView: View {
                 ToolbarItem(
                     placement: .topBarTrailing
                 ) {
-                    Button("Adicionar") {
+                    Button {
                         adicionar()
+                    } label: {
+                        Text("Adicionar")
+                            .foregroundStyle(.black)
                     }
                     .buttonStyle(.glassProminent)
-                    .tint(
-                        Color(
-                            red: 1.0,
-                            green: 0.67,
-                            blue: 0.20
-                        )
-                    )
+                    .tint(Color(red: 1.0,green: 0.67,blue: 0.20))
                 }
             }
         }

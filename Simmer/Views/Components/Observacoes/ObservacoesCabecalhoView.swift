@@ -20,21 +20,10 @@ struct ObservacoesCabecalhoView: View {
                 voltar()
             } label: {
                 Image(systemName: "chevron.left")
-                    .font(
-                        .system(
-                            size: 22,
-                            weight: .medium
-                        )
-                    )
+                    .font(.system(size: 22,weight: .medium))
                     .foregroundStyle(.primary)
-                    .frame(
-                        width: 40,
-                        height: 40
-                    )
-                    .glassEffect(
-                        .regular,
-                        in: Circle()
-                    )
+                    .frame(width: 40,height: 40)
+                    .glassEffect(.regular,in: Circle())
             }
             .buttonStyle(.plain)
             .accessibilityLabel("Voltar")
@@ -42,12 +31,7 @@ struct ObservacoesCabecalhoView: View {
             Spacer()
             
             Text("Observações")
-                .font(
-                    .system(
-                        size: 17,
-                        weight: .semibold
-                    )
-                )
+                .font(.system(size: 17,weight: .semibold))
             
             Spacer()
             
@@ -55,20 +39,11 @@ struct ObservacoesCabecalhoView: View {
                 adicionar()
             } label: {
                 Image(systemName: "plus")
-                    .font(
-                        .system(
-                            size: 18,
-                            weight: .medium
-                        )
-                    )
-                    .tint(.primary)
-                    .frame(
-                        width: 40,
-                        height: 40
-                    )
-                    .background(
-                        Color.orange
-                    )
+                    .foregroundStyle(.black)
+                    .font(.system(size: 18,weight: .medium))
+                   
+                    .frame(width: 40,height: 40)
+                    .background(Color.adicionarReceita)
                     .clipShape(Circle())
             }
             .buttonStyle(.plain)
