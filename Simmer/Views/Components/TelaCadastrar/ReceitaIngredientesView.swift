@@ -5,99 +5,6 @@
 //  Created by Gabriel Groppo on 18/08/26.
 //
 
-//import SwiftUI
-//
-//struct ReceitaIngredientesView: View {
-//
-//    @Binding var ingredientes: [IngredienteFormulario]
-//
-//    var body: some View {
-//        VStack(
-//            alignment: .leading,
-//            spacing: 16
-//        ) {
-//
-//            HStack(
-//                alignment: .firstTextBaseline
-//            ) {
-//
-//                Text("Ingredientes")
-//                    .font(
-//                        .system(
-//                            size: 22,
-//                            weight: .semibold
-//                        )
-//                    )
-//
-//                Text("*")
-//                    .foregroundStyle(.red)
-//
-//                Spacer()
-//
-//                if ingredientes.isEmpty {
-//                    Text("campo obrigatório")
-//                        .font(.system(size: 12))
-//                        .foregroundStyle(
-//                            .red.opacity(0.75)
-//                        )
-//                }
-//            }
-//
-//            HStack(spacing: 12) {
-//
-//                Text("Nome do ingrediente")
-//                    .frame(
-//                        maxWidth: .infinity,
-//                        alignment: .leading
-//                    )
-//
-//                Text("Qtd")
-//                    .frame(
-//                        width: 88,
-//                        alignment: .leading
-//                    )
-//
-//                Text("Unidade")
-//                    .frame(
-//                        width: 88,
-//                        alignment: .leading
-//                    )
-//            }
-//            .font(.system(size: 14))
-//
-//            ForEach(
-//                $ingredientes
-//            ) { $ingrediente in
-//
-//                ReceitaIngredienteRowView(
-//                    ingrediente: $ingrediente
-//                )
-//            }
-//            .onDelete { offsets in
-//                ingredientes.remove(
-//                    atOffsets: offsets
-//                )
-//            }
-//
-//            Button {
-//                adicionarIngrediente()
-//            } label: {
-//                Label(
-//                    "Adicionar ingrediente",
-//                    systemImage: "plus.circle"
-//                )
-//                .font(.system(size: 15))
-//            }
-//        }
-//    }
-//
-//    private func adicionarIngrediente() {
-//        ingredientes.append(
-//            IngredienteFormulario()
-//        )
-//    }
-//}
-
 import SwiftUI
 
 struct ReceitaIngredientesView: View {
@@ -136,7 +43,7 @@ struct ReceitaIngredientesView: View {
                         .font(.system(size: 15, weight: .semibold))
                     Divider()
                 }
-                .frame(maxWidth: 140, alignment: .leading)
+                .frame(maxWidth: 120, alignment: .leading)
                 
                 // Coluna 2: Qtd (Largura fixa 48, centralizado)
                 VStack(alignment: .center, spacing: 6) {
@@ -150,17 +57,26 @@ struct ReceitaIngredientesView: View {
                 VStack(alignment: .trailing, spacing: 6) {
                     Text("Unidade")
                         .font(.system(size: 15, weight: .semibold))
+                        .padding(.trailing, 20)
                     Divider()
                 }
-                .frame(width: 180, alignment: .trailing)
+                .frame(width: 150, alignment: .trailing)
+                
             }
             
             // MARK: - Lista de Ingredientes
-            ForEach($ingredientes) { $ingrediente in
-                ReceitaIngredienteRowView(ingrediente: $ingrediente)
-            }
-            .onDelete { offsets in
-                ingredientes.remove(atOffsets: offsets)
+            ForEach(
+                $ingredientes
+            ) { $ingrediente in
+                
+                ReceitaIngredienteRowView(
+                    ingrediente: $ingrediente
+                ) {
+                    
+                    removerIngrediente(
+                        id: ingrediente.id
+                    )
+                }
             }
             
             // MARK: - Botão Adicionar
@@ -177,6 +93,14 @@ struct ReceitaIngredientesView: View {
     
     private func adicionarIngrediente() {
         ingredientes.append(IngredienteFormulario())
+    }
+    
+    private func removerIngrediente(
+        id: UUID
+    ) {
+        ingredientes.removeAll {
+            $0.id == id
+        }
     }
 }
 
