@@ -29,9 +29,22 @@
 		7B9E293B302E79100030E0D7 /* Comentario+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Comentario+CoreDataProperties.swift"; path = "Simmer/Models/Comentario+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		2E9143873038E19000945554 /* Exceptions for "Simmer" folder in "Simmer" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 7B9E2908302E5FAC0030E0D7 /* Simmer */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		7B9E290B302E5FAC0030E0D7 /* Simmer */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				2E9143873038E19000945554 /* Exceptions for "Simmer" folder in "Simmer" target */,
+			);
 			path = Simmer;
 			sourceTree = "<group>";
 		};
