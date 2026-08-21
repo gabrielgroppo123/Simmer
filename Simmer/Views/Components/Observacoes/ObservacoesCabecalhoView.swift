@@ -22,26 +22,19 @@ struct ObservacoesCabecalhoView: View {
                 Image(systemName: "chevron.left")
                     .font(
                         .system(
-                            size: 18,
+                            size: 22,
                             weight: .medium
                         )
                     )
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.primary)
                     .frame(
                         width: 40,
                         height: 40
                     )
-                    .background(
-                        Color(.systemBackground)
+                    .glassEffect(
+                        .regular,
+                        in: Circle()
                     )
-                    .clipShape(Circle())
-                    .overlay {
-                        Circle()
-                            .stroke(
-                                Color.gray.opacity(0.18),
-                                lineWidth: 1
-                            )
-                    }
             }
             .buttonStyle(.plain)
             .accessibilityLabel("Voltar")
