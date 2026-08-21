@@ -30,7 +30,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		2E9143873038E19000945554 /* Exceptions for "Simmer" folder in "Simmer" target */ = {
+		7BAB277E3038E703005F80DB /* Exceptions for "Simmer" folder in "Simmer" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -43,7 +43,7 @@
 		7B9E290B302E5FAC0030E0D7 /* Simmer */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				2E9143873038E19000945554 /* Exceptions for "Simmer" folder in "Simmer" target */,
+				7BAB277E3038E703005F80DB /* Exceptions for "Simmer" folder in "Simmer" target */,
 			);
 			path = Simmer;
 			sourceTree = "<group>";
@@ -304,7 +304,10 @@
 				DEVELOPMENT_TEAM = 3PZUG43HKQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Simmer/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "acessar camera";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "usar microfone";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "reconhecimento de voz";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -337,7 +340,10 @@
 				DEVELOPMENT_TEAM = 3PZUG43HKQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Simmer/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "acessar camera";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "usar microfone";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "reconhecimento de voz";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
