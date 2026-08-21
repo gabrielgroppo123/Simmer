@@ -115,10 +115,10 @@ struct DetalhesReceita: View {
                                     .font(.title3)
                                     .frame(width: 24)
                                 
-                                (Text("Tempo de preparo: ")
+                                Text("Tempo de preparo: ")
                                     .fontWeight(.bold) +
                                  Text(formatarDuracao(receitaAtual.duracao))
-                                    .fontWeight(.regular))
+                                    .fontWeight(.regular)
                                 .font(.body)
                             }
                             
@@ -143,6 +143,25 @@ struct DetalhesReceita: View {
                 
                 // MARK: - Ingredientes
                 
+                NavigationLink {
+                    CalculadoraReceitaView(
+                        receita: receitaAtual
+                    )
+                } label: {
+                    HStack {
+                        
+                        Image(systemName: "plus.forwardslash.minus")
+                        
+                        Text("Calcular porções")
+                        
+                        Spacer()
+                        
+                        Image(systemName: "chevron.right")
+                    }
+                }
+                .tint(.primary)
+                .background(.orange)
+                
                 VStack(alignment: .leading, spacing: 12) {
                     
                     Text("Ingredientes")
@@ -166,24 +185,7 @@ struct DetalhesReceita: View {
                             }
                         }
                     }
-                    NavigationLink {
-                        CalculadoraReceitaView(
-                            receita: receitaAtual
-                        )
-                    } label: {
-                        HStack {
-                            
-                            Image(systemName: "plus.forwardslash.minus")
-                            
-                            Text("Calcular porções")
-                            
-                            Spacer()
-                            
-                            Image(systemName: "chevron.right")
-                        }
-                    }
-                    .tint(.primary)
-                    .background(.orange)
+                    
                 }
                 .padding(.horizontal)
                 
@@ -331,6 +333,7 @@ struct DetalhesReceita: View {
                                 service: service,
                                 onSaved: {
                                     atualizarDadosLocais()
+                                    onSaved()
                                 }
                             )
                         } label: {
@@ -410,6 +413,8 @@ struct DetalhesReceita: View {
     private func excluirReceita() {
         do {
             try service.deletarReceita(receitaAtual)
+            
+            onSaved()
             dismiss()
         } catch {
             print("❌ Erro ao excluir receita: \(error)")
