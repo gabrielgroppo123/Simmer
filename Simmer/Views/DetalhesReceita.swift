@@ -148,19 +148,37 @@ struct DetalhesReceita: View {
                         receita: receitaAtual
                     )
                 } label: {
-                    HStack {
+                    HStack(spacing: 18) {
                         
-                        Image(systemName: "plus.forwardslash.minus")
+                        Image(systemName: "person.2.fill")
+                            .font(.system(size: 24, weight: .medium))
                         
-                        Text("Calcular porções")
+                        Text("Recalcular Porções")
+                            .font(
+                                .system(
+                                    size: 18,
+                                    weight: .medium
+                                )
+                            )
                         
-                        Spacer()
-                        
-                        Image(systemName: "chevron.right")
                     }
+                    .foregroundStyle(.black)
+                    .padding(.horizontal, 30)
+                    .frame(
+                        width: 280,
+                        height: 50
+                    )
+                    
+                    .background(
+                        Color.adicionarReceita
+                    )
+                    .clipShape(
+                        Capsule()
+                    )
                 }
-                .tint(.primary)
-                .background(.orange)
+                .padding(.leading, 60)
+                .padding(.vertical, 10)
+                .buttonStyle(.plain)
                 
                 VStack(alignment: .leading, spacing: 12) {
                     

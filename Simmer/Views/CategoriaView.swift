@@ -100,7 +100,7 @@ struct CategoriaView: View {
                                 .font(.system(size: 18))
                                 .foregroundStyle(.black)
                                 .frame(width: 40, height: 40)
-                                .background(Color.orange)
+                                .background(Color.adicionarReceita)
                                 .clipShape(Circle())
                         }
                         .accessibilityLabel(
