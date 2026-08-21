@@ -10,12 +10,32 @@ import CoreData
 
 @main
 struct SimmerApp: App {
+    
     let persistenceController = PersistenceController.shared
-
+    
+    let receitaService = ReceitaService(
+        repository: CoreDataReceitaRepository(
+            context: PersistenceController.shared.container.viewContext
+        )
+    )
+    
+    @State private var mostrandoSplash = true
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            
+            if mostrandoSplash {
+                
+                SplashView {
+                    mostrandoSplash = false
+                }
+                
+            } else {
+                
+                MainView(
+                    service: receitaService
+                )
+            }
         }
     }
 }
