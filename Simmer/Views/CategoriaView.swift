@@ -10,7 +10,8 @@ import SwiftUI
 struct CategoriaView: View {
     
     let categoria: Categoria
-    private let service: ReceitaService
+    let service: ReceitaService
+    let onSaved: () -> Void
     
     @State private var receitas: [ReceitaModel] = []
     
@@ -22,10 +23,12 @@ struct CategoriaView: View {
     
     init(
         categoria: Categoria,
-        service: ReceitaService
+        service: ReceitaService,
+        onSaved: @escaping () -> Void
     ) {
         self.categoria = categoria
         self.service = service
+        self.onSaved = onSaved
     }
     
     @Environment(\.colorScheme) private var colorScheme
@@ -93,6 +96,7 @@ struct CategoriaView: View {
                                 categoriaInicial: categoria,
                                 onSaved: {
                                     carregarReceitas()
+                                    onSaved()
                                 }
                             )
                         } label: {
@@ -343,7 +347,10 @@ struct CategoriaView: View {
     NavigationStack {
         CategoriaView(
             categoria: .doces,
-            service: PreviewSupport.receitaService
+            service: PreviewSupport.receitaService,
+            onSaved: {
+                "salvou"
+            }
         )
     }
 }
