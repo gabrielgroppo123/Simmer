@@ -56,6 +56,7 @@ struct CadastrarReceita: View {
                     fotoSelecionada: $fotoSelecionada
                 )
                 .padding(.top, 18)
+                .padding(.leading, 70)
                 
                 ReceitaCampoNomeView(
                     nome: $nome

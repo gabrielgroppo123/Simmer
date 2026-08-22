@@ -1,10 +1,3 @@
-//
-//  SpeechRecognizer.swift
-//  Simmer
-//
-//  Created by Gabriel Groppo on 14/08/26.
-//
-
 import Speech
 import AVFoundation
 import Combine
@@ -23,50 +16,70 @@ final class SpeechRecognizer: ObservableObject {
     private var request: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
     
+    // MARK: - Permissões
+    
     func solicitarPermissao() async -> Bool {
         
-        let autorizacaoSpeech = await withCheckedContinuation { continuation in
-            
-            SFSpeechRecognizer.requestAuthorization { status in
-                continuation.resume(
-                    returning: status == .authorized
-                )
+        let autorizacaoSpeech =
+            await withCheckedContinuation { continuation in
+                
+                SFSpeechRecognizer.requestAuthorization { status in
+                    
+                    continuation.resume(
+                        returning: status == .authorized
+                    )
+                }
             }
-        }
         
         guard autorizacaoSpeech else {
             return false
         }
         
-        let autorizacaoMicrofone = await AVAudioApplication.requestRecordPermission()
+        let autorizacaoMicrofone =
+            await AVAudioApplication.requestRecordPermission()
         
         return autorizacaoMicrofone
     }
     
+    // MARK: - Iniciar reconhecimento
+    
     func iniciarReconhecimento() {
         
-        // Cancela uma tarefa anterior, caso exista.
+        // Cancela reconhecimento anterior
         recognitionTask?.cancel()
         recognitionTask = nil
         
-        request = SFSpeechAudioBufferRecognitionRequest()
+        // Garante que não exista um tap anterior
+        let inputNode = audioEngine.inputNode
         
-        guard let request = request else {
-            return
-        }
+        inputNode.removeTap(onBus: 0)
+        
+        // Cria nova requisição
+        let novaRequest =
+            SFSpeechAudioBufferRecognitionRequest()
+        
+        request = novaRequest
+        
+        novaRequest.shouldReportPartialResults = true
         
         guard let speechRecognizer = speechRecognizer,
               speechRecognizer.isAvailable else {
+            
+            print("❌ Reconhecimento de fala indisponível.")
             return
         }
         
-        let audioSession = AVAudioSession.sharedInstance()
+        // MARK: - Configuração do áudio
+        
+        let audioSession =
+            AVAudioSession.sharedInstance()
         
         do {
+            
             try audioSession.setCategory(
                 .record,
                 mode: .measurement,
-                options: .duckOthers
+                options: [.duckOthers]
             )
             
             try audioSession.setActive(
@@ -75,19 +88,30 @@ final class SpeechRecognizer: ObservableObject {
             )
             
         } catch {
-            print("❌ Erro ao configurar áudio: \(error)")
+            
+            print(
+                "❌ Erro ao configurar sessão de áudio: \(error)"
+            )
+            
             return
         }
         
-        let inputNode = audioEngine.inputNode
+        // MARK: - Verificar microfone
         
-        let recordingFormat = inputNode.outputFormat(
-            forBus: 0
-        )
+        let recordingFormat =
+            inputNode.outputFormat(forBus: 0)
         
-        inputNode.removeTap(
-            onBus: 0
-        )
+        guard recordingFormat.sampleRate > 0,
+              recordingFormat.channelCount > 0 else {
+            
+            print(
+                "❌ Microfone indisponível ou formato de áudio inválido."
+            )
+            
+            return
+        }
+        
+        // MARK: - Capturar áudio
         
         inputNode.installTap(
             onBus: 0,
@@ -95,12 +119,15 @@ final class SpeechRecognizer: ObservableObject {
             format: recordingFormat
         ) { [weak self] buffer, _ in
             
-            request.append(buffer)
+            self?.request?.append(buffer)
         }
+        
+        // MARK: - Preparar AudioEngine
         
         audioEngine.prepare()
         
         do {
+            
             try audioEngine.start()
             
             DispatchQueue.main.async {
@@ -109,38 +136,57 @@ final class SpeechRecognizer: ObservableObject {
             }
             
         } catch {
-            print("❌ Erro ao iniciar microfone: \(error)")
+            
+            print(
+                "❌ Erro ao iniciar AudioEngine: \(error)"
+            )
+            
+            inputNode.removeTap(onBus: 0)
+            
             return
         }
         
-        recognitionTask = speechRecognizer.recognitionTask(
-            with: request
-        ) { [weak self] resultado, error in
-            
-            guard let self = self else {
-                return
-            }
-            
-            if let resultado = resultado {
+        // MARK: - Reconhecimento
+        
+        recognitionTask =
+            speechRecognizer.recognitionTask(
+                with: novaRequest
+            ) { [weak self] resultado, error in
                 
-                DispatchQueue.main.async {
-                    self.textoReconhecido =
-                        resultado.bestTranscription.formattedString
+                guard let self else {
+                    return
+                }
+                
+                if let resultado {
+                    
+                    DispatchQueue.main.async {
+                        
+                        self.textoReconhecido =
+                            resultado.bestTranscription
+                            .formattedString
+                    }
+                }
+                
+                if error != nil ||
+                    resultado?.isFinal == true {
+                    
+                    self.pararReconhecimento()
                 }
             }
-            
-            if error != nil || resultado?.isFinal == true {
-                self.pararReconhecimento()
-            }
-        }
     }
+    
+    // MARK: - Parar reconhecimento
     
     func pararReconhecimento() {
         
         audioEngine.stop()
-        audioEngine.inputNode.removeTap(onBus: 0)
+        
+        audioEngine.inputNode.removeTap(
+            onBus: 0
+        )
         
         request?.endAudio()
+        
         recognitionTask?.cancel()
         
         request = nil
@@ -151,12 +197,18 @@ final class SpeechRecognizer: ObservableObject {
         }
         
         do {
-            try AVAudioSession.sharedInstance().setActive(
-                false,
-                options: .notifyOthersOnDeactivation
-            )
+            
+            try AVAudioSession.sharedInstance()
+                .setActive(
+                    false,
+                    options: .notifyOthersOnDeactivation
+                )
+            
         } catch {
-            print("❌ Erro ao desativar áudio: \(error)")
+            
+            print(
+                "❌ Erro ao desativar áudio: \(error)"
+            )
         }
     }
 }
