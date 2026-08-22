@@ -177,8 +177,16 @@ struct MainView: View {
                     }
                     .padding(.horizontal, 16)
                 }
-                .navigationDestination(item: $categoriaSelecionada) { categoria in
-                    CategoriaView(categoria: categoria,service: service)
+                .navigationDestination(
+                    item: $categoriaSelecionada
+                ) { categoria in
+                    CategoriaView(
+                        categoria: categoria,
+                        service: service,
+                        onSaved: {
+                            carregarReceitas()
+                        }
+                    )
                 }
                 
                 // MARK: - Barra de pesquisa

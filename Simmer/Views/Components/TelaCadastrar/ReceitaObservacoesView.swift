@@ -28,7 +28,7 @@ struct ReceitaObservacoesView: View {
                         )
                         .padding(.bottom, 20)
                     
-                    Text("Sugestão: descreva não sabores, mas sentimentos, expectativas, dificuldades no seu processo com a receita.")
+                    Text("Sugestão: descreva não só sabores, mas sentimentos, expectativas, dificuldades no seu processo com a receita.")
                 }
                 Spacer()
                 
