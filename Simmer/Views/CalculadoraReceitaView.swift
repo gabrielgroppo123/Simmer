@@ -120,6 +120,7 @@ struct CalculadoraReceitaView: View {
             }
             .padding(20)
         }
+        .fecharTecladoAoTocarFora()
         .navigationTitle("Calcular porções")
         .navigationBarTitleDisplayMode(.inline)
     }
