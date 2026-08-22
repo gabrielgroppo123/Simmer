@@ -160,6 +160,7 @@ struct CategoriaView: View {
                 }
                 .padding(.horizontal, 16)
             }
+            .fecharTecladoAoTocarFora()
             
             // MARK: - Barra de pesquisa
             

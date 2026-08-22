@@ -177,6 +177,7 @@ struct MainView: View {
                     }
                     .padding(.horizontal, 16)
                 }
+                .fecharTecladoAoTocarFora()
                 .navigationDestination(
                     item: $categoriaSelecionada
                 ) { categoria in

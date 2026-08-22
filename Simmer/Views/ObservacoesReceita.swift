@@ -109,6 +109,7 @@ struct ObservacoesReceita: View {
                 pesquisa: $pesquisa
             )
         }
+        .fecharTecladoAoTocarFora()
         .navigationBarBackButtonHidden(true)
         .background(
             Color(.systemBackground)
