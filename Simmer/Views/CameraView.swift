@@ -50,7 +50,6 @@ struct CameraView: UIViewControllerRepresentable {
             self.resultado = resultado
         }
         
-        // MARK: - Foto capturada
         
         func imagePickerController(
             _ picker:
@@ -75,8 +74,6 @@ struct CameraView: UIViewControllerRepresentable {
                 imagem: imagem
             )
         }
-        
-        // MARK: - Confirmação
         
         private func mostrarConfirmacao(
             no picker:
@@ -116,7 +113,6 @@ struct CameraView: UIViewControllerRepresentable {
             )
         }
         
-        // MARK: - Cancelar câmera
         
         func imagePickerControllerDidCancel(
             _ picker:

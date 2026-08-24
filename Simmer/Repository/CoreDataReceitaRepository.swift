@@ -9,14 +9,6 @@ import CoreData
 
 final class CoreDataReceitaRepository: ReceitaRepository {
     
-    //REBECA: COMENTEI PQ ESSA FUNC JA TINHA LA EMBAIXO E ESTAVA VAZIA
-//    func atualizarReceita(_ receita: ReceitaModel, nome: String, categoria: Categoria, foto: Data, porcoes: Int16?, duracao: Int64, utensilios: String?, modoPreparo: String, ingredientes: [NovoIngrediente]) throws {
-//        
-//    }
-    
-    
-    
-    
     private let context: NSManagedObjectContext
     
     init(context: NSManagedObjectContext) {

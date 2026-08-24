@@ -88,7 +88,6 @@ struct ReceitaFotoView: View {
                 : "Alterar imagem"
         )
         
-        // MARK: - Menu de opções
         
         .confirmationDialog(
             "Adicionar imagem",
@@ -120,8 +119,6 @@ struct ReceitaFotoView: View {
             ) {}
         }
         
-        // MARK: - Câmera
-        
         .fullScreenCover(
             isPresented: $mostrandoCamera
         ) {
@@ -138,16 +135,14 @@ struct ReceitaFotoView: View {
             }
         }
         
-        // MARK: - Galeria
-        
+    
         .photosPicker(
             isPresented: $mostrandoGaleria,
             selection: $fotoSelecionada,
             matching: .images
         )
         
-        // MARK: - Imagem selecionada da galeria
-        
+       
         .onChange(
             of: fotoSelecionada
         ) { _, novoItem in
@@ -156,9 +151,7 @@ struct ReceitaFotoView: View {
                 novoItem
             )
         }
-        
-        // MARK: - Confirmação da galeria
-        
+       
         .alert(
             "Usar esta foto?",
             isPresented:
@@ -190,8 +183,7 @@ struct ReceitaFotoView: View {
         }
     }
     
-    // MARK: - Galeria
-    
+  
     private func carregarImagemDaGaleria(
         _ item: PhotosPickerItem?
     ) {
@@ -201,7 +193,6 @@ struct ReceitaFotoView: View {
         }
         
         Task {
-            
             do {
                 
                 guard let data =
@@ -225,13 +216,12 @@ struct ReceitaFotoView: View {
             } catch {
                 
                 print(
-                    "❌ Erro ao carregar imagem: \(error)"
+                    "Erro ao carregar imagem: \(error)"
                 )
             }
         }
     }
     
-    // MARK: - Confirmar galeria
     
     private func confirmarFotoDaGaleria() {
         

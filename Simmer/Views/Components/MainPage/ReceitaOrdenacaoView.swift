@@ -17,8 +17,6 @@ struct ReceitaOrdenacaoView: View {
     var body: some View {
         Menu {
             
-            // MARK: - Critério
-            
             Button {
                 ordenacao = .dataCriacao
             } label: {
@@ -57,8 +55,7 @@ struct ReceitaOrdenacaoView: View {
             
             Divider()
             
-            // MARK: - Direção
-            
+          
             Button {
                 direcao = .crescente
             } label: {
