@@ -23,7 +23,8 @@ struct NovaObservacaoView: View {
             VStack(alignment: .leading,spacing: 20) {
                 
                 Text("Nova observação")
-                    .font(.system(size: 24,weight: .bold))
+                    .font(.custom("Alexandria-Bold", size: 24))
+
                 
                 TextEditor(text: $texto)
                     .font(.system(size: 18))

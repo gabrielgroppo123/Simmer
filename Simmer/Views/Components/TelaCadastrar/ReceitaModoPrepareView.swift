@@ -22,11 +22,7 @@ struct ReceitaModoPreparoView: View {
             ) {
                 
                 Text("Modo de preparo")
-                    .font(
-                        .system(
-                            size: 22,
-                            weight: .semibold)
-                    )
+                    .font(.custom("Alexandria-SemiBold", size: 22))
                 
                 Text("*")
                     .foregroundStyle(.red)

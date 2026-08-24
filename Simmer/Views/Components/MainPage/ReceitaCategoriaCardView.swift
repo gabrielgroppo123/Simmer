@@ -16,7 +16,7 @@ struct ReceitaCategoriaCardView: View {
             
         
             Text(nomeCategoria)
-                .font(.system(size: 14, weight: .bold))
+                .font(.custom("Alexandria-Bold", size: 14))
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.leading)
                 .lineLimit(2)

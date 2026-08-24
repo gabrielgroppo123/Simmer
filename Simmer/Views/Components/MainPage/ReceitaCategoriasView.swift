@@ -16,7 +16,8 @@ struct ReceitaCategoriasView: View {
         VStack(alignment: .leading, spacing: 12) {
             
             Text("Categorias")
-                .font(.system(size: 22, weight: .semibold))
+                .font(.custom("Alexandria-SemiBold", size: 22))
+
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {

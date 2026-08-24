@@ -22,12 +22,8 @@ struct ReceitaCampoNomeView: View {
             ) {
                 
                 Text("Nome da Receita")
-                    .font(
-                        .system(
-                            size: 21,
-                            weight: .semibold
-                        )
-                    )
+                    .font(.custom("Alexandria-SemiBold", size: 22))
+
                 
                 Text("*")
                     .foregroundStyle(.red)

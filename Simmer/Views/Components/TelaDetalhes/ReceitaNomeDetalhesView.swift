@@ -14,7 +14,7 @@ struct ReceitaCampoNomeExibicaoView: View {
         VStack(alignment: .leading, spacing: 12) {
             
             Text("Nome da Receita")
-                .font(.system(size: 22, weight: .semibold))
+                .font(.custom("Alexandria-SemiBold", size: 22))
                 .foregroundStyle(.primary)
             
             Text(nome.isEmpty ? "Sem nome" : nome)

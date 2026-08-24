@@ -18,12 +18,7 @@ struct ReceitaUtensiliosView: View {
         ) {
             
             Text("Utensílios")
-                .font(
-                    .system(
-                        size: 22,
-                        weight: .semibold
-                    )
-                )
+                .font(.custom("Alexandria-SemiBold", size: 22))
             
             ForEach(
                 utensilios.indices,

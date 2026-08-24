@@ -19,12 +19,8 @@ struct ReceitaCategoriaView: View {
                 .frame(width: 28)
             
             Text("Categoria")
-                .font(
-                    .system(
-                        size: 18,
-                        weight: .semibold
-                    )
-                )
+                .font(.custom("Alexandria-Medium", size: 17))
+
             
             Spacer()
             

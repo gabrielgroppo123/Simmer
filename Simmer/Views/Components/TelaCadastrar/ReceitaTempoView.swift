@@ -30,7 +30,7 @@ struct ReceitaTempoView: View {
                         .foregroundStyle(.primary)
                     
                     Text("Tempo de preparo")
-                        .font(.system(size: 18, weight: .semibold))
+                        .font(.custom("Alexandria-Medium", size: 17))
                         .foregroundStyle(.primary)
                     
                     Spacer()

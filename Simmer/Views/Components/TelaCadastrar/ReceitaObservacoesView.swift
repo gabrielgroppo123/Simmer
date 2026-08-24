@@ -20,15 +20,11 @@ struct ReceitaObservacoesView: View {
             HStack {
                 VStack (alignment: .leading){
                     Text("Observações")
-                        .font(
-                            .system(
-                                size: 22,
-                                weight: .semibold
-                            )
-                        )
-                        .padding(.bottom, 20)
+                        .font(.custom("Alexandria-SemiBold", size: 22))
+                        .padding(.bottom, 12)
                     
                     Text("Sugestão: descreva não só sabores, mas sentimentos, expectativas, dificuldades no seu processo com a receita.")
+                        .font(.custom("Alexandria-Light", size: 17))
                 }
                 Spacer()
                 
