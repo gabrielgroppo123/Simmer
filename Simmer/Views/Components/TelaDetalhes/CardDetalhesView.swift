@@ -28,7 +28,7 @@ struct CardDetalhesView<Content: View>: View {
             .padding(.vertical, paddingVertical)
             .background(
                 RoundedRectangle(cornerRadius: 16)
-                    .fill(Color("CardObservacoes")) // Tom de laranja super suave e translúcido
+                    .fill(Color("CardObservacoes")) 
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 16)

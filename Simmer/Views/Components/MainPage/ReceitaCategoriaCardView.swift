@@ -5,105 +5,6 @@
 //  Created by Rebeca Emanuela Calmon de Andrade Alves on 19/08/26.
 //
 
-
-//import SwiftUI
-//
-//struct ReceitaCategoriaCardView: View {
-//
-//    let categoria: Categoria
-//
-//    var body: some View {
-//        VStack(alignment: .leading) {
-//            Text(nomeCategoria)
-//                .font(.system(size: 14, weight: .medium))
-//                .foregroundStyle(.white)
-//                .multilineTextAlignment(.leading)
-//                .lineLimit(2)
-//                .fixedSize(horizontal: false, vertical: false)
-//
-//            HStack {
-//                Spacer()
-//
-//                // Trata custom asset vs. SF Symbols
-//                if categoria == .aves {
-//                    Image(iconeCategoria)
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 28, height: 28)
-//                        .foregroundStyle(.white.opacity(0.75))
-//                } else {
-//                    Image(systemName: iconeCategoria)
-//                        .font(.system(size: 28))
-//                        .foregroundStyle(.white.opacity(0.75))
-//                }
-//            }
-//        }
-//        .padding(10)
-//        .frame(width: 128, height: 90)
-//        .background(corCategoria)
-//        .clipShape(RoundedRectangle(cornerRadius: 15))
-//    }
-//
-//    private var nomeCategoria: String {
-//        switch categoria {
-//        case .aves: return "Aves"
-//        case .bebidas: return "Bebidas"
-//        case .carnes: return "Carnes\nvermelhas"
-//        case .sobremesas: return "Doces"
-//        case .arrozGraos: return "Grãos &\nLeguminosas"
-//        case .massas: return "Massas"
-//        case .paesSalgados: return "Pães &\nsalgados"
-//        case .peixesFrutosDoMar: return "Peixes e frutos\ndo mar"
-//        case .saladasVegetais: return "Legumes &\nvegetais"
-//        case .sopasCaldos: return "Sopas"
-//        case .outro: return "Outros"
-//        }
-//    }
-//
-//    private var iconeCategoria: String {
-//        switch categoria {
-//        case .aves: return "avesicone"
-//        case .bebidas: return "cup.and.saucer.fill"
-//        case .carnes: return "takeoutbag.and.cup.and.straw.fill"
-//        case .sobremesas: return "birthday.cake.fill"
-//        case .arrozGraos: return "leaf.fill"
-//        case .massas: return "fork.knife"
-//        case .paesSalgados: return "birthday.cake.fill"
-//        case .peixesFrutosDoMar: return "fish.fill"
-//        case .saladasVegetais: return "leaf.fill"
-//        case .sopasCaldos: return "cup.and.saucer.fill"
-//        case .outro: return "fork.knife"
-//        }
-//    }
-//
-//    private var corCategoria: Color {
-//        switch categoria {
-//        case .aves: return Color.brown
-//        case .bebidas: return Color.cyan
-//        case .carnes: return Color.red.opacity(0.55)
-//        case .sobremesas: return Color.pink.opacity(0.65)
-//        case .arrozGraos: return Color.orange
-//        case .massas: return Color.yellow
-//        case .paesSalgados: return Color.orange.opacity(0.8)
-//        case .peixesFrutosDoMar: return Color.blue.opacity(0.65)
-//        case .saladasVegetais: return Color.green.opacity(0.65)
-//        case .sopasCaldos: return Color.red.opacity(0.7)
-//        case .outro: return Color.gray
-//        }
-//    }
-//}
-//
-//// MARK: - Preview
-//#Preview {
-//    ReceitaCategoriaCardView(categoria: .sobremesas)
-//        .padding()
-//}
-
-//
-//  ReceitaCategoriaCardView.swift
-//  Simmer
-//
-
 import SwiftUI
 
 struct ReceitaCategoriaCardView: View {
@@ -113,15 +14,14 @@ struct ReceitaCategoriaCardView: View {
     var body: some View {
         VStack(alignment: .leading) {
             
-            // MARK: - Texto da Categoria Ajustado
-            
+        
             Text(nomeCategoria)
                 .font(.system(size: 14, weight: .bold))
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.leading)
                 .lineLimit(2)
-                .minimumScaleFactor(0.75) // Reduz suavemente até 75% caso não caiba
-                .frame(maxWidth: .infinity, alignment: .leading) // Ocupa toda a largura do card
+                .minimumScaleFactor(0.75)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
             
             Spacer()
@@ -153,8 +53,6 @@ struct ReceitaCategoriaCardView: View {
         )
     }
     
-    // MARK: - Gradiente de Fundo (Diagonal)
-    
     private var gradienteCategoria: LinearGradient {
         LinearGradient(
             colors: coresGradiente,
@@ -162,9 +60,6 @@ struct ReceitaCategoriaCardView: View {
             endPoint: .bottomTrailing
         )
     }
-    
-    // MARK: - Cores do Gradiente por Categoria
-    
     private var coresGradiente: [Color] {
         switch categoria {
         case .aves:
@@ -234,8 +129,6 @@ struct ReceitaCategoriaCardView: View {
             ]
         }
     }
-    
-    // MARK: - Dados de Nome e Ícone
     
     private var nomeCategoria: String {
         switch categoria {

@@ -46,22 +46,6 @@ struct EditarReceitaInformacoesView: View {
                     .tag(categoria)
             }
         }
-
-       
-
-        
-
-//        TextField(
-//            "Utensílios",
-//            text: $utensilios
-//        )
-//
-//        TextField(
-//            "Modo de preparo",
-//            text: $modoPreparo,
-//            axis: .vertical
-//        )
-//        .lineLimit(4...8)
     }
 }
 

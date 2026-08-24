@@ -10,8 +10,6 @@ import UIKit
 
 struct DetalhesReceita: View {
     
-    // MARK: - Propriedades
-    
     let receita: ReceitaModel
     private let service: ReceitaService
     private let onSaved: () -> Void
@@ -20,7 +18,6 @@ struct DetalhesReceita: View {
     @State private var receitaAtual: ReceitaModel
     @State private var mostrarAlertaExclusao = false
     
-    // Processa a String de utensílios transformando em um Array de Strings
     private var listaUtensilios: [String] {
         guard let utensilios = receitaAtual.utensilios, !utensilios.isEmpty else { return [] }
         return utensilios
@@ -29,7 +26,6 @@ struct DetalhesReceita: View {
             .filter { !$0.isEmpty }
     }
     
-    // MARK: - Inicializador
     
     init(
         receita: ReceitaModel,
@@ -45,15 +41,12 @@ struct DetalhesReceita: View {
         )
     }
     
-    // MARK: - Body
-    
     var body: some View {
         ScrollView {
             
             VStack(alignment: .leading, spacing: 24) {
                 
-                // MARK: - Foto
-                
+              
                 if let imagem = UIImage(data: receitaAtual.foto) {
                     
                     Image(uiImage: imagem)
@@ -75,8 +68,6 @@ struct DetalhesReceita: View {
                         }
                 }
                 
-                // MARK: - Informações Principais
-                
                 VStack(alignment: .leading, spacing: 16) {
                     
                     Button {
@@ -89,14 +80,11 @@ struct DetalhesReceita: View {
                     }
                     .tint(.primary)
                     
-                    // Componente de exibição visual do Nome (Não Editável)
                     ReceitaCampoNomeExibicaoView(nome: receitaAtual.nome)
-                    
-                    // Card com Meta-informações (Data de Criação, Tempo e Porções)
+                   
                     CardDetalhesView(paddingVertical: 20, paddingHorizontal: 20) {
                         VStack(alignment: .leading, spacing: 16) {
                             
-                            // 1. Data de Criação
                             HStack(spacing: 12) {
                                 Image(systemName: "calendar")
                                     .font(.title3)
@@ -109,7 +97,6 @@ struct DetalhesReceita: View {
                                 .font(.body)
                             }
                             
-                            // 2. Tempo de Preparo
                             HStack(spacing: 12) {
                                 Image(systemName: "clock")
                                     .font(.title3)
@@ -121,8 +108,7 @@ struct DetalhesReceita: View {
                                     .fontWeight(.regular)
                                 .font(.body)
                             }
-                            
-                            // 3. Porções
+                           
                             if let porcoes = receitaAtual.porcoes {
                                 HStack(spacing: 12) {
                                     Image(systemName: "person.2")
@@ -140,8 +126,6 @@ struct DetalhesReceita: View {
                     }
                 }
                 .padding(.horizontal)
-                
-                // MARK: - Ingredientes
                 
                 NavigationLink {
                     CalculadoraReceitaView(
@@ -207,8 +191,6 @@ struct DetalhesReceita: View {
                 }
                 .padding(.horizontal)
                 
-                // MARK: - Modo de Preparo
-                
                 VStack(alignment: .leading, spacing: 12) {
                     
                     Text("Modo de Fazer")
@@ -220,8 +202,6 @@ struct DetalhesReceita: View {
                     }
                 }
                 .padding(.horizontal)
-                
-                // MARK: - Utensílios
                 
                 if !listaUtensilios.isEmpty {
                     
@@ -239,14 +219,11 @@ struct DetalhesReceita: View {
                     }
                     .padding(.horizontal)
                 }
-                
-                // MARK: - Observações
 
                 VStack(alignment: .leading, spacing: 12) {
                     
                     HStack {
                         
-                        // Título → abre todas as observações
                         NavigationLink {
                             ObservacoesReceita(
                                 receita: receitaAtual,
@@ -268,7 +245,6 @@ struct DetalhesReceita: View {
                         
                         Spacer()
                         
-                        // + → abre Observações com a sheet aberta
                         NavigationLink {
                             ObservacoesReceita(
                                 receita: receitaAtual,
@@ -290,9 +266,7 @@ struct DetalhesReceita: View {
                         }
                         .accessibilityLabel("Adicionar observação")
                     }
-                    
-                    // MARK: - Último comentário
-                    
+                 
                     if let ultimoComentario = receitaAtual.comentarios.max(
                         by: { $0.data < $1.data }
                     ) {
@@ -321,19 +295,15 @@ struct DetalhesReceita: View {
         }
         .navigationTitle("Receita")
         .navigationBarTitleDisplayMode(.inline)
-        
-        // MARK: - Sincronização pós-edição
         .onAppear {
             atualizarDadosLocais()
         }
         
-        // MARK: - Toolbar
-        
+       
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 HStack(spacing: 12) {
                     
-                    // Compartilhar
                     ShareLink(
                         item: receitaAtual.nome,
                         subject: Text(receitaAtual.nome),
@@ -342,7 +312,6 @@ struct DetalhesReceita: View {
                         Image(systemName: "square.and.arrow.up")
                     }
                     
-                    // Menu de Ações (Padrão iOS)
                     Menu {
                         
                         NavigationLink {
@@ -373,8 +342,6 @@ struct DetalhesReceita: View {
             }
         }
         
-        // MARK: - Alerta Exclusão
-        
         .alert(
             "Excluir receita?",
             isPresented: $mostrarAlertaExclusao
@@ -390,9 +357,6 @@ struct DetalhesReceita: View {
             Text("Tem certeza que deseja excluir \"\(receitaAtual.nome)\"?")
         }
     }
-    
-    // MARK: - Métodos Auxiliares e Lógica
-    
     private func atualizarDadosLocais() {
         if let receitaAtualizada = try? service.buscarReceita(id: receitaAtual.id) {
             self.receitaAtual = receitaAtualizada
@@ -424,7 +388,7 @@ struct DetalhesReceita: View {
             )
             onSaved()
         } catch {
-            print("❌ Erro ao atualizar favorito: \(error)")
+            print("Erro ao atualizar favorito: \(error)")
         }
     }
     
@@ -435,7 +399,7 @@ struct DetalhesReceita: View {
             onSaved()
             dismiss()
         } catch {
-            print("❌ Erro ao excluir receita: \(error)")
+            print("Erro ao excluir receita: \(error)")
         }
     }
     
