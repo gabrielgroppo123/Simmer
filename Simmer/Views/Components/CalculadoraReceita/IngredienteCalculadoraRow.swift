@@ -52,8 +52,7 @@ struct IngredienteCalculadoRowView: View {
         }
         
         return String(
-            format: "%.2f",
-            quantidade
+            format: "%.2f", quantidade
         )
         .replacingOccurrences(
             of: ".",

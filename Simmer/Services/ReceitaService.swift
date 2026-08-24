@@ -91,8 +91,6 @@ final class ReceitaService {
     func apagarReceitasComCategoriaAntiga() throws {
         try repository.apagarReceitasComCategoriaAntiga()
     }
-    
-    // MARK: - Comentários
 
     func criarComentario(
         descricao: String,

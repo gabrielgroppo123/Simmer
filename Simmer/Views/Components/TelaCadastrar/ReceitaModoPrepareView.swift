@@ -25,8 +25,7 @@ struct ReceitaModoPreparoView: View {
                     .font(
                         .system(
                             size: 22,
-                            weight: .semibold
-                        )
+                            weight: .semibold)
                     )
                 
                 Text("*")

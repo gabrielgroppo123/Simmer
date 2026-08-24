@@ -22,7 +22,6 @@ struct ReceitaIngredienteRowView: View {
             spacing: 12
         ) {
             
-            // MARK: - Nome
             
             TextField(
                 "Ex: Leite",
@@ -31,8 +30,7 @@ struct ReceitaIngredienteRowView: View {
             .font(.system(size: 16))
             .frame(maxWidth: 120)
             
-            // MARK: - Quantidade
-            
+        
             TextField(
                 "250",
                 text: $ingrediente.quantidade
@@ -42,7 +40,6 @@ struct ReceitaIngredienteRowView: View {
             .multilineTextAlignment(.center)
             .frame(width: 48)
             
-            // MARK: - Unidade
             
             Picker(
                 "",
