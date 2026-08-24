@@ -116,7 +116,7 @@ struct ContentView: View {
             guard let receitaAtualizada = try service.buscarReceita(
                 id: receita.id
             ) else {
-                print("❌ Receita não encontrada após UPDATE.")
+                print("Receita não encontrada após UPDATE.")
                 return
             }
             
