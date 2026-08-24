@@ -118,40 +118,6 @@ final class CoreDataReceitaRepository: ReceitaRepository {
         return converterReceita(receita)
     }
     
-
-    //REBECA- FOI ESSA FUNC QUE ESTAVA ANTE
-//    func atualizarReceita(
-//        _ receita: ReceitaModel,
-//        nome: String,
-//        categoria: Categoria,
-//        porcoes: Int16?,
-//        duracao: Int64,
-//        utensilios: String?,
-//        modoPreparo: String
-//    ) throws {
-//        
-//        let request: NSFetchRequest<Receita> = Receita.fetchRequest()
-//        
-//        request.predicate = NSPredicate(
-//            format: "id == %@",
-//            receita.id as CVarArg
-//        )
-//        
-//        request.fetchLimit = 1
-//        
-//        guard let receitaCoreData = try context.fetch(request).first else {
-//            return
-//        }
-//        
-//        receitaCoreData.nome = nome
-//        receitaCoreData.categoria = categoria.rawValue
-//        receitaCoreData.porcoes = porcoes ?? 1
-//        receitaCoreData.duracao = duracao
-//        receitaCoreData.utensilios = utensilios
-//        receitaCoreData.modoPreparo = modoPreparo
-//        
-//        try context.save()
-//    }
     
     func atualizarReceita(
         _ receita: ReceitaModel,
@@ -175,7 +141,6 @@ final class CoreDataReceitaRepository: ReceitaRepository {
             return
         }
         
-        // Atualiza os dados básicos (incluindo a foto)
         receitaCoreData.nome = nome
         receitaCoreData.categoria = categoria.rawValue
         receitaCoreData.foto = foto
@@ -184,14 +149,12 @@ final class CoreDataReceitaRepository: ReceitaRepository {
         receitaCoreData.utensilios = utensilios
         receitaCoreData.modoPreparo = modoPreparo
         
-        // Apaga os ingredientes antigos para não duplicar
         if let ingredientesAntigos = receitaCoreData.ingredientes as? Set<Ingrediente> {
             for ingrediente in ingredientesAntigos {
                 context.delete(ingrediente)
             }
         }
         
-        // Adiciona os novos ingredientes
         for dadosIngrediente in ingredientes {
             let ingrediente = Ingrediente(context: context)
             ingrediente.id = UUID()
@@ -260,9 +223,7 @@ final class CoreDataReceitaRepository: ReceitaRepository {
             guard let categoriaConvertida = Categoria(
                 rawValue: receita.categoria
             ) else {
-                fatalError(
-                    "Categoria inválida: \(receita.categoria)"
-                )
+                fatalError("Categoria inválida: \(receita.categoria)")
             }
             
             categoria = categoriaConvertida
@@ -271,9 +232,7 @@ final class CoreDataReceitaRepository: ReceitaRepository {
         let ingredientes = (receita.ingredientes as? Set<Ingrediente> ?? [])
             .compactMap { ingrediente -> IngredienteModel? in
                 
-                guard let unidade = UnidadeMedida(
-                    rawValue: ingrediente.unidade
-                ) else {
+                guard let unidade = UnidadeMedida(rawValue: ingrediente.unidade) else {
                     return nil
                 }
                 
@@ -315,10 +274,7 @@ final class CoreDataReceitaRepository: ReceitaRepository {
         
         let request: NSFetchRequest<Receita> = Receita.fetchRequest()
         
-        request.predicate = NSPredicate(
-            format: "categoria == %@",
-            "Sobremesas"
-        )
+        request.predicate = NSPredicate(format: "categoria == %@","Sobremesas")
         
         let receitasAntigas = try context.fetch(request)
         
@@ -328,44 +284,28 @@ final class CoreDataReceitaRepository: ReceitaRepository {
         
         try context.save()
         
-        print(
-            "🗑️ \(receitasAntigas.count) receita(s) antiga(s) removida(s)."
-        )
+        print(" \(receitasAntigas.count) receita(s) antiga(s) removida(s).")
     }
     
-    // MARK: - Comentários
 
     func criarComentario(
         descricao: String,
         receita: ReceitaModel
     ) throws -> ComentarioModel {
         
-        let request: NSFetchRequest<Receita> =
-            Receita.fetchRequest()
+        let request: NSFetchRequest<Receita> = Receita.fetchRequest()
         
-        request.predicate = NSPredicate(
-            format: "id == %@",
-            receita.id as CVarArg
-        )
+        request.predicate = NSPredicate(format: "id == %@",receita.id as CVarArg)
         
         request.fetchLimit = 1
         
         guard let receitaCoreData =
                 try context.fetch(request).first else {
             
-            throw NSError(
-                domain: "Simmer",
-                code: 404,
-                userInfo: [
-                    NSLocalizedDescriptionKey:
-                        "A receita não foi encontrada no Core Data."
-                ]
-            )
+            throw NSError(domain: "Simmer",code: 404,userInfo: [NSLocalizedDescriptionKey:"A receita não foi encontrada no Core Data."])
         }
         
-        let comentario = Comentario(
-            context: context
-        )
+        let comentario = Comentario(context: context)
         
         comentario.id = UUID()
         comentario.descricao = descricao
@@ -378,7 +318,7 @@ final class CoreDataReceitaRepository: ReceitaRepository {
             
             let nsError = error as NSError
             
-            print("❌ ERRO NO CONTEXT.SAVE()")
+            print("ERRO NO CONTEXT.SAVE()")
             print("Domain: \(nsError.domain)")
             print("Code: \(nsError.code)")
             print("Description: \(nsError.localizedDescription)")
@@ -390,28 +330,16 @@ final class CoreDataReceitaRepository: ReceitaRepository {
         return ComentarioModel(
             id: comentario.id,
             descricao: comentario.descricao,
-            data: comentario.data
-        )
+            data: comentario.data)
     }
     
-    func buscarComentarios(
-        receita: ReceitaModel
-    ) throws -> [ComentarioModel] {
+    func buscarComentarios(receita: ReceitaModel) throws -> [ComentarioModel] {
         
-        let request: NSFetchRequest<Comentario> =
-            Comentario.fetchRequest()
+        let request: NSFetchRequest<Comentario> = Comentario.fetchRequest()
         
-        request.predicate = NSPredicate(
-            format: "receita.id == %@",
-            receita.id as CVarArg
-        )
+        request.predicate = NSPredicate(format: "receita.id == %@",receita.id as CVarArg)
         
-        request.sortDescriptors = [
-            NSSortDescriptor(
-                keyPath: \Comentario.data,
-                ascending: false
-            )
-        ]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \Comentario.data,ascending: false)]
         
         let comentarios = try context.fetch(request)
 
@@ -420,8 +348,7 @@ final class CoreDataReceitaRepository: ReceitaRepository {
             ComentarioModel(
                 id: comentario.id,
                 descricao: comentario.descricao,
-                data: comentario.data
-            )
+                data: comentario.data)
         }
     }
 }

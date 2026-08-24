@@ -13,30 +13,41 @@ struct ReceitaUtensilioRowView: View {
     
     let remover: () -> Void
     
+    @State private var mostrandoConfirmacao = false
+    
     var body: some View {
         HStack(spacing: 8) {
             
-            TextField(
-                "Adicionar utensílio",
-                text: $utensilio
-            )
+            TextField("Adicionar utensílio",text: $utensilio)
             .font(.system(size: 17))
             
             Button {
-                remover()
+                mostrandoConfirmacao = true
             } label: {
-                Image(
-                    systemName: "minus.circle"
-                )
-                .foregroundStyle(.secondary)
+                
+                Image(systemName: "trash")
+                .font(.system(size: 16))
+                .foregroundStyle(.red)
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(
-                "Remover utensílio"
-            )
+            .accessibilityLabel("Excluir utensílio")
         }
-        
-        Divider()
+        .padding(.vertical, 2)
+        .alert("Excluir utensílio?",isPresented: $mostrandoConfirmacao) {
+            
+            Button("Cancelar",role: .cancel) {
+                mostrandoConfirmacao = false
+            }
+            
+            Button("Excluir",role: .destructive) {
+                remover()
+            }
+            
+        } message: {
+            
+            Text("Deseja realmente excluir este utensílio?")
+        }
+    Divider()
     }
 }
 
