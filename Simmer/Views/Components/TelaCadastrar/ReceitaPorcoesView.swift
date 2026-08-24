@@ -19,12 +19,8 @@ struct ReceitaPorcoesView: View {
                 .frame(width: 28)
             
             Text("Porções")
-                .font(
-                    .system(
-                        size: 18,
-                        weight: .semibold
-                    )
-                )
+                .font(.custom("Alexandria-Medium", size: 17))
+                .foregroundColor(.primary)
             
             Spacer()
             

@@ -20,15 +20,13 @@ struct ReceitaObservacoesView: View {
             HStack {
                 VStack (alignment: .leading){
                     Text("Observações")
-                        .font(
-                            .system(
-                                size: 22,
-                                weight: .semibold
-                            )
-                        )
-                        .padding(.bottom, 20)
+                        .font(.custom("Alexandria-SemiBold", size: 22))
+                        .foregroundColor(.primary)
+                        .padding(.bottom, 12)
                     
                     Text("Sugestão: descreva não só sabores, mas sentimentos, expectativas, dificuldades no seu processo com a receita.")
+                        .font(.custom("Alexandria-Light", size: 17))
+                        .foregroundColor(.primary)
                 }
                 Spacer()
                 
@@ -40,6 +38,7 @@ struct ReceitaObservacoesView: View {
                 axis: .vertical
             )
             .font(.system(size: 15))
+            .foregroundColor(.secondary)
             .lineLimit(3...7)
         }
     }

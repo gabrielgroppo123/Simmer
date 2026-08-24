@@ -31,7 +31,9 @@ struct ObservacoesCabecalhoView: View {
             Spacer()
             
             Text("Observações")
-                .font(.system(size: 17,weight: .semibold))
+                .font(.custom("Alexandria-SemiBold", size: 16))
+                .foregroundColor(.primary)
+
             
             Spacer()
             
@@ -41,7 +43,6 @@ struct ObservacoesCabecalhoView: View {
                 Image(systemName: "plus")
                     .foregroundStyle(.black)
                     .font(.system(size: 18,weight: .medium))
-                   
                     .frame(width: 40,height: 40)
                     .background(Color.adicionarReceita)
                     .clipShape(Circle())

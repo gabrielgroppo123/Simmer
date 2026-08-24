@@ -52,7 +52,7 @@ struct ReceitaCardView: View {
                         Text("Favorito")
                     }
                 }
-                .font(.system(size: 11))
+                .font(.custom("Alexandria-Regular", size: 11))
                 .foregroundStyle(.secondary)
             }
             .frame(

@@ -20,7 +20,9 @@ struct ReceitaIngredientesView: View {
             // MARK: - Cabeçalho
             HStack(alignment: .firstTextBaseline) {
                 Text("Ingredientes")
-                    .font(.system(size: 22, weight: .bold))
+                    .font(.custom("Alexandria-Bold", size: 22))
+                    .foregroundColor(.primary)
+
                 
                 Text("*")
                     .foregroundStyle(.red)
@@ -40,7 +42,8 @@ struct ReceitaIngredientesView: View {
                 // Coluna 1: Nome (Ocupa o espaço restante)
                 VStack(alignment: .leading, spacing: 6) {
                     Text("Nome")
-                        .font(.system(size: 15, weight: .semibold))
+                        .font(.custom("Alexandria-Medium", size: 17))
+
                     Divider()
                 }
                 .frame(maxWidth: 120, alignment: .leading)
@@ -48,15 +51,16 @@ struct ReceitaIngredientesView: View {
                 // Coluna 2: Qtd (Largura fixa 48, centralizado)
                 VStack(alignment: .center, spacing: 6) {
                     Text("Qtd")
-                        .font(.system(size: 15, weight: .semibold))
+                        .font(.custom("Alexandria-Medium", size: 17))
                     Divider()
                 }
                 .frame(width: 48)
                 
                 VStack(alignment: .trailing, spacing: 6) {
                     Text("Unidade")
-                        .font(.system(size: 15, weight: .semibold))
+                        .font(.custom("Alexandria-Medium", size: 17))
                         .padding(.trailing, 20)
+                    
                     Divider()
                 }
                 .frame(width: 150, alignment: .trailing)

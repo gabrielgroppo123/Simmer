@@ -47,12 +47,9 @@ struct MainView: View {
                         HStack(spacing: 12) {
                             
                             Text("Suas Receitas")
-                                .font(
-                                    .system(
-                                        size: 22,
-                                        weight: .semibold
-                                    )
-                                )
+                                .font(.custom("Alexandria-SemiBold", size: 22))
+                                .foregroundColor(.primary)
+
                             
                             Spacer()
                             
