@@ -33,7 +33,7 @@ extension Receita {
 
 }
 
-// MARK: Generated accessors for ingredientes
+
 extension Receita {
 
     @objc(addIngredientesObject:)
@@ -50,7 +50,6 @@ extension Receita {
 
 }
 
-// MARK: Generated accessors for comentarios
 extension Receita {
 
     @objc(addComentariosObject:)

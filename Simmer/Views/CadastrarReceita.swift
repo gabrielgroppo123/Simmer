@@ -143,8 +143,6 @@ struct CadastrarReceita: View {
     }
 }
 
-// MARK: - Ações
-
 private extension CadastrarReceita {
     
     func adicionarIngrediente() {
@@ -218,13 +216,11 @@ private extension CadastrarReceita {
         } catch {
             
             print(
-                "❌ Erro ao carregar foto: \(error)"
+                "Erro ao carregar foto: \(error)"
             )
         }
     }
 }
-
-// MARK: - Persistência
 
 private extension CadastrarReceita {
     
@@ -250,7 +246,6 @@ private extension CadastrarReceita {
             return
         }
         
-        // Porções são opcionais.
         let porcoesInt: Int16?
         
         if porcoes.trimmingCharacters(
@@ -294,8 +289,6 @@ private extension CadastrarReceita {
             
             return
         }
-        
-        // Ingredientes
         
         guard !ingredientes.isEmpty else {
             
@@ -346,8 +339,6 @@ private extension CadastrarReceita {
             return
         }
         
-        // Utensílios
-        
         let utensiliosString = utensilios
             .map {
                 $0.trimmingCharacters(
@@ -391,10 +382,10 @@ private extension CadastrarReceita {
             
             if !textoObservacao.isEmpty {
                 
-                print("📝 Tentando salvar observação:")
+                print("Tentando salvar observação:")
                 print(textoObservacao)
                 
-                print("🍳 Receita criada:")
+                print("Receita criada:")
                 print(receitaCriada.id)
                 
                 let comentario = try service.criarComentario(
@@ -402,11 +393,11 @@ private extension CadastrarReceita {
                     receita: receitaCriada
                 )
                 
-                print("✅ Comentário criado:")
+                print("Comentário criado:")
                 print(comentario.id)
             }
             
-            print("✅ Receita cadastrada com sucesso!")
+            print("Receita cadastrada com sucesso!")
             
             onSaved()
             dismiss()
@@ -418,7 +409,7 @@ private extension CadastrarReceita {
             )
             
             print(
-                "❌ Erro ao cadastrar receita: \(error)"
+                "Erro ao cadastrar receita: \(error)"
             )
         }
     }
@@ -485,15 +476,11 @@ private extension CadastrarReceita {
     }
 }
 
-// MARK: - Erros
-
 private enum ErroCadastro: Error {
     
     case ingredienteSemNome
     case quantidadeInvalida
 }
-
-// MARK: - Preview
 
 #Preview {
     NavigationStack {

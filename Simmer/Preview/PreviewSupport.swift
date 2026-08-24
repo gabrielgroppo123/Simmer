@@ -21,8 +21,7 @@ enum PreviewSupport {
     
     static func criarReceitaPreview() -> ReceitaModel {
         
-        let context =
-            persistenceController.container.viewContext
+        let context = persistenceController.container.viewContext
         
         let receita = Receita(context: context)
         
@@ -52,25 +51,20 @@ enum PreviewSupport {
                         id: receita.id
                     ) else {
                 
-                fatalError(
-                    "Receita de Preview não foi encontrada."
-                )
+                fatalError("Receita de Preview não foi encontrada.")
             }
             
             return receitaModel
             
         } catch {
             
-            fatalError(
-                "Erro ao buscar receita de Preview: \(error)"
-            )
+            fatalError("Erro ao buscar receita de Preview: \(error)")
         }
     }
     
     static func criarDadosObservacoesPreview() -> ReceitaModel {
         
-        let context =
-            persistenceController.container.viewContext
+        let context = persistenceController.container.viewContext
         
         let receita = Receita(context: context)
         
@@ -88,45 +82,32 @@ enum PreviewSupport {
         let comentario1 = Comentario(context: context)
         
         comentario1.id = UUID()
-        comentario1.descricao =
-            "Fica excelente adicionando molho pesto de manjericão fresco."
+        comentario1.descricao = "Fica excelente adicionando molho pesto de manjericão fresco."
         comentario1.data = Date()
         comentario1.receita = receita
         
         let comentario2 = Comentario(context: context)
         
         comentario2.id = UUID()
-        comentario2.descricao =
-            "Também funciona muito bem substituindo as nozes por castanhas."
-        comentario2.data = Calendar.current.date(
-            byAdding: .month,
-            value: -2,
-            to: Date()
-        ) ?? Date()
+        comentario2.descricao = "Também funciona muito bem substituindo as nozes por castanhas."
+        comentario2.data = Calendar.current.date(byAdding: .month,value: -2,to: Date()) ?? Date()
         comentario2.receita = receita
         
         do {
             try context.save()
         } catch {
-            fatalError(
-                "Erro ao criar dados do Preview: \(error)"
-            )
+            fatalError("Erro ao criar dados do Preview: \(error)")
         }
         
         do {
-            guard let receitaModel =
-                    try receitaService.buscarReceita(
-                        id: receita.id
-                    ) else {
+            guard let receitaModel = try receitaService.buscarReceita(id: receita.id) else {
                 fatalError("Receita do Preview não encontrada.")
             }
             
             return receitaModel
             
         } catch {
-            fatalError(
-                "Erro ao buscar receita do Preview: \(error)"
-            )
+            fatalError("Erro ao buscar receita do Preview: \(error)")
         }
     }
 }

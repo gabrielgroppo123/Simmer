@@ -57,8 +57,7 @@ final class ReceitaService {
         duracao: Int64,
         utensilios: String?,
         modoPreparo: String,
-        ingredientes: [NovoIngrediente]
-    ) throws {
+        ingredientes: [NovoIngrediente]) throws {
         
         try repository.atualizarReceita(
             receita,
@@ -69,19 +68,14 @@ final class ReceitaService {
             duracao: duracao,
             utensilios: utensilios,
             modoPreparo: modoPreparo,
-            ingredientes: ingredientes
-        )
+            ingredientes: ingredientes)
     }
     
     func atualizarFavorito(
         _ receita: ReceitaModel,
-        favorito: Bool
-    ) throws {
+        favorito: Bool) throws {
         
-        try repository.atualizarFavorito(
-            receita,
-            favorito: favorito
-        )
+        try repository.atualizarFavorito(receita,favorito: favorito)
     }
     
     func deletarReceita(_ receita: ReceitaModel) throws {
@@ -91,24 +85,15 @@ final class ReceitaService {
     func apagarReceitasComCategoriaAntiga() throws {
         try repository.apagarReceitasComCategoriaAntiga()
     }
+    
 
-    func criarComentario(
-        descricao: String,
-        receita: ReceitaModel
-    ) throws -> ComentarioModel {
+    func criarComentario(descricao: String, receita: ReceitaModel) throws -> ComentarioModel {
         
-        try repository.criarComentario(
-            descricao: descricao,
-            receita: receita
-        )
+        try repository.criarComentario(descricao: descricao,receita: receita)
     }
 
-    func buscarComentarios(
-        receita: ReceitaModel
-    ) throws -> [ComentarioModel] {
+    func buscarComentarios(receita: ReceitaModel) throws -> [ComentarioModel] {
         
-        try repository.buscarComentarios(
-            receita: receita
-        )
+        try repository.buscarComentarios(receita: receita)
     }
 }
