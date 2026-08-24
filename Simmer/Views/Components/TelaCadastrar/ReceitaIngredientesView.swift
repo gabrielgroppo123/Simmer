@@ -53,7 +53,6 @@ struct ReceitaIngredientesView: View {
                 }
                 .frame(width: 48)
                 
-                // Coluna 3: Unidade (Largura fixa 110, alinhado à direita para coincidir com o Picker)
                 VStack(alignment: .trailing, spacing: 6) {
                     Text("Unidade")
                         .font(.system(size: 15, weight: .semibold))
@@ -64,7 +63,6 @@ struct ReceitaIngredientesView: View {
                 
             }
             
-            // MARK: - Lista de Ingredientes
             ForEach(
                 $ingredientes
             ) { $ingrediente in
@@ -79,7 +77,6 @@ struct ReceitaIngredientesView: View {
                 }
             }
             
-            // MARK: - Botão Adicionar
             Button {
                 adicionarIngrediente()
             } label: {

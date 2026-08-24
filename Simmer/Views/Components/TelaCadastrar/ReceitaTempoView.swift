@@ -18,7 +18,6 @@ struct ReceitaTempoView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             
-            // MARK: - Linha Principal (Clicável)
             Button {
                 withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
                     isPickerExpanded.toggle()
@@ -51,7 +50,6 @@ struct ReceitaTempoView: View {
             }
             .buttonStyle(.plain)
             
-            // MARK: - Menu Suspenso Sobreposto (Overlay)
             .overlay(alignment: .topTrailing) {
                 if isPickerExpanded {
                     HStack(spacing: 0) {
@@ -92,7 +90,6 @@ struct ReceitaTempoView: View {
         }
     }
     
-    // MARK: - Carrega horas e minutos se já existir texto na variável duracao
     private func carregarValoresIniciais() {
         guard !duracao.isEmpty else { return }
         
@@ -127,15 +124,12 @@ struct ReceitaTempoView: View {
     }
 }
 
-// MARK: - Previews
 
 #Preview("Menu Suspenso Sobreposto") {
     @Previewable @State var duracao = "45 min"
     
     VStack(spacing: 24) {
         ReceitaTempoView(duracao: $duracao)
-        
-        // Exemplo de elemento abaixo para testar a sobreposição
         Text("Conteúdo abaixo que será sobreposto")
             .font(.subheadline)
             .foregroundStyle(.secondary)

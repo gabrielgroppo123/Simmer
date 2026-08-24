@@ -24,22 +24,17 @@ struct MainView: View {
     init(service: ReceitaService) {
         self.service = service
     }
-    
     @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         NavigationStack {
-            
             ZStack(alignment: .bottom) {
-                
                 ScrollView {
                     
                     VStack(
                         alignment: .leading,
                         spacing: 0
                     ) {
-                        
-                        // MARK: - Categorias
                         
                         ReceitaCategoriasView(
                             categorias: Categoria.allCases
@@ -48,7 +43,6 @@ struct MainView: View {
                         }
                         .padding(.top, 28)
                         
-                        // MARK: - Suas receitas
                         
                         HStack(spacing: 12) {
                             
@@ -62,7 +56,6 @@ struct MainView: View {
                             
                             Spacer()
                             
-                            // Favoritos
                             Button {
                                 somenteFavoritos.toggle()
                             } label: {
@@ -88,13 +81,11 @@ struct MainView: View {
                                 : "Mostrar somente favoritas"
                             )
                             
-                            // Ordenação
                             ReceitaOrdenacaoView(
                                 ordenacao: $ordenacao,
                                 direcao: $direcao
                             )
                             
-                            // Nova receita
                             NavigationLink {
                                 CadastrarReceita(
                                     service: service,
@@ -120,7 +111,6 @@ struct MainView: View {
                         }
                         .padding(.top, 52)
                         
-                        // MARK: - Lista de receitas
                         
                         LazyVStack(
                             spacing: 14
@@ -170,13 +160,13 @@ struct MainView: View {
                         }
                         .padding(.top, 18)
                         
-                        // Espaço para a barra de pesquisa
                         
                         Color.clear
                             .frame(height: 70)
                     }
                     .padding(.horizontal, 16)
                 }
+                .fecharTecladoAoTocarFora()
                 .navigationDestination(
                     item: $categoriaSelecionada
                 ) { categoria in
@@ -188,8 +178,6 @@ struct MainView: View {
                         }
                     )
                 }
-                
-                // MARK: - Barra de pesquisa
                 
                 ReceitaBuscaView(
                     textoBusca: $textoBusca,
@@ -273,7 +261,6 @@ struct MainView: View {
         return resultado
     }
     
-    // MARK: - Carregar receitas
     private func carregarReceitas() {
         
         do {
@@ -281,11 +268,11 @@ struct MainView: View {
                 texto: textoBusca
             )
             
-            print("🔎 Receitas encontradas: \(resultado.count)")
+            print("Receitas encontradas: \(resultado.count)")
             
             for receita in resultado {
                 print(
-                    "🍰 \(receita.nome) | Categoria: \(receita.categoria.rawValue)"
+                    "\(receita.nome) | Categoria: \(receita.categoria.rawValue)"
                 )
             }
             
@@ -293,13 +280,11 @@ struct MainView: View {
             
         } catch {
             print(
-                "❌ Erro ao buscar receitas: \(error)"
+                "Erro ao buscar receitas: \(error)"
             )
         }
     }
-    
-   //oi
-    
+ 
     private func iniciarBuscaPorVoz() {
         
         if speechRecognizer.estaOuvindo {
@@ -314,7 +299,7 @@ struct MainView: View {
             
             guard permitido else {
                 print(
-                    "❌ Permissão para microfone ou reconhecimento negada."
+                    "Permissão para microfone ou reconhecimento negada."
                 )
                 return
             }

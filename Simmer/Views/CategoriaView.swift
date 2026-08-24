@@ -43,7 +43,6 @@ struct CategoriaView: View {
                     spacing: 0
                 ) {
                     
-                    // MARK: - Cabeçalho
                     
                     HStack(spacing: 12) {
                         
@@ -56,8 +55,6 @@ struct CategoriaView: View {
                             )
                         
                         Spacer()
-                        
-                        // Favoritos
                         Button {
                             somenteFavoritos.toggle()
                         } label: {
@@ -83,13 +80,12 @@ struct CategoriaView: View {
                             : "Mostrar somente favoritas"
                         )
                         
-                        // Ordenação
+                    
                         ReceitaOrdenacaoView(
                             ordenacao: $ordenacao,
                             direcao: $direcao
                         )
                         
-                        // Adicionar receita
                         NavigationLink {
                             CadastrarReceita(
                                 service: service,
@@ -113,7 +109,6 @@ struct CategoriaView: View {
                     }
                     .padding(.top, 24)
                     
-                    // MARK: - Receitas
                     
                     if receitasOrdenadas.isEmpty {
                         
@@ -160,8 +155,7 @@ struct CategoriaView: View {
                 }
                 .padding(.horizontal, 16)
             }
-            
-            // MARK: - Barra de pesquisa
+            .fecharTecladoAoTocarFora()
             
             ReceitaBuscaView(
                 textoBusca: $textoBusca,
@@ -196,8 +190,6 @@ struct CategoriaView: View {
             aplicarFiltros()
         }
     }
-    
-    // MARK: - Nome da categoria
     
     private var nomeCategoria: String {
         
@@ -238,7 +230,6 @@ struct CategoriaView: View {
         }
     }
     
-    // MARK: - Receitas ordenadas
     
     private var receitasOrdenadas: [ReceitaModel] {
         
@@ -287,7 +278,6 @@ struct CategoriaView: View {
         return resultado
     }
     
-    // MARK: - Carregar receitas
     
     private func carregarReceitas() {
         
@@ -306,12 +296,11 @@ struct CategoriaView: View {
         } catch {
             
             print(
-                "❌ Erro ao carregar receitas da categoria: \(error)"
+                "Erro ao carregar receitas da categoria: \(error)"
             )
         }
     }
     
-    // MARK: - Filtros
     
     private func aplicarFiltros() {
         
@@ -337,7 +326,7 @@ struct CategoriaView: View {
         } catch {
             
             print(
-                "❌ Erro ao aplicar filtros: \(error)"
+                "Erro ao aplicar filtros: \(error)"
             )
         }
     }

@@ -9,14 +9,6 @@ import CoreData
 
 final class CoreDataReceitaRepository: ReceitaRepository {
     
-    //REBECA: COMENTEI PQ ESSA FUNC JA TINHA LA EMBAIXO E ESTAVA VAZIA
-//    func atualizarReceita(_ receita: ReceitaModel, nome: String, categoria: Categoria, foto: Data, porcoes: Int16?, duracao: Int64, utensilios: String?, modoPreparo: String, ingredientes: [NovoIngrediente]) throws {
-//        
-//    }
-    
-    
-    
-    
     private let context: NSManagedObjectContext
     
     init(context: NSManagedObjectContext) {
@@ -117,42 +109,7 @@ final class CoreDataReceitaRepository: ReceitaRepository {
         
         return converterReceita(receita)
     }
-    
-
-    //REBECA- FOI ESSA FUNC QUE ESTAVA ANTE
-//    func atualizarReceita(
-//        _ receita: ReceitaModel,
-//        nome: String,
-//        categoria: Categoria,
-//        porcoes: Int16?,
-//        duracao: Int64,
-//        utensilios: String?,
-//        modoPreparo: String
-//    ) throws {
-//        
-//        let request: NSFetchRequest<Receita> = Receita.fetchRequest()
-//        
-//        request.predicate = NSPredicate(
-//            format: "id == %@",
-//            receita.id as CVarArg
-//        )
-//        
-//        request.fetchLimit = 1
-//        
-//        guard let receitaCoreData = try context.fetch(request).first else {
-//            return
-//        }
-//        
-//        receitaCoreData.nome = nome
-//        receitaCoreData.categoria = categoria.rawValue
-//        receitaCoreData.porcoes = porcoes ?? 1
-//        receitaCoreData.duracao = duracao
-//        receitaCoreData.utensilios = utensilios
-//        receitaCoreData.modoPreparo = modoPreparo
-//        
-//        try context.save()
-//    }
-    
+        
     func atualizarReceita(
         _ receita: ReceitaModel,
         nome: String,
@@ -174,9 +131,7 @@ final class CoreDataReceitaRepository: ReceitaRepository {
         guard let receitaCoreData = try context.fetch(request).first else {
             return
         }
-        
-        // Atualiza os dados básicos (incluindo a foto)
-        receitaCoreData.nome = nome
+                receitaCoreData.nome = nome
         receitaCoreData.categoria = categoria.rawValue
         receitaCoreData.foto = foto
         receitaCoreData.porcoes = porcoes ?? 1
@@ -184,14 +139,12 @@ final class CoreDataReceitaRepository: ReceitaRepository {
         receitaCoreData.utensilios = utensilios
         receitaCoreData.modoPreparo = modoPreparo
         
-        // Apaga os ingredientes antigos para não duplicar
         if let ingredientesAntigos = receitaCoreData.ingredientes as? Set<Ingrediente> {
             for ingrediente in ingredientesAntigos {
                 context.delete(ingrediente)
             }
         }
         
-        // Adiciona os novos ingredientes
         for dadosIngrediente in ingredientes {
             let ingrediente = Ingrediente(context: context)
             ingrediente.id = UUID()

@@ -23,9 +23,7 @@ struct ObservacoesReceita: View {
     
     @State private var mostrandoErro = false
     @State private var mensagemErro = ""
-    
-    // MARK: - Inicialização
-    
+
     init(
             receita: ReceitaModel,
             service: ReceitaService,
@@ -36,8 +34,7 @@ struct ObservacoesReceita: View {
             self.abrirNovaObservacao = abrirNovaObservacao
         }
     
-    // MARK: - Observações filtradas
-    
+  
     private var observacoesFiltradas: [ComentarioModel] {
         
         if pesquisa.trimmingCharacters(
@@ -53,7 +50,6 @@ struct ObservacoesReceita: View {
         }
     }
     
-    // MARK: - Body
     
     var body: some View {
         
@@ -61,8 +57,7 @@ struct ObservacoesReceita: View {
             
             VStack(spacing: 0) {
                 
-                // MARK: Cabeçalho
-                
+              
                 ObservacoesCabecalhoView(
                     voltar: {
                         dismiss()
@@ -73,8 +68,7 @@ struct ObservacoesReceita: View {
                     }
                 )
                 
-                // MARK: Lista de observações
-                
+             
                 ScrollView {
                     
                     LazyVStack(
@@ -92,7 +86,6 @@ struct ObservacoesReceita: View {
                             .padding(.bottom, 28)
                         }
                         
-                        // Espaço para a barra de pesquisa
                         
                         Color.clear
                             .frame(height: 70)
@@ -103,18 +96,16 @@ struct ObservacoesReceita: View {
                 .scrollIndicators(.hidden)
             }
             
-            // MARK: Barra de pesquisa
-            
             ObservacoesBuscaView(
                 pesquisa: $pesquisa
             )
         }
+        .fecharTecladoAoTocarFora()
         .navigationBarBackButtonHidden(true)
         .background(
             Color(.systemBackground)
         )
         
-        // MARK: Nova observação
         
         .sheet(
             isPresented: $mostrandoNovaObservacao
@@ -126,8 +117,7 @@ struct ObservacoesReceita: View {
             }
         }
         
-        // MARK: Carregar observações
-        
+       
         .onAppear {
             carregarObservacoes()
             
@@ -137,8 +127,7 @@ struct ObservacoesReceita: View {
             }
         }
         
-        // MARK: Alert
-        
+       
         .alert(
             "Erro",
             isPresented: $mostrandoErro
@@ -153,7 +142,6 @@ struct ObservacoesReceita: View {
     }
 }
 
-// MARK: - Core Data
 
 private extension ObservacoesReceita {
     
@@ -166,13 +154,13 @@ private extension ObservacoesReceita {
             )
             
             print(
-                "💬 \(observacoes.count) comentário(s) carregado(s)"
+                "\(observacoes.count) comentário(s) carregado(s)"
             )
             
         } catch {
             
             print(
-                "❌ Erro ao carregar comentários: \(error)"
+                "Erro ao carregar comentários: \(error)"
             )
         }
     }
@@ -203,7 +191,7 @@ private extension ObservacoesReceita {
             novaObservacao = ""
             
             print(
-                "✅ Comentário salvo no Core Data!"
+                "Comentário salvo no Core Data!"
             )
             
         } catch {
@@ -215,7 +203,7 @@ private extension ObservacoesReceita {
             
             let nsError = error as NSError
             
-            print("❌ ERRO AO SALVAR COMENTÁRIO")
+            print("ERRO AO SALVAR COMENTÁRIO")
             print("Domain: \(nsError.domain)")
             print("Code: \(nsError.code)")
             print(
@@ -227,8 +215,6 @@ private extension ObservacoesReceita {
         }
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     

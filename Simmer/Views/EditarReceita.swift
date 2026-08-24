@@ -9,8 +9,7 @@ import UIKit
 
 struct EditarReceita: View {
     
-    // MARK: - Propriedades
-    
+   
     let receita: ReceitaModel
     private let service: ReceitaService
     private let onSaved: () -> Void
@@ -31,9 +30,7 @@ struct EditarReceita: View {
     @State private var fotoSelecionada: PhotosPickerItem?
     @State private var mostrandoErro = false
     @State private var mensagemErro = ""
-    
-    // MARK: - Inicializador
-    
+  
     init(
         receita: ReceitaModel,
         service: ReceitaService,
@@ -51,14 +48,12 @@ struct EditarReceita: View {
             initialValue: receita.porcoes.map(String.init) ?? ""
         )
         
-        // Converte a duração salva (segundos) em formato de texto
         let totalMinutos = receita.duracao / 60
         let h = totalMinutos / 60
         let m = totalMinutos % 60
         let textoDuracao = h > 0 ? (m > 0 ? "\(h)h \(m)min" : "\(h)h") : "\(m)min"
         _duracao = State(initialValue: textoDuracao)
         
-        // Separa a string de utensílios salvos em array
         let listaUtensilios = receita.utensilios?
             .components(separatedBy: "\n")
             .filter { !$0.isEmpty } ?? []
@@ -86,8 +81,7 @@ struct EditarReceita: View {
         )
     }
     
-    // MARK: - Body
-    
+  
     var body: some View {
         ScrollView {
             VStack(
@@ -143,6 +137,7 @@ struct EditarReceita: View {
             .padding(.horizontal, 16)
             .padding(.bottom, 30)
         }
+        .fecharTecladoAoTocarFora()
         .scrollIndicators(.hidden)
         .background(
             Color(.systemBackground)
@@ -172,8 +167,7 @@ struct EditarReceita: View {
         }
     }
     
-    // MARK: - Métodos Auxiliares
-    
+   
     private func carregarFoto() async {
         guard let fotoSelecionada else { return }
         
@@ -182,7 +176,7 @@ struct EditarReceita: View {
                 foto = novaFoto
             }
         } catch {
-            print("❌ Erro ao carregar foto: \(error)")
+            print("Erro ao carregar foto: \(error)")
         }
     }
     
@@ -265,14 +259,12 @@ struct EditarReceita: View {
             
             print("✅ Receita atualizada com sucesso!")
             
-            // Dispara o callback para atualizar a tela anterior
             onSaved()
-            
             dismiss()
             
         } catch {
             mostrarErro("Ocorreu um erro ao atualizar a receita.")
-            print("❌ Erro ao atualizar receita: \(error)")
+            print("Erro ao atualizar receita: \(error)")
         }
     }
     

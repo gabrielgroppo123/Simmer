@@ -13,12 +13,10 @@ struct CardObservacaoDetalhes: View {
         CardDetalhesView(paddingVertical: 20, paddingHorizontal: 20) {
             VStack(alignment: .leading, spacing: 12) {
                 
-                // Formatação nativa de Date no SwiftUI
                 Text(comentario.data, style: .date)
                     .font(.headline)
                     .fontWeight(.bold)
                 
-                // Alterado de .texto para .descricao
                 Text(comentario.descricao)
                     .font(.body)
                     .foregroundStyle(.primary)

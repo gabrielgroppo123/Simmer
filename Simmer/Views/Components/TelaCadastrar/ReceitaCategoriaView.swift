@@ -79,7 +79,6 @@ struct ReceitaCategoriaView: View {
 }
 
 #Preview("Categoria Selecionada") {
-    // Altere para qualquer outro caso válido da sua enum Categoria (ex: .almoco)
     ReceitaCategoriaView(
         categoria: .constant(.massas)
     )

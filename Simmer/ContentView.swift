@@ -33,9 +33,7 @@ struct ContentView: View {
     }
     
     private func testarCRUD() {
-        
-        // MARK: CREATE
-        
+    
         let ingredientes = [
             NovoIngrediente(
                 nome: "Ovos",
@@ -69,13 +67,12 @@ struct ContentView: View {
             
             let receita = try service.criarReceita(dados)
             
-            print("✅ CREATE")
+            print("CREATE")
             print("Nome: \(receita.nome)")
             print("ID: \(receita.id)")
             
-            // MARK: READ INGREDIENTES
-            
-            print("🥕 Ingredientes: \(receita.ingredientes.count)")
+           
+            print("Ingredientes: \(receita.ingredientes.count)")
             
             for ingrediente in receita.ingredientes {
                 print(
@@ -84,20 +81,18 @@ struct ContentView: View {
                 )
             }
             
-            // MARK: READ ONE
             
             guard let receitaEncontrada = try service.buscarReceita(
                 id: receita.id
             ) else {
-                print("❌ Receita não encontrada.")
+                print("Receita não encontrada.")
                 return
             }
             
-            print("🔎 READ ONE")
+            print("READ ONE")
             print("Nome: \(receitaEncontrada.nome)")
             
-            // MARK: UPDATE
-            
+          
             try service.atualizarReceita(
                 receitaEncontrada,
                 nome: "Bolo de Chocolate Especial",
@@ -116,10 +111,7 @@ struct ContentView: View {
                 }
             )
             
-            print("✏️ UPDATE")
-            
-            // Como o método de update não devolve a receita,
-            // buscamos novamente para confirmar a alteração.
+            print("UPDATE")
             
             guard let receitaAtualizada = try service.buscarReceita(
                 id: receita.id
@@ -131,26 +123,25 @@ struct ContentView: View {
             print("Nome depois do UPDATE: \(receitaAtualizada.nome)")
             print("Porções depois do UPDATE: \(receitaAtualizada.porcoes)")
             
-            // MARK: DELETE
+         
             
             try service.deletarReceita(receitaAtualizada)
             
-            print("🗑️ DELETE")
+            print("DELETE")
             
-            // Confirma que realmente foi excluída.
             
             let receitaDepoisDoDelete = try service.buscarReceita(
                 id: receita.id
             )
             
             if receitaDepoisDoDelete == nil {
-                print("✅ Receita não encontrada após DELETE!")
+                print("Receita não encontrada após DELETE!")
             } else {
-                print("❌ A receita ainda existe!")
+                print("A receita ainda existe!")
             }
             
         } catch {
-            print("❌ Erro: \(error)")
+            print("Erro: \(error)")
         }
     }
     
@@ -167,11 +158,11 @@ struct ContentView: View {
         do {
             try service.apagarReceitasComCategoriaAntiga()
             
-            print("✅ Limpeza concluída!")
+            print("Limpeza concluída!")
             
         } catch {
             print(
-                "❌ Erro ao apagar receitas antigas: \(error)"
+                "Erro ao apagar receitas antigas: \(error)"
             )
         }
     }

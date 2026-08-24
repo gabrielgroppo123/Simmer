@@ -35,7 +35,6 @@ struct CalculadoraReceitaView: View {
                 spacing: 24
             ) {
                 
-                // MARK: - Porções atuais
                 
                 HStack {
                     Text("Porções atuais")
@@ -49,7 +48,6 @@ struct CalculadoraReceitaView: View {
                     .foregroundStyle(.secondary)
                 }
                 
-                // MARK: - Porções desejadas
                 
                 VStack(
                     alignment: .leading,
@@ -81,7 +79,6 @@ struct CalculadoraReceitaView: View {
                     )
                 }
                 
-                // MARK: - Ingredientes recalculados
                 
                 if let fatorConversao {
                     
@@ -120,6 +117,7 @@ struct CalculadoraReceitaView: View {
             }
             .padding(20)
         }
+        .fecharTecladoAoTocarFora()
         .navigationTitle("Calcular porções")
         .navigationBarTitleDisplayMode(.inline)
     }

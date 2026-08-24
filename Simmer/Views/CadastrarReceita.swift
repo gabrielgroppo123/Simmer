@@ -101,6 +101,7 @@ struct CadastrarReceita: View {
             .padding(.horizontal, 16)
             .padding(.bottom, 30)
         }
+        .fecharTecladoAoTocarFora()
         .scrollIndicators(.hidden)
         .background(
             Color(.systemBackground)

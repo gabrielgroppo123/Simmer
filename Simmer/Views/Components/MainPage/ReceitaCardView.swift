@@ -15,10 +15,8 @@ struct ReceitaCardView: View {
     var body: some View {
         HStack(spacing: 12) {
             
-            // MARK: - Imagem
             imagemReceita
             
-            // MARK: - Informações
             VStack(
                 alignment: .leading,
                 spacing: 6
@@ -62,7 +60,6 @@ struct ReceitaCardView: View {
                 alignment: .leading
             )
             
-            // MARK: - Navegação
             Image(
                 systemName: "chevron.right"
             )
@@ -89,7 +86,6 @@ struct ReceitaCardView: View {
         .shadow(color: .black.opacity(0.06), radius: 5, y: 2)
     }
     
-    // MARK: - Imagem
     private var imagemReceita: some View {
         Group {
             if let imagem = UIImage(
@@ -119,7 +115,6 @@ struct ReceitaCardView: View {
         )
     }
     
-    // MARK: - Duração
     private func textoDuracao(
         _ duracaoEmSegundos: Int64
     ) -> String {
