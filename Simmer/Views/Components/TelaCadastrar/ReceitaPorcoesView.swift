@@ -20,6 +20,7 @@ struct ReceitaPorcoesView: View {
             
             Text("Porções")
                 .font(.custom("Alexandria-Medium", size: 17))
+                .foregroundColor(.primary)
             
             Spacer()
             

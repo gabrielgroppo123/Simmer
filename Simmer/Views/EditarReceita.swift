@@ -92,6 +92,7 @@ struct EditarReceita: View {
                     foto: $foto,
                     fotoSelecionada: $fotoSelecionada
                 )
+                .frame(maxWidth: .infinity)
                 .padding(.top, 18)
                 
                 ReceitaCampoNomeView(

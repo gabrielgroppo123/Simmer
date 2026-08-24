@@ -20,6 +20,7 @@ struct ReceitaCategoriaView: View {
             
             Text("Categoria")
                 .font(.custom("Alexandria-Medium", size: 17))
+                .foregroundColor(.primary)
 
             
             Spacer()

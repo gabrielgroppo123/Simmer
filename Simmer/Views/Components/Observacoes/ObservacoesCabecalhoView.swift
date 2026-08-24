@@ -32,6 +32,7 @@ struct ObservacoesCabecalhoView: View {
             
             Text("Observações")
                 .font(.custom("Alexandria-SemiBold", size: 16))
+                .foregroundColor(.primary)
 
             
             Spacer()

@@ -23,6 +23,7 @@ struct ReceitaCampoNomeView: View {
                 
                 Text("Nome da Receita")
                     .font(.custom("Alexandria-SemiBold", size: 22))
+                    .foregroundColor(.primary)
 
                 
                 Text("*")

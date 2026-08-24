@@ -21,6 +21,7 @@ struct ReceitaIngredientesView: View {
             HStack(alignment: .firstTextBaseline) {
                 Text("Ingredientes")
                     .font(.custom("Alexandria-Bold", size: 22))
+                    .foregroundColor(.primary)
 
                 
                 Text("*")

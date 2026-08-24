@@ -67,6 +67,7 @@ struct ReceitaFotoView: View {
                         Text(
                             "Adicione uma imagem"
                         )
+                        .foregroundColor(.primary)
                         .font(
                             .system(size: 17)
                         )

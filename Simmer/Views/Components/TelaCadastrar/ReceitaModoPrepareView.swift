@@ -23,6 +23,7 @@ struct ReceitaModoPreparoView: View {
                 
                 Text("Modo de preparo")
                     .font(.custom("Alexandria-SemiBold", size: 22))
+                    .foregroundColor(.primary)
                 
                 Text("*")
                     .foregroundStyle(.red)

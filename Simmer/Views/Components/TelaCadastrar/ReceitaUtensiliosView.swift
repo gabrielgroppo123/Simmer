@@ -19,6 +19,7 @@ struct ReceitaUtensiliosView: View {
             
             Text("Utensílios")
                 .font(.custom("Alexandria-SemiBold", size: 22))
+                .foregroundColor(.primary)
             
             ForEach(
                 utensilios.indices,

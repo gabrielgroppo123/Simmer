@@ -17,6 +17,7 @@ struct ReceitaCategoriasView: View {
             
             Text("Categorias")
                 .font(.custom("Alexandria-SemiBold", size: 22))
+                .foregroundColor(.primary)
 
             
             ScrollView(.horizontal, showsIndicators: false) {

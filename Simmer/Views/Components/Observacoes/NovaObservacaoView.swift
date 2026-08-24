@@ -24,6 +24,7 @@ struct NovaObservacaoView: View {
                 
                 Text("Nova observação")
                     .font(.custom("Alexandria-Bold", size: 24))
+                    .foregroundColor(.primary)
 
                 
                 TextEditor(text: $texto)
