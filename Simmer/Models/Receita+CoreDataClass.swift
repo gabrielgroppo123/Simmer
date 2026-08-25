@@ -1,17 +1,17 @@
+////
+////  Receita+CoreDataClass.swift
+////  Simmer
+////
+////  Created by Gabriel Groppo on 13/08/26.
+////
+////
 //
-//  Receita+CoreDataClass.swift
-//  Simmer
+//public import Foundation
+//public import CoreData
 //
-//  Created by Gabriel Groppo on 13/08/26.
+//public typealias ReceitaCoreDataClassSet = NSSet
 //
+//@objc(Receita)
+//public class Receita: NSManagedObject {
 //
-
-public import Foundation
-public import CoreData
-
-public typealias ReceitaCoreDataClassSet = NSSet
-
-@objc(Receita)
-public class Receita: NSManagedObject {
-
-}
+//}
