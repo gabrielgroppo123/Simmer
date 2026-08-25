@@ -6,12 +6,12 @@
 //
 //
 
-public import Foundation
-public import CoreData
-
-public typealias ComentarioCoreDataClassSet = NSSet
-
-@objc(Comentario)
-public class Comentario: NSManagedObject {
-
-}
+//public import Foundation
+//public import CoreData
+//
+//public typealias ComentarioCoreDataClassSet = NSSet
+//
+//@objc(Comentario)
+//public class Comentario: NSManagedObject {
+//
+//}
