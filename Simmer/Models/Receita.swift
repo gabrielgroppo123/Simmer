@@ -2,6 +2,13 @@
 //  Receita.swift
 //  Simmer
 //
+//  Created by Rebeca Emanuela Calmon de Andrade Alves on 25/08/26.
+//
+
+//
+//  Receita.swift
+//  Simmer
+//
 //  Created by Gabriel Groppo on 24/08/26.
 //
 
