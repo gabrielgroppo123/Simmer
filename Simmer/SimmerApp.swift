@@ -6,22 +6,32 @@
 //
 
 import SwiftUI
-import CoreData
+import SwiftData
 
 @main
 struct SimmerApp: App {
     
-    let persistenceController = PersistenceController.shared
+    let persistenceController =
+        PersistenceController.shared
     
-    let receitaService = ReceitaService(
-        repository: CoreDataReceitaRepository(
-            context: PersistenceController.shared.container.viewContext
-        )
-    )
+    let receitaService: ReceitaService
     
     @State private var mostrandoSplash = true
     
+    init() {
+        
+        let context =
+            PersistenceController.shared.container.mainContext
+        
+        self.receitaService = ReceitaService(
+            repository: SwiftDataReceitaRepository(
+                context: context
+            )
+        )
+    }
+    
     var body: some Scene {
+        
         WindowGroup {
             
             if mostrandoSplash {
@@ -37,5 +47,8 @@ struct SimmerApp: App {
                 )
             }
         }
+        .modelContainer(
+            persistenceController.container
+        )
     }
 }

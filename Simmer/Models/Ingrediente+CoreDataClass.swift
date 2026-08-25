@@ -1,17 +1,17 @@
+////
+////  Ingrediente+CoreDataClass.swift
+////  Simmer
+////
+////  Created by Gabriel Groppo on 13/08/26.
+////
+////
 //
-//  Ingrediente+CoreDataClass.swift
-//  Simmer
+//public import Foundation
+//public import CoreData
 //
-//  Created by Gabriel Groppo on 13/08/26.
+//public typealias IngredienteCoreDataClassSet = NSSet
 //
+//@objc(Ingrediente)
+//public class Ingrediente: NSManagedObject {
 //
-
-public import Foundation
-public import CoreData
-
-public typealias IngredienteCoreDataClassSet = NSSet
-
-@objc(Ingrediente)
-public class Ingrediente: NSManagedObject {
-
-}
+//}
