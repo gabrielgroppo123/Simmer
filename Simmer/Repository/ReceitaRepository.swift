@@ -9,13 +9,19 @@ import Foundation
 
 protocol ReceitaRepository {
     
-    func criarReceita(_ dados: NovaReceita) throws -> ReceitaModel
+    func criarReceita(
+        _ dados: NovaReceita
+    ) throws -> ReceitaModel
     
     func buscarReceitas() throws -> [ReceitaModel]
     
-    func buscarReceitas(texto: String) throws -> [ReceitaModel]
+    func buscarReceitas(
+        texto: String
+    ) throws -> [ReceitaModel]
     
-    func buscarReceita(id: UUID) throws -> ReceitaModel?
+    func buscarReceita(
+        id: UUID
+    ) throws -> ReceitaModel?
     
     func atualizarReceita(
         _ receita: ReceitaModel,
@@ -26,20 +32,26 @@ protocol ReceitaRepository {
         duracao: Int64,
         utensilios: String?,
         modoPreparo: String,
-        ingredientes: [NovoIngrediente]) throws
+        ingredientes: [NovoIngrediente]
+    ) throws
     
     func atualizarFavorito(
         _ receita: ReceitaModel,
-        favorito: Bool) throws
+        favorito: Bool
+    ) throws
+    
+    func deletarReceita(
+        _ receita: ReceitaModel
+    ) throws
     
     func criarComentario(
         descricao: String,
-        receita: ReceitaModel) throws -> ComentarioModel
-
-    func buscarComentarios(
-        receita: ReceitaModel) throws -> [ComentarioModel]
+        receita: ReceitaModel
+    ) throws -> ComentarioModel
     
-    func deletarReceita(_ receita: ReceitaModel) throws
+    func buscarComentarios(
+        receita: ReceitaModel
+    ) throws -> [ComentarioModel]
     
     func apagarReceitasComCategoriaAntiga() throws
 }

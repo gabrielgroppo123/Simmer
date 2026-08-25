@@ -1,12 +1,13 @@
-//
 //  ReceitaService.swift
 //  Simmer
 //
 //  Created by Gabriel Groppo on 14/08/26.
 //
+
 import Foundation
 
 struct NovaReceita {
+    
     let nome: String
     let categoria: Categoria
     let foto: Data
@@ -18,10 +19,10 @@ struct NovaReceita {
 }
 
 struct NovoIngrediente {
+    
     let nome: String
     let quantidade: Double
     let unidade: UnidadeMedida
-    
 }
 
 final class ReceitaService {
@@ -31,21 +32,34 @@ final class ReceitaService {
     init(repository: ReceitaRepository) {
         self.repository = repository
     }
-    
-    func criarReceita(_ dados: NovaReceita) throws -> ReceitaModel {
+    func criarReceita(
+        _ dados: NovaReceita
+    ) throws -> ReceitaModel {
+        
         try repository.criarReceita(dados)
     }
     
     func buscarReceitas() throws -> [ReceitaModel] {
+        
         try repository.buscarReceitas()
     }
     
-    func buscarReceitas(texto: String) throws -> [ReceitaModel] {
-        try repository.buscarReceitas(texto: texto)
+    func buscarReceitas(
+        texto: String
+    ) throws -> [ReceitaModel] {
+        
+        try repository.buscarReceitas(
+            texto: texto
+        )
     }
     
-    func buscarReceita(id: UUID) throws -> ReceitaModel? {
-        try repository.buscarReceita(id: id)
+    func buscarReceita(
+        id: UUID
+    ) throws -> ReceitaModel? {
+        
+        try repository.buscarReceita(
+            id: id
+        )
     }
     
     func atualizarReceita(
@@ -57,7 +71,8 @@ final class ReceitaService {
         duracao: Int64,
         utensilios: String?,
         modoPreparo: String,
-        ingredientes: [NovoIngrediente]) throws {
+        ingredientes: [NovoIngrediente]
+    ) throws {
         
         try repository.atualizarReceita(
             receita,
@@ -68,32 +83,52 @@ final class ReceitaService {
             duracao: duracao,
             utensilios: utensilios,
             modoPreparo: modoPreparo,
-            ingredientes: ingredientes)
+            ingredientes: ingredientes
+        )
     }
     
     func atualizarFavorito(
         _ receita: ReceitaModel,
-        favorito: Bool) throws {
+        favorito: Bool
+    ) throws {
         
-        try repository.atualizarFavorito(receita,favorito: favorito)
+        try repository.atualizarFavorito(
+            receita,
+            favorito: favorito
+        )
     }
     
-    func deletarReceita(_ receita: ReceitaModel) throws {
-        try repository.deletarReceita(receita)
+    func deletarReceita(
+        _ receita: ReceitaModel
+    ) throws {
+        
+        try repository.deletarReceita(
+            receita
+        )
+    }
+    
+    func criarComentario(
+        descricao: String,
+        receita: ReceitaModel
+    ) throws -> ComentarioModel {
+        
+        try repository.criarComentario(
+            descricao: descricao,
+            receita: receita
+        )
+    }
+    
+    func buscarComentarios(
+        receita: ReceitaModel
+    ) throws -> [ComentarioModel] {
+        
+        try repository.buscarComentarios(
+            receita: receita
+        )
     }
     
     func apagarReceitasComCategoriaAntiga() throws {
+        
         try repository.apagarReceitasComCategoriaAntiga()
-    }
-    
-
-    func criarComentario(descricao: String, receita: ReceitaModel) throws -> ComentarioModel {
-        
-        try repository.criarComentario(descricao: descricao,receita: receita)
-    }
-
-    func buscarComentarios(receita: ReceitaModel) throws -> [ComentarioModel] {
-        
-        try repository.buscarComentarios(receita: receita)
     }
 }
