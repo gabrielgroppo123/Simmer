@@ -21,17 +21,20 @@ final class Ingrediente {
     var nome: String
     var quantidade: Double
     var unidade: String
+    var receita: Receita?
     
     init(
             id: UUID = UUID(),
             nome: String,
             quantidade: Double,
-            unidade: String
+            unidade: String,
+            receita: Receita? = nil
         ) {
             self.id = id
             self.nome = nome
             self.quantidade = quantidade
             self.unidade = unidade
+            self.receita = receita
         }
     
 }
