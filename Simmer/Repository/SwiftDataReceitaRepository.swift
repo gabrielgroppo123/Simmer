@@ -17,9 +17,7 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
         self.context = context
     }
     
-    func criarReceita(
-        _ dados: NovaReceita
-    ) throws -> ReceitaModel {
+    func criarReceita( _ dados: NovaReceita) throws -> ReceitaModel {
         
         let receita = Receita(
             nome: dados.nome,
@@ -30,8 +28,7 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
             porcoes: dados.porcoes ?? 1,
             duracao: dados.duracao,
             utensilios: dados.utensilios,
-            modoPreparo: dados.modoPreparo
-        )
+            modoPreparo: dados.modoPreparo)
         
         context.insert(receita)
         
@@ -41,8 +38,7 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
                 nome: dadosIngrediente.nome,
                 quantidade: dadosIngrediente.quantidade,
                 unidade: dadosIngrediente.unidade.rawValue,
-                receita: receita
-            )
+                receita: receita)
             
             context.insert(ingrediente)
         }
@@ -55,13 +51,7 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
     func buscarReceitas() throws -> [ReceitaModel] {
         
         let descriptor = FetchDescriptor<Receita>(
-            sortBy: [
-                SortDescriptor<Receita>(
-                    \.dataCriacao,
-                    order: .reverse
-                )
-            ]
-        )
+            sortBy: [SortDescriptor<Receita>(\.dataCriacao,order: .reverse)])
         
         let receitas = try context.fetch(descriptor)
         
@@ -70,25 +60,15 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
         }
     }
     
-    func buscarReceitas(
-        texto: String
-    ) throws -> [ReceitaModel] {
+    func buscarReceitas(texto: String) throws -> [ReceitaModel] {
         
         let descriptor = FetchDescriptor<Receita>(
-            sortBy: [
-                SortDescriptor<Receita>(
-                    \.dataCriacao,
-                    order: .reverse
-                )
-            ]
-        )
+            sortBy: [SortDescriptor<Receita>(\.dataCriacao,order: .reverse)])
         
         let receitas = try context.fetch(descriptor)
         
         let textoNormalizado = texto
-            .trimmingCharacters(
-                in: .whitespacesAndNewlines
-            )
+            .trimmingCharacters(in: .whitespacesAndNewlines)
         
         if textoNormalizado.isEmpty {
             return receitas.map {
@@ -98,18 +78,14 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
         
         return receitas
             .filter {
-                $0.nome.localizedCaseInsensitiveContains(
-                    textoNormalizado
-                )
+                $0.nome.localizedCaseInsensitiveContains(textoNormalizado)
             }
             .map {
                 converterReceita($0)
             }
     }
     
-    func buscarReceita(
-        id: UUID
-    ) throws -> ReceitaModel? {
+    func buscarReceita(id: UUID) throws -> ReceitaModel? {
         
         let idReceita = id
         
@@ -121,9 +97,7 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
             predicate: predicate
         )
         
-        guard let receita = try context.fetch(
-            descriptor
-        ).first else {
+        guard let receita = try context.fetch(descriptor).first else {
             return nil
         }
         
@@ -152,9 +126,7 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
             predicate: predicate
         )
         
-        guard let receitaSwiftData = try context.fetch(
-            descriptor
-        ).first else {
+        guard let receitaSwiftData = try context.fetch(descriptor).first else {
             return
         }
         
@@ -179,8 +151,7 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
                 nome: dadosIngrediente.nome,
                 quantidade: dadosIngrediente.quantidade,
                 unidade: dadosIngrediente.unidade.rawValue,
-                receita: receitaSwiftData
-            )
+                receita: receitaSwiftData)
             
             context.insert(ingrediente)
         }
@@ -188,10 +159,7 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
         try context.save()
     }
     
-    func atualizarFavorito(
-        _ receita: ReceitaModel,
-        favorito: Bool
-    ) throws {
+    func atualizarFavorito(_ receita: ReceitaModel,favorito: Bool) throws {
         
         let idReceita = receita.id
         
@@ -199,13 +167,9 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
             receitaSwiftData.id == idReceita
         }
         
-        let descriptor = FetchDescriptor<Receita>(
-            predicate: predicate
-        )
+        let descriptor = FetchDescriptor<Receita>(predicate: predicate)
         
-        guard let receitaSwiftData = try context.fetch(
-            descriptor
-        ).first else {
+        guard let receitaSwiftData = try context.fetch(descriptor).first else {
             return
         }
         
@@ -214,9 +178,7 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
         try context.save()
     }
     
-    func deletarReceita(
-        _ receita: ReceitaModel
-    ) throws {
+    func deletarReceita(_ receita: ReceitaModel) throws {
         
         let idReceita = receita.id
         
@@ -224,13 +186,9 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
             receitaSwiftData.id == idReceita
         }
         
-        let descriptor = FetchDescriptor<Receita>(
-            predicate: predicate
-        )
+        let descriptor = FetchDescriptor<Receita>(predicate: predicate)
         
-        guard let receitaSwiftData = try context.fetch(
-            descriptor
-        ).first else {
+        guard let receitaSwiftData = try context.fetch(descriptor).first else {
             return
         }
         
@@ -245,9 +203,7 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
             receita.categoria == "Sobremesas"
         }
         
-        let descriptor = FetchDescriptor<Receita>(
-            predicate: predicate
-        )
+        let descriptor = FetchDescriptor<Receita>(predicate: predicate)
         
         let receitas = try context.fetch(descriptor)
         
@@ -257,16 +213,11 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
         
         try context.save()
         
-        print(
-            "\(receitas.count) receita(s) antiga(s) removida(s)."
-        )
+        print("\(receitas.count) receita(s) antiga(s) removida(s).")
     }
     
     
-    func criarComentario(
-        descricao: String,
-        receita: ReceitaModel
-    ) throws -> ComentarioModel {
+    func criarComentario(descricao: String,receita: ReceitaModel) throws -> ComentarioModel {
         
         let idReceita = receita.id
         
@@ -274,29 +225,17 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
             receitaSwiftData.id == idReceita
         }
         
-        let descriptor = FetchDescriptor<Receita>(
-            predicate: predicate
-        )
+        let descriptor = FetchDescriptor<Receita>(predicate: predicate)
         
-        guard let receitaSwiftData = try context.fetch(
-            descriptor
-        ).first else {
+        guard let receitaSwiftData = try context.fetch(descriptor).first else {
             
-            throw NSError(
-                domain: "Simmer",
-                code: 404,
-                userInfo: [
-                    NSLocalizedDescriptionKey:
-                        "A receita não foi encontrada no SwiftData."
-                ]
-            )
+            throw NSError(domain: "Simmer",code: 404,userInfo: [NSLocalizedDescriptionKey:"A receita não foi encontrada no SwiftData."])
         }
         
         let comentario = Comentario(
             descricao: descricao,
             data: Date(),
-            receita: receitaSwiftData
-        )
+            receita: receitaSwiftData)
         
         context.insert(comentario)
         
@@ -305,24 +244,12 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
         return ComentarioModel(
             id: comentario.id,
             descricao: comentario.descricao,
-            data: comentario.data
-        )
+            data: comentario.data)
     }
     
-    func buscarComentarios(
-        receita: ReceitaModel
-    ) throws -> [ComentarioModel] {
+    func buscarComentarios(receita: ReceitaModel) throws -> [ComentarioModel] {
         
-        let comentarios = try context.fetch(
-            FetchDescriptor<Comentario>(
-                sortBy: [
-                    SortDescriptor<Comentario>(
-                        \.data,
-                        order: .reverse
-                    )
-                ]
-            )
-        )
+        let comentarios = try context.fetch(FetchDescriptor<Comentario>(sortBy: [SortDescriptor<Comentario>(\.data,order: .reverse)]))
         
         return comentarios
             .filter {
@@ -332,14 +259,11 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
                 ComentarioModel(
                     id: $0.id,
                     descricao: $0.descricao,
-                    data: $0.data
-                )
+                    data: $0.data)
             }
     }
     
-    private func converterReceita(
-        _ receita: Receita
-    ) -> ReceitaModel {
+    private func converterReceita(_ receita: Receita) -> ReceitaModel {
         
         let ingredientes = receita.ingredientes.map {
             
@@ -347,10 +271,7 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
                 id: $0.id,
                 nome: $0.nome,
                 quantidade: $0.quantidade,
-                unidade: UnidadeMedida(
-                    rawValue: $0.unidade
-                ) ?? .gramas
-            )
+                unidade: UnidadeMedida(rawValue: $0.unidade) ?? .gramas)
         }
         
         let comentarios = receita.comentarios.map {
@@ -358,8 +279,7 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
             ComentarioModel(
                 id: $0.id,
                 descricao: $0.descricao,
-                data: $0.data
-            )
+                data: $0.data)
         }
         
         return ReceitaModel(
@@ -376,7 +296,6 @@ final class SwiftDataReceitaRepository: ReceitaRepository {
             utensilios: receita.utensilios,
             modoPreparo: receita.modoPreparo,
             ingredientes: ingredientes,
-            comentarios: comentarios
-        )
+            comentarios: comentarios)
     }
 }

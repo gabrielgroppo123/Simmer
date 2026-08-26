@@ -133,7 +133,6 @@ final class SpeechRecognizer: ObservableObject {
             }
     }
     
-    // MARK: - Parar reconhecimento
     
     func pararReconhecimento() {
         

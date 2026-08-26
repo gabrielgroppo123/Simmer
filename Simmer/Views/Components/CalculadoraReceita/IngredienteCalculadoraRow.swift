@@ -24,16 +24,9 @@ struct IngredienteCalculadoRowView: View {
                     quantidadeCalculada
                 )
             )
-            .font(
-                .system(
-                    size: 16,
-                    weight: .semibold
-                )
-            )
+            .font(.system(size: 16,weight: .semibold))
             
-            Text(
-                ingrediente.unidade.rawValue
-            )
+            Text(ingrediente.unidade.rawValue)
             .foregroundStyle(.secondary)
             
             Text(ingrediente.nome)
@@ -43,20 +36,13 @@ struct IngredienteCalculadoRowView: View {
         .padding(.vertical, 6)
     }
     
-    private func formatarQuantidade(
-        _ quantidade: Double
-    ) -> String {
+    private func formatarQuantidade(_ quantidade: Double) -> String {
         
         if quantidade.rounded() == quantidade {
             return String(Int(quantidade))
         }
         
-        return String(
-            format: "%.2f", quantidade
-        )
-        .replacingOccurrences(
-            of: ".",
-            with: ","
-        )
+        return String(format: "%.2f", quantidade)
+        .replacingOccurrences(of: ".",with: ",")
     }
 }
