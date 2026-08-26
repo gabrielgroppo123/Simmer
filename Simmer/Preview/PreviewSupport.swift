@@ -16,9 +16,7 @@ enum PreviewSupport {
     
     static let receitaService = ReceitaService(
         repository: SwiftDataReceitaRepository(
-            context: persistenceController.container.mainContext
-        )
-    )
+            context: persistenceController.container.mainContext))
     
     static func criarReceitaPreview() -> ReceitaModel {
         
@@ -33,8 +31,7 @@ enum PreviewSupport {
             porcoes: 2,
             duracao: 900,
             utensilios: "",
-            modoPreparo: "Misture todos os ingredientes."
-        )
+            modoPreparo: "Misture todos os ingredientes.")
         
         context.insert(receita)
         
@@ -44,37 +41,27 @@ enum PreviewSupport {
             
         } catch {
             
-            fatalError(
-                "Erro ao criar receita para Preview: \(error)"
-            )
+            fatalError("Erro ao criar receita para Preview: \(error)")
         }
         
         do {
             
-            guard let receitaModel =
-                    try receitaService.buscarReceita(
-                        id: receita.id
-                    )
+            guard let receitaModel = try receitaService.buscarReceita(id: receita.id)
             else {
                 
-                fatalError(
-                    "Receita de Preview não foi encontrada."
-                )
+                fatalError("Receita de Preview não foi encontrada.")
             }
             
             return receitaModel
             
         } catch {
             
-            fatalError(
-                "Erro ao buscar receita de Preview: \(error)"
-            )
+            fatalError("Erro ao buscar receita de Preview: \(error)")
         }
     }
     static func criarDadosObservacoesPreview() -> ReceitaModel {
         
-        let context =
-            persistenceController.container.mainContext
+        let context = persistenceController.container.mainContext
         
         let receita = Receita(
             nome: "Salada Caesar",
@@ -86,29 +73,20 @@ enum PreviewSupport {
             duracao: 900,
             utensilios: "",
             modoPreparo:
-                "Misture todos os ingredientes."
-        )
+                "Misture todos os ingredientes.")
         
         context.insert(receita)
         
         let comentario1 = Comentario(
-            descricao:
-                "Fica excelente adicionando molho pesto de manjericão fresco.",
+            descricao: "Fica excelente adicionando molho pesto de manjericão fresco.",
             data: Date(),
             receita: receita
         )
         
         let comentario2 = Comentario(
-            descricao:
-                "Também funciona muito bem substituindo as nozes por castanhas.",
-            data:
-                Calendar.current.date(
-                    byAdding: .month,
-                    value: -2,
-                    to: Date()
-                ) ?? Date(),
-            receita: receita
-        )
+            descricao: "Também funciona muito bem substituindo as nozes por castanhas.",
+            data: Calendar.current.date(byAdding: .month,value: -2,to: Date()) ?? Date(),
+            receita: receita)
         
         context.insert(comentario1)
         context.insert(comentario2)
@@ -122,31 +100,22 @@ enum PreviewSupport {
             
         } catch {
             
-            fatalError(
-                "Erro ao criar dados do Preview: \(error)"
-            )
+            fatalError("Erro ao criar dados do Preview: \(error)")
         }
         
         do {
             
-            guard let receitaModel =
-                    try receitaService.buscarReceita(
-                        id: receita.id
-                    )
+            guard let receitaModel = try receitaService.buscarReceita(id: receita.id)
             else {
                 
-                fatalError(
-                    "Receita do Preview não encontrada."
-                )
+                fatalError("Receita do Preview não encontrada.")
             }
             
             return receitaModel
             
         } catch {
             
-            fatalError(
-                "Erro ao buscar receita do Preview: \(error)"
-            )
+            fatalError("Erro ao buscar receita do Preview: \(error)")
         }
     }
 }
